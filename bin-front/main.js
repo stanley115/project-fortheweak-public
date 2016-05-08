@@ -7,4 +7,6 @@ var room = new Room();
 //var game = new Game();
 
 
+require('./Communication');
+require('./StylesAndFix');
 //game.start();
