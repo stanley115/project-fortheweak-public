@@ -49,6 +49,13 @@
       socket.emit("roomCreate",'AOC');
       socket.emit("roomList");
       socket.emit("roomLeave");
+      socket.on("roomList",function(data){
+          console.log("roomList",data);
+          });
+      socket.on("roomEntered",function(data){
+          console.log("roomEntered",data);
+          });
+      console.log("BIND event");
     </script>
     </body>
   </html>

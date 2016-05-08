@@ -1,30 +1,31 @@
 /**
  *  Main application
  */
+var client_prefix = "client-";
 var client_id_pool = 0 ;
 var room_id_pool = 0;
 var globalData = {};
 globalData.client = {};
 globalData.room = {};
-function roomCreate(socket,cid,roomName){
+function roomCreate(serverSocket,socket,cid,roomName){
   var room_id = ++room_id_pool;
   //console.log('room_id:'+room_id);
   //console.log("Create new room with name:"+roomName);
   globalData.room[room_id]={};//create obj
   globalData.room[room_id].name = roomName;
   globalData.room[room_id].client_list = [];
-  roomJoin(socket,cid,room_id);
+  roomJoin(serverSocket,socket,cid,room_id);
 }
-function roomJoin(socket,cid,rid){
-  globalData.room[rid].client_list.push(cid);
+function roomJoin(serverSocket,socket,cid,rid){
   socket.join(rid);
+  globalData.room[rid].client_list.push(cid);
   //console.log(cid+" join "+rid);
   //console.log("Room name:"+globalData.room[rid].name);
-  var client_self = 'client-'+cid;
+  var client_self = client_prefix+cid;
   console.log(globalData.room[rid]);
   globalData.client[cid].inRoom = rid;
   //Need notify any one in the room 
-  socket.to(rid).emit('roomEntered',globalData.room[rid]);
+  serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   
 }
 
@@ -45,10 +46,10 @@ function roomLeave(socket,cid){
   }
 }
 
-function roomList(socket,cid){
-  var client_self = 'client-'+cid;
+function roomList(serverSocket,cid){
+  var client_self = client_prefix+cid;
   console.log(globalData.room);
-  socket.to(client_self).emit('roomList',globalData.room);
+  serverSocket.to(client_self).emit('roomList',globalData.room);
 }
 
 module.exports = function(app){
@@ -57,7 +58,7 @@ module.exports = function(app){
   var io = require('socket.io').listen(app);
   io.on('connection', function(socket){
     var client_id = ++client_id_pool; // **** closure for each client to capture client_id;
-    var client_channel = "CLIENT-"+client_id;
+    var client_channel = client_prefix+client_id;
     socket.join(client_channel); // so that we can broadcast roomList/pref to individual clients when not in room
     console.log("client_id:"+client_id);
     var client_name; // another var in closure
@@ -67,18 +68,18 @@ module.exports = function(app){
       globalData.client[client_id].name = name;
       globalData.client[client_id].inRoom = -1;
       console.log(globalData.client[client_id]);
-      socket.emit(client_channel,globalData.client[client_id]);
+      io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
     });
     socket.on('disconnect',function(){
       console.log('disconnect:'+client_id);
     });
     socket.on('roomCreate',function(roomName){
       console.log('roomCreate');
-      roomCreate(socket,client_id,roomName);
+      roomCreate(io,socket,client_id,roomName);
     });
     socket.on('roomJoin',function(room_id){
       console.log('roomJoin');
-      roomJoin(socket,client_id,room_id);
+      roomJoin(io,socket,client_id,room_id);
     });
     socket.on('roomLeave',function(){
       console.log('roomLeave');
@@ -86,7 +87,7 @@ module.exports = function(app){
     });
     socket.on('roomList',function(){
       console.log('roomList');
-      roomList(socket,client_id);
+      roomList(io,client_id);
     });
     socket.on('roomUpdate',function(){
       console.log('roomUpdate');
