@@ -1,7 +1,10 @@
 "use strict";
 
-var Game = require('./Game');
+var Room = require('./Room');
+//var Game = require('./Game');
 
-var game = new Game();
+var room = new Room();
+//var game = new Game();
 
-game.start();
+
+//game.start();
