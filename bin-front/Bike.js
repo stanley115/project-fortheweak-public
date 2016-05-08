@@ -29,7 +29,7 @@ var Bike = function(scene, config){
 		bikeURL,
 		// Function when resource is loaded
 		function ( collada ) {
-			console.log("load");
+			//console.log("load");
             self.obj = collada.scene;
             scene.add(self.obj);
 
@@ -41,7 +41,7 @@ var Bike = function(scene, config){
 		},
 		// Function called when download progresses
 		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			//console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
 }
@@ -52,11 +52,11 @@ Bike.prototype.update = function(dt){
     if (this.drive) {
         // get velocity
         var tv = new THREE.Vector2(this.dir.x, this.dir.z);
-        console.log("v = (" + tv.x + "," + tv.y + ")");
+        //console.log("v = (" + tv.x + "," + tv.y + ")");
         // get acceleration
         var ta = new THREE.Vector2(-this.dir.z, this.dir.x);
         ta.normalize().multiplyScalar(this.turn * dt);
-        console.log("a = (" + ta.x + "," + ta.y + ")");
+        //console.log("a = (" + ta.x + "," + ta.y + ")");
         // update velocity
         tv.add(ta);
         // update position and direaction
