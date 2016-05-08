@@ -16,11 +16,14 @@ body {
     right: 0;
     bottom: 0;
 }
-#welcome-page{
+#welcome-page-background{
   /*background-color: lightblue;
   */
-  height:100%;
+  width:1000px;
+  height:1000px;
   margin:0 auto;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
   background-size: 100%;
   background-image: url("../assets/welcome.jpg");*/
 
