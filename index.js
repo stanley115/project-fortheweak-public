@@ -7,6 +7,7 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/public/index.html');
 });
 
+app.use('/3rdparty',express.static(__dirname + '/node_modules/'));
 app.use(express.static(__dirname + '/public'));
 
 var server_port = process.env.PORT || 8080;

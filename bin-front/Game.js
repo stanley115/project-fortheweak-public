@@ -5,8 +5,7 @@
 var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
-    Display = require('./Display');
-
+    Display = require('./Display'); 
 var clock = new THREE.Clock(),
     scene = new THREE.Scene();
 
@@ -29,7 +28,7 @@ var Game = function(config){
     ], function(err){
         if (err) console.log(err);
         self.display = new Display(scene, {
-            role: 'player',
+            role: 'not player',
             player: self.player
         });
 
