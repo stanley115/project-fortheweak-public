@@ -2,6 +2,9 @@
 var express = require('express'),
 	app = express(),
 	http = require('http').Server(app);
+  
+//Must ,otherwise route would not be captured...
+var io = require('socket.io').listen(http);
 
 app.get('/', function(req, res){
 	res.sendFile(__dirname + '/public/index.html');
@@ -18,4 +21,5 @@ app.listen(server_port, function(){
 });
 
 // run application
-require("./bin/app.js")(http);
+require("./bin/app.js")(http,io);
+module.exports=app;

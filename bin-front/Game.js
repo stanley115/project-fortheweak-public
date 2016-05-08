@@ -5,8 +5,7 @@
 var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
-    Display = require('./Display');
-
+    Display = require('./Display'); 
 var clock = new THREE.Clock(),
     scene = new THREE.Scene();
 

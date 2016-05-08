@@ -29,7 +29,7 @@ var Bike = function(scene, config){
 		bikeURL,
 		// Function when resource is loaded
 		function ( collada ) {
-			console.log("load");
+			//console.log("load");
             self.obj = collada.scene;
             scene.add(self.obj);
 
@@ -41,7 +41,7 @@ var Bike = function(scene, config){
 		},
 		// Function called when download progresses
 		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			//console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
 }
