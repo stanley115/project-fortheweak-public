@@ -26,9 +26,7 @@
     </div>
     <div id="game-div" hidden></div>
 
-    <!--
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
-    -->
     <script src="js/threejs/three.min.js"></script>
     <script src="js/threejs/StereoEffect.js"></script>
     <script src="js/threejs/DeviceOrientationControls.js"></script>
@@ -45,9 +43,12 @@
         console.error('There was a problem in locking the orientation')
       }
 */
-/*
       var socket = io.connect();
-      */
+      socket.emit("clientNew","Tr9llo");
+      socket.emit("roomList");
+      socket.emit("roomCreate",'AOC');
+      socket.emit("roomList");
+      socket.emit("roomLeave");
     </script>
     </body>
   </html>

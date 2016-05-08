@@ -1,12 +1,21 @@
-var io = require('socket.io-client');
-io.connect();
-console.log("Communication API");
-function roomList(){
-}
-function roomCreate(roomName){
-}
-function callbackRoomList(roomList){
-  console.log(roomList);
-}
-function callbackRoomCreate(data){
-}
+var Communication=function(){
+  var socket = require('socket.io-client');
+  socket.connect();
+  console.log("Communication API");
+  return {
+    initCallback:function(){
+      socket.on('roomList',callbackRoomList);
+    },
+    roomList:function(){
+    },
+    roomCreate:function(roomName){
+      socket.emit('roomCreate',roomName);
+    },
+    callbackRoomList:function(roomList){
+      console.log(roomList);
+    },
+    callbackRoomCreate:function(data){
+    }
+  };
+};
+module.exports = Communication;
