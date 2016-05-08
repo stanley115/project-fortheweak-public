@@ -22,7 +22,7 @@ Player.prototype.getCameraPos = function(){
 
 Player.prototype.getCameraDir = function(){
     // return new THREE.Vector3(1, 0, 1);
-    return new THREE.Vector3(this.bike.dir.x, 0, this.bike.dir.z);
+    return new THREE.Vector3(this.bike.dir.z, 0, -this.bike.dir.x);
 }
 
 module.exports = Player;

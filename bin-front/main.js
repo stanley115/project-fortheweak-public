@@ -1,10 +1,12 @@
 "use strict";
 
 var Room = require('./Room');
-//var Game = require('./Game');
+var Game = require('./Game');
 
 var room = new Room();
-//var game = new Game();
+var game = new Game({
+    role: 'player'
+});
 
 
 var communication = require('./Communication');

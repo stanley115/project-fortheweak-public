@@ -5,7 +5,7 @@
 var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
-    Display = require('./Display'); 
+    Display = require('./Display');
 var clock = new THREE.Clock(),
     scene = new THREE.Scene();
 
@@ -15,7 +15,8 @@ var Game = function(config){
     var self = this;
     this.display = null;
     this.player = null;
-    this.background = new Background(scene, config.background);
+    this.controls = null;
+    this.background = null;
 
     async.series([
         function(callback){
@@ -24,15 +25,40 @@ var Game = function(config){
             self.player = new Player(scene, {
                 callback: callback
             })
+        },
+        function(callback){
+            // display
+            self.display = new Display(scene, {
+                role: config.role,
+                player: self.player
+            });
+
+            callback();
+        },
+        function(callback){
+            // controls
+            self.controls = self.display.controls;
+
+            if (config.role == "player"){
+                self.controls.getTurnDeg = function(){
+                    var tmp = new THREE.Euler();
+                    tmp.setFromQuaternion(this.orientationQuaternion, "ZXY");
+                    return tmp.x;
+                }
+            }
+
+            callback();
+        },
+        function(callback){
+            // background
+            self.background = new Background(scene, config.background);
+            self.background.createWorld(self.display);
+
+            callback();
         }
     ], function(err){
         if (err) console.log(err);
-        self.display = new Display(scene, {
-            role: 'not player',
-            player: self.player
-        });
 
-        self.background.createWorld(self.display);
         self.animate();
     });
 }
@@ -43,6 +69,8 @@ Game.prototype.animate = function(t) {
     function update(dt) {
         self.player.update(dt);
         self.display.update(dt);
+
+        self.player.bike.turn = self.controls.getTurnDeg();
     }
 
     function render(dt) {

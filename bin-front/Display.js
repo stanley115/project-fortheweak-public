@@ -16,7 +16,7 @@ function Display(scene, config){
         container = document.getElementById('game-div');
     	container.appendChild(element);
 
-        camera = new THREE.PerspectiveCamera(70, 1, 0.001, 700);
+        camera = new THREE.PerspectiveCamera(100, 2, 0.1, 700);
     	camera.position.set(0, 10, 0);
     	scene.add(camera);
 
@@ -103,6 +103,7 @@ function Display(scene, config){
         this.renderer = renderer;
         this.update = update;
         this.render = render;
+        this.controls = controls;
     }).bind(this);
 
     // run init()
