@@ -1,44 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>VR Tron</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-        <link rel="stylesheet" type="text/css" href="css/style.css">
-    </head>
-    <body>
-        <div id="room-div">
-            <div id = "welcome-page">　
-              <div>
-                <h2>happy trolling</h2>
-                <ul>
-                  <li class="content-page" id="fullscreen">
-                 <!--button id="fullscreen"　class = "content-page"-->
-                    Click Me to Go fullscreen
-                </li>
-              </div>
-              <div id = "welcome-page-background">
-              HIHI
-              </div>
-            </ul>
-
-              <!--/button-->
-
-            </div>
+  <head>
+    <title>VR Tron</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <div id="room-div">
+      <div id = "welcome-page">　
+        <div>
+          <h2>happy trolling</h2>
+          <ul>
+            <li class="content-page" id="fullscreen">
+            <!--button id="fullscreen"　class = "content-page"-->
+            Click Me to Go fullscreen
+            </li>
+          </ul>
         </div>
-        <div id="game-div" hidden></div>
+      </div>
+      <div id = "welcome-page-background">
+      </div>
+      <!--/button-->
 
-        <script src="3rdparty/socket.io-client/socket.io.js"></script>
-        <script src="js/threejs/three.min.js"></script>
-        <script src="js/threejs/StereoEffect.js"></script>
-        <script src="js/threejs/DeviceOrientationControls.js"></script>
-        <script src="js/threejs/OrbitControls.js"></script>
-        <script src="js/threejs/ColladaLoader.js"></script>
+    </div>
+    <div id="game-div" hidden></div>
 
-        <script src="js/bundle.js"></script>
-        <script type="text/javascript">
-          var socket = io();
+    <script src="3rdparty/socket.io-client/socket.io.js"></script>
+    <script src="js/threejs/three.min.js"></script>
+    <script src="js/threejs/StereoEffect.js"></script>
+    <script src="js/threejs/DeviceOrientationControls.js"></script>
+    <script src="js/threejs/OrbitControls.js"></script>
+    <script src="js/threejs/ColladaLoader.js"></script>
 
-        </script>
+    <script src="js/bundle.js"></script>
+    <script type="text/javascript">
+      var socket = io();
+
+      </script>
     </body>
-</html>
+  </html>
