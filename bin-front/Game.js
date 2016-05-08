@@ -70,7 +70,7 @@ Game.prototype.animate = function(t) {
         self.player.update(dt);
         self.display.update(dt);
 
-        self.player.bike.turn = self.controls.getTurnDeg();
+        if (self.controls.getTurnDeg) self.player.bike.turn = self.controls.getTurnDeg();
     }
 
     function render(dt) {
