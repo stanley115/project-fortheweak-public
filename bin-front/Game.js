@@ -29,7 +29,7 @@ var Game = function(config){
     ], function(err){
         if (err) console.log(err);
         self.display = new Display(scene, {
-            role: 'player',
+            role: 'not player',
             player: self.player
         });
 

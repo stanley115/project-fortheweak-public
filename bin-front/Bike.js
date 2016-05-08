@@ -52,11 +52,9 @@ Bike.prototype.update = function(dt){
     if (this.drive) {
         // get velocity
         var tv = new THREE.Vector2(this.dir.x, this.dir.z);
-        console.log("v = (" + tv.x + "," + tv.y + ")");
         // get acceleration
         var ta = new THREE.Vector2(-this.dir.z, this.dir.x);
         ta.normalize().multiplyScalar(this.turn * dt);
-        console.log("a = (" + ta.x + "," + ta.y + ")");
         // update velocity
         tv.add(ta);
         // update position and direaction

@@ -3,7 +3,8 @@
  * TODO: BGM
  */
 "use strict";
-var DEFAULT_GROUND = "assets/tron.png";
+// var DEFAULT_GROUND = "assets/tron.png";
+var DEFAULT_GROUND = "assets/floor.jpg";
 var scene = null;
 
 var Background = function(tmpScene, config){
@@ -26,7 +27,7 @@ Background.prototype.createWorld = function(display){
 	var material = new THREE.MeshPhongMaterial({
 		color: 0xFFFFFF,
 		specular: 0xFFFFFF,
-		shininess: 20,
+		shininess: 100,
 		shading: THREE.FlatShading,
 		map: texture
 	});
