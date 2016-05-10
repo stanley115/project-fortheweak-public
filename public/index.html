@@ -7,14 +7,14 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
-    <div id="welcome-div" class = "bg">
+    <div id="welcome-div" class="full-page-div bg">
       <div id = "welcome-page">　
         <div>
           <h2>happy trolling</h2>
           <ul>
-            <li class="content-page" id="fullscreen">
-            <!--button id="fullscreen"　class = "content-page"-->
-            Click Me to Go fullscreen
+            <li class="text-block" id="fullscreen">
+            <!--button id="fullscreen"　class = "text-block"-->
+            Start Tron
             </li>
           </ul>
         </div>
@@ -22,8 +22,14 @@
       <div id = "welcome-page-background"></div>
       <div id = "CUHK-logo-background"></div>
     </div>
-
-    <div id="game-div" style="display:none"></div>
+    <div id="lobby-div"  class="full-page-div" style="display:none">
+          <ul>
+            <li class="text-block" id="fullscreen"><h3>Room List</h3></li>
+            <div id="divLobbyRoomList">
+            </div>
+          </ul>
+    </div>
+    <div id="game-div" class="full-page-div" style="display:none"></div>
 
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
     <script src="js/threejs/three.min.js"></script>
@@ -33,28 +39,28 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
-/*
-      var lockFunction =  window.screen.orientation.lock;
-      if (lockFunction && lockFunction.call(window.screen.orientation, 'landscape')) {
-        console.log('Orientation locked')
-      } else {
-        console.error('There was a problem in locking the orientation')
-      }
-*/
-      var socket = io.connect();
-      socket.emit("clientNew","Tr9llo");
-      socket.emit("roomList");
-      socket.emit("roomCreate",'AOC');
-      socket.emit("roomList");
-      socket.emit("roomLeave");
-      socket.on("roomList",function(data){
-          console.log("roomList",data);
-          });
-      socket.on("roomEntered",function(data){
-          console.log("roomEntered",data);
-          });
-      console.log("BIND event");
-    </script>
-    <script src="js/bundle.js"></script>
+      /*
+         var lockFunction =  window.screen.orientation.lock;
+         if (lockFunction && lockFunction.call(window.screen.orientation, 'landscape')) {
+         console.log('Orientation locked')
+         } else {
+         console.error('There was a problem in locking the orientation')
+         }
+       */
+    var socket = io.connect();
+    socket.emit("clientNew","Tr9llo");
+    socket.emit("roomList");
+    socket.emit("roomCreate",'AOC');
+    socket.emit("roomList");
+    socket.emit("roomLeave");
+    socket.on("roomList",function(data){
+        console.log("roomList",data);
+        });
+socket.on("roomEntered",function(data){
+    console.log("roomEntered",data);
+    });
+console.log("BIND event");
+</script>
+<script src="js/bundle.js"></script>
     </body>
   </html>

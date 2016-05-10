@@ -9,11 +9,18 @@
   }
 }
 */
-
+/* Tr9llo begin fix */
+/* fix ul /li padding & center */
+* {
+  -webkit-padding-start: 0px;
+}
+ul body{
+  overflow: scroll;
+}
+/* Tr9llo end fix */
 h1,h2,h3 {
   text-align: center;
 }
-
 body {
   margin: 0px;
   overflow: hidden;
@@ -21,23 +28,13 @@ body {
 .bg {
     -webkit-transition: opacity 1000ms linear;
 }
-
 .bg.hide {
     opacity: 0;
 }
-
 .bg.remove {
     display: none;
 }
-
-#game-div {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-#welcome-div {
+.full-page-div {
   position: absolute;
   top: 0;
   left: 0;
@@ -45,8 +42,7 @@ body {
   bottom: 0;
 }
 #welcome-page-background{
-  /*background-color: lightblue;
-   */
+  /*background-color: lightblue;*/
   position:absolute;
   width:100%;
   height:100%;
@@ -58,7 +54,6 @@ body {
   /*filter: alpha(opacity=33);*/
   background-size: 100%;
   background-image: url("../assets/welcome.jpg");*/
-
 }
 #CUHK-logo-background{
   /*background-color: lightblue;
@@ -74,7 +69,6 @@ body {
   /*filter: alpha(opacity=33);*/
   background-size: 100%;
   background-image: url("../assets/CUlogo.jpg");*/
-
 }
 /* a crosshair looks more tron-y */
 * {
@@ -87,33 +81,28 @@ body {
   /* give all text a cold glow */
   text-shadow: 0 0 5px rgba(21,171,195,0.7);
 }
-
-.content-page {
+.text-block {
   font-size: 13px;
   line-height: 21px;
   display: block;
   /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 20px;
-  width: 300px; /*500 too width for mobile*/
+  margin: 0 auto 15px;
+  width: 60%; /*500 too width for mobile*/
   padding: 25px 75px;
   border: 1px solid rgba(21,171,195,1.0);
   background: url(../images/quote_right.png) top right no-repeat;
-
   -moz-border-radius: 15px;
   border-radius: 15px;
-
   -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
   -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
   box-shadow: 0 0 9px rgba(21,171,195,1.0);
 }
-
-.content-page a {
+.text-block a {
   color: rgb(36,198,224);
   text-shadow: 0 0 5px rgba(36,198,224,1.0);
   cursor: pointer;
 }
-
-.content-page h1 {
+.text-block h1 {
   margin: .8em 0 0 0;
   font-size: 1.7em;
   text-align: center;
@@ -122,17 +111,15 @@ body {
   border: 1px solid rgba(36,198,24,1.0);
   margin-bottom: 1ex;
   font-family: "Bitstream Vera Sans Mono", monospace;
-
   -moz-border-radius: 1em;
   border-radius: 1em;
   background-color: rgba(36,198,224,1.0);
   color: black;
-
   -moz-box-shadow: 0 0 10px rgba(36,198,224,1.0);
   -webkit-box-shadow: 0 0 10px rgba(36,198,224,1.0);
   box-shadow: 0 0 10px rgba(36,198,224,1.0);
 }
-.content-page h2 {
+.text-block h2 {
   background: url(../images/quote_right.png) center right no-repeat;
 }
 a.big-rss-link {
@@ -150,9 +137,7 @@ a.big-rss-link {
 a.big-rss-link:hover {
   background-image: url(../images/rss_bright.png);
 }
-
-
-.content-page blockquote {
+.text-block blockquote {
   width: 400px;
   background-image: url(../images/quote_left.png);
   background-repeat: no-repeat;
@@ -161,53 +146,47 @@ a.big-rss-link:hover {
   text-indent: 1em;
   padding: 20px 50px 10px;
   margin: .2em auto;
-
   -moz-border-radius: 1em;
   border-radius: 1em;
-
   border: 2px solid rgba(21,171,195,1.0);
   -moz-box-shadow: 0 0 5px rgba(21,171,195,1.0);
   -webkit-box-shadow: 0 0 5px rgba(21,171,195,1.0);
   box-shadow: 0 0 5px rgba(21,171,195,1.0);
 }
-.content-page code {
+.text-block code {
   font-family: "Bitstream Vera Sans Mono", monospace;
   font-style: normal;
   color: rgba(39,215,243,1.0);
   text-shadow: 0 0 5px rgba(39,215,243,1.0);
 }
-.content-page blockquote a {
+.text-block blockquote a {
   font-size: .85em;
 }
-
-
-.content-page ul {
+.text-block ul {
   list-style-type: none;
   padding-left: 1ex;
 }
-.content-page ul li {
+.text-block ul li {
   background-image: url(../images/bullet_point.png);
   background-repeat: no-repeat;
   background-position: 0 2px;
   padding-left: 20px;
 }
-.content-page ol {
-  list-style: decimal inside;
-  padding-left: 1ex;
-}
-.content-page ol li {
-  list-style: decimal inside;
-  display: list-item;
-}
-/* shared styles for ul and ol items */
-.content-page li {
+.text-block li {
   margin: 1em 0 1em;
   font-size: 13px;
   line-height: 17px;
   font-family: "Bitstream Vera Sans Mono", monospace;
 }
-
-/* Menu style */
+/*
+.text-block ol {
+  list-style: decimal inside;
+  padding-left: 1ex;
+}
+.text-block ol li {
+  list-style: decimal inside;
+  display: list-item;
+}
 ul.menu {
   position: relative;
   right: 500px;
@@ -253,8 +232,6 @@ ul.menu li.menu_break {
   height: 10px;
   visibility: hidden;
 }
-
-
 #quick-search {
   display: none;
   position: relative;
@@ -276,20 +253,14 @@ ul.menu li.menu_break {
 #quick-search button {
   display: none;
 }
-
 #sidebar {
-  /* margin: 1em 5px 10px 0px; todo */
   position: absolute;
   left: 50%;
 }
-
-
-/* keyboard */
 .inverse {
   background-color: rgba(21,171,195,1.0);
   color: rgba(0,0,0,0.7);
 }
-
 .glow {
   -webkit-box-shadow:0 0 5px rgba(21,171,195,1.0);
   -moz-box-shadow: 0 0 5px rgba(21,171,195,1.0);
@@ -299,9 +270,7 @@ ul.menu li.menu_break {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-
 }
-
 .keyboard {
   width: 27em;
   border: 4px double rgba(21,171,195,1.0);
@@ -339,3 +308,4 @@ ul.menu li.menu_break {
   -moz-box-shadow: 0 0 7px rgba(36,198,224,1.0);
   box-shadow:0 0 7px rgba(36,198,224,1.0);
 }
+*/
