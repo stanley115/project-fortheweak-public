@@ -49,28 +49,29 @@ var Welcome = function(config){
     //    var ele = document.getElementById('CUHK-logo-background');
     //  fadeIn(ele);
     setTimeout(
-        function tmp1() {
+        function() {
           var ele = document.getElementById('welcome-page-background');
           fadeOut(ele);
         },
         1200);
     setTimeout(
-        function tmp2() {
+        function() {
           var ele = document.getElementById('CUHK-logo-background');
           fadeIn(ele)
         },
         1900);
     setTimeout(
-        function tmp3() {
+        function() {
           var ele = document.getElementById('CUHK-logo-background');
           fadeOut(ele)
         },
         3100);
     setTimeout(
-        function tmp4() {
+        function() {
+          prompt("Enter something","default");
           var ele = document.getElementById('welcome-div');
           ele.classList.add("remove");
-          document.getElementById('game-div').style.display = 'block'
+          document.getElementById('lobby-div').style.display = 'block'
         },
         3800);
     //$(document.getElementById('welcome-div')).fadeOut("slow");

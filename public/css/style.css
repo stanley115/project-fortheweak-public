@@ -41,7 +41,7 @@ body {
   right: 0;
   bottom: 0;
 }
-#welcome-page-background{
+.base-background{
   /*background-color: lightblue;*/
   position:absolute;
   width:100%;
