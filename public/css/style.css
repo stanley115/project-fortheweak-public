@@ -18,6 +18,18 @@ body {
   margin: 0px;
   overflow: hidden;
 }
+.bg {
+    -webkit-transition: opacity 1500ms linear;
+}
+
+.bg.hide {
+    opacity: 0;
+}
+
+.bg.remove {
+    display: none;
+}
+
 #game-div {
   position: absolute;
   top: 0;
@@ -40,6 +52,7 @@ body {
   height:100%;
   z-index:-999;
   top:0px;
+  left:0px;
   margin:0 auto;
   opacity: 0.33;
   filter: alpha(opacity=33);

@@ -20,7 +20,7 @@ function Display(scene, config){
     	camera.position.set(0, 10, 0);
     	scene.add(camera);
 
-        if (config.role == 'player'){
+        if (config.role != 'viewer'){
             effect = new THREE.StereoEffect(renderer);
 
             controls = new THREE.DeviceOrientationControls(camera, true);

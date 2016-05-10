@@ -18,6 +18,19 @@ var Room = function(config){
           element.webkitRequestFullScreen();
       }
       // Hooray, now we're in fullscreen mode!
+//      var divid = document.getElementById('welcome-div');
+//      $(divid).fadeOut("slow");
+      var elem = document.getElementById('welcome-div');
+      elem.classList.add("hide");
+
+      setTimeout(
+        function Remove() {
+            elem.classList.add("remove");
+            document.getElementById('game-div').style.display = 'block'
+        },
+      1500 );
+      //$(document.getElementById('welcome-div')).fadeOut("slow");
+      //document.getElementById('welcome-div').style.display='none'
   }
 }
 

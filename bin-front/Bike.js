@@ -3,18 +3,18 @@
  */
 "use strict";
 var DEFAULT_BIKE = "assets/tron.dae",
-    DEFAULT_VELOCITY = 10;
+    DEFAULT_VELOCITY = 30;
 
 var AbstractAsset = require("./AbstractAsset.js");
 
-var Bike = function(scene, config){
+var Bike = function(scene, config, callback){
     var self = this;
     config = config || {};
     AbstractAsset.call(this, scene, config);
 
     this.v = DEFAULT_VELOCITY;
-    this.drive = true;
-    this.turn = 1;
+    this.turn = 0;
+    this.id = config.id;
 
     var bikeURL = DEFAULT_BIKE;
 
@@ -29,21 +29,33 @@ var Bike = function(scene, config){
 		bikeURL,
 		// Function when resource is loaded
 		function ( collada ) {
-			//console.log("load");
+			console.log("load");
             self.obj = collada.scene;
             scene.add(self.obj);
 
-            if (config.callback){
-                config.callback();
-            }
             self.obj.receiveShadow = true;
+
+            if (callback){
+                callback();
+            }
             // self.bike.rotation.y = Math.PI / 2;
 		},
 		// Function called when download progresses
 		function ( xhr ) {
-			//console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
+
+    socket.on("sync", function(data){
+        console.log(data);
+        var player = data.players[self.id];
+
+        self.setPos(player.pos.x, player.pos.y);
+        self.setDir(player.dir.x, player.dir.y);
+
+        self.v = player.v;
+        self.turn = player.deg;
+    });
 }
 
 Bike.prototype = Object.create(AbstractAsset.prototype);
