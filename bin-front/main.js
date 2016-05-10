@@ -11,7 +11,8 @@ var game = new Game({
 
 var communication = require('./Communication');
 require('./StylesAndFix');
-//game.start();
+game.start();
+
 //
 /*
 console.log(communication);
