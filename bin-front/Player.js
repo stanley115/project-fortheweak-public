@@ -6,8 +6,8 @@
 
 var Bike = require("./Bike.js");
 
-var Player = function(scene, config){
-    this.bike = new Bike(scene, config);
+var Player = function(scene, config, callback){
+    this.bike = new Bike(scene, config, callback);
 }
 
 Player.prototype.update = function (dt) {

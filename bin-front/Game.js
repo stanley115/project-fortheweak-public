@@ -14,23 +14,29 @@ var Game = function(config){
 
     var self = this;
     this.display = null;
-    this.player = null;
+    this.players = null;
     this.controls = null;
     this.background = null;
+
+    this.role = config.role || "viewer";
 
     async.series([
         function(callback){
             // player
-            console.log("RUN 1");
-            self.player = new Player(scene, {
-                callback: callback
-            })
+            self.players = [];
+            async.forEachOf(config.players, function(player, id, callback){
+                player.id = id;
+                self.players[id] = new Player(scene, player, callback);
+            }, function(err){
+                if (err) console.error("construct player", err);
+                callback();
+            });
         },
         function(callback){
             // display
             self.display = new Display(scene, {
                 role: config.role,
-                player: self.player
+                player: self.players[config.role] || null
             });
 
             callback();
@@ -39,7 +45,7 @@ var Game = function(config){
             // controls
             self.controls = self.display.controls;
 
-            if (config.role == "player"){
+            if (config.role != "viewer"){
                 self.controls.getTurnDeg = function(){
                     var tmp = new THREE.Euler();
                     tmp.setFromQuaternion(this.orientationQuaternion, "ZXY");
@@ -67,10 +73,12 @@ Game.prototype.animate = function(t) {
     var self = this;
 
     function update(dt) {
-        self.player.update(dt);
+        // self.player.update(dt);
         self.display.update(dt);
 
-        if (self.controls.getTurnDeg) self.player.bike.turn = self.controls.getTurnDeg();
+        if (self.controls.getTurnDeg){
+            socket.emit("deg", self.controls.getTurnDeg());
+        }
     }
 
     function render(dt) {
