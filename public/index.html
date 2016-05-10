@@ -59,6 +59,18 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
+      function showGameRoom(){
+        $("#lobby-div").css("display","none");
+        $("#gameroom-div").css("display","block");
+      }
+      function showLobby(){
+        $("#lobby-div").css("display","block");
+        $("#gameroom-div").css("display","none");
+      }
+     function roomJoin(rid){
+        console.log(" want join rid:"+rid);
+        socket.emit("roomJoin", rid);
+      }
       function updateRoomList(data){
         console.log("updateRoomList");
         console.log(data);
@@ -81,16 +93,40 @@
           $("#divLobbyRoomList").append(eachRoom);
         }
       }
+      function updateGameRoom(data){
+        $("#divGameRoomBody").empty();
+        var divInRoomName = $("<div/>").html("Room Name:"+data.name);
+        var divInRoomID = $("<div/>").html("Room ID:"+data.room_id);
+        var divClientList = $("<div/>");
+        for (var i in data.client_list){
+          var tmpli = $("<div/>").html(""+data.client_list[i]+",");
+          divClientList.append(tmpli);
+        }
+        var roomBody = $("<li/>");
+        roomBody.addClass("text-block");
+        roomBody.append(divInRoomName);
+        roomBody.append(divInRoomID);
+        roomBody.append(divClientList);
+        $("#divGameRoomBody").append(roomBody);
+      }
     $("#btnCreateRoom").click(function(){
         var roomName = window.prompt("Please enter room name", "AOC");
         socket.emit("roomCreate", roomName);
-        });
+    });
+    $("#btnLeaveRoom").click(function(){
+        socket.emit("roomLeave");
+    });
       var socket = io.connect();
     socket.on("roomList",function(data){
             updateRoomList(data);
         });
     socket.on("roomEntered",function(data){
         console.log("roomEntered",data);
+        updateGameRoom(data);
+        showGameRoom();
+        });
+    socket.on("roomLeave",function(data){
+        showLobby();
         });
   </script>
   <script src="js/bundle.js"></script>

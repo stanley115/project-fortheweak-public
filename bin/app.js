@@ -55,6 +55,13 @@ function roomLeave(serverSocket,socket,cid){
     // enter room func
     serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
     var client_self = client_prefix+cid;
+    //In fact need notify all client so that info updated on lobby too 
+    //Update on left client lobby too so that it won't click on empty room 
+    /*
+    serverSocket.to(client_self).emit('roomList',globalData.room);
+    serverSocket.to(client_self).emit('roomLeave');
+    */
+    serverSocket.emit('roomList',globalData.room);
     serverSocket.to(client_self).emit('roomLeave');
   }
 }

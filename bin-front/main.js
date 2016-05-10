@@ -1,7 +1,7 @@
 "use strict";
 
-// var Welcome = require('./Welcome');
-// var welcome = new Welcome();
+var Welcome = require('./Welcome');
+var welcome = new Welcome();
 
 
 var Game = require('./Game');
