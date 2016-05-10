@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VR Tron</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <style>
+      .divSection {
+        border-style: solid;
+        border-width: medium;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="divPlayerInfo" class="divSection">
+      <button id="btnCreateRoom" >Create Room</button>
+    </div>
+    <div id="divLobby" class="divSection">
+    </div>
+    <div id="divGameRoom" class="divSection">
+      Not in room 
+    </div>
+    <script src="3rdparty/socket.io-client/socket.io.js"></script>
+    <script src="3rdparty/jquery/dist/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      var cid = -1;
+      var socket = null;
+      function roomJoin(rid){
+        console.log("cid:"+cid+" want join rid:"+rid);
+        socket.emit("roomJoin", rid);
+      }
+      function updateRoomList(data){
+        console.log("updateRoomList");
+        console.log(data);
+        $("#divLobby").empty();
+        for (var i in data){
+          var roomId = i+"";
+          var eachRoom = $("<div/>").addClass("divSection");
+          eachRoom.append($("<h4/>").html("Room id:"+roomId));
+          eachRoom.append($("<h4/>").html("Room name:"+data[i].name));
+          var btnJoin = $("<button/>").html("Join");
+          btnJoin.on("click",function(){
+              var roomToJoin = roomId;
+              return function(){
+                  roomJoin(roomToJoin);
+              }
+              }());
+          eachRoom.append(btnJoin);
+          $("#divLobby").append(eachRoom);
+        }
+      }
+      function updateGameRoom(data){
+        $("#divGameRoom").empty();
+        var divInRoomName = $("<div/>").html("Room Name:"+data.name);
+        var divInRoomID = $("<div/>").html("Room ID:"+data.room_id);
+        var divClientList = $("<ul/>");
+        for (var i in data.client_list){
+          var tmpli = $("<li/>").html(""+data.client_list[i]);
+          divClientList.append(tmpli);
+        }
+        $("#divGameRoom").append(divInRoomName);
+        $("#divGameRoom").append(divInRoomID);
+        $("#divGameRoom").append(divClientList);
+      }
+      $(document).ready(function(){
+          $("#btnCreateRoom").click(function(){
+              var roomName = window.prompt("Please enter room name", "AOC");
+              socket.emit("roomCreate", roomName);
+            });
+          var playerName = window.prompt("Please enter your name", "Tr9llo");
+          socket = io.connect();
+          socket.emit("clientNew",playerName);
+          /*
+          socket.emit("roomList");
+          socket.emit("roomCreate",'AOC');
+          socket.emit("roomList");
+          socket.emit("roomLeave");
+          */
+          /*
+          socket.on("registered",function(data){
+            cid = parseInt(data);
+          });
+          */
+          socket.on("roomList",function(data){
+            updateRoomList(data);
+            });
+          socket.on("roomEntered",function(data){
+            console.log("roomEntered",data);
+            updateGameRoom(data);
+            });
+          socket.on("roomLeave",function(data){
+             $("divGameRoom").html("Not in Room");
+            });
+          console.log("BIND event");
+          });
+</script>
+    </body>
+  </html>

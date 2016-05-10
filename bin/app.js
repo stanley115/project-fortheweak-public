@@ -13,10 +13,15 @@ function roomCreate(serverSocket,socket,cid,roomName){
   //console.log("Create new room with name:"+roomName);
   globalData.room[room_id]={};//create obj
   globalData.room[room_id].name = roomName;
+  globalData.room[room_id].room_id = room_id;
   globalData.room[room_id].client_list = [];
   roomJoin(serverSocket,socket,cid,room_id);
+  serverSocket.emit('roomList',globalData.room);
 }
 function roomJoin(serverSocket,socket,cid,rid){
+  //If client is in other room ,leave it first
+  //This step will also remove empty room
+  roomLeave(serverSocket,socket,cid);
   socket.join(rid);
   globalData.room[rid].client_list.push(cid);
   //console.log(cid+" join "+rid);
@@ -26,23 +31,31 @@ function roomJoin(serverSocket,socket,cid,rid){
   globalData.client[cid].inRoom = rid;
   //Need notify any one in the room 
   serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
+  //As this step may also remove room List, notify the world
+  serverSocket.emit('roomList',globalData.room);
   
 }
 
-function roomLeave(socket,cid){
-  var orgRoom = globalData.client[cid].inRoom;
-  if(parseInt(orgRoom) > 0 ){
-    var filteredAry = globalData.room[orgRoom].client_list.filter(function(e){return e!=cid;});
-    globalData.room[orgRoom].client_list = filteredAry;
-    console.log(globalData.room[orgRoom]);
-    console.log(cid+"(cid) leave "+orgRoom+"(rid)");
+function roomLeave(serverSocket,socket,cid){
+  var rid = globalData.client[cid].inRoom;
+  if(parseInt(rid) > 0 ){
+    socket.leave(rid);//leave the socket channel too
+    var filteredAry = globalData.room[rid].client_list.filter(function(e){return e!=cid;});
+    globalData.room[rid].client_list = filteredAry;
+    //Need to update everyone ,excluding left player
+    console.log(globalData.room[rid]);
+    console.log(cid+"(cid) leave "+rid+"(rid)");
     if(filteredAry.length === 0){
       console.log("Remove Empty Room");
-      delete globalData.room[orgRoom];
+      delete globalData.room[rid];
     }
     //remove this client from that room List ;
     globalData.client[cid].inRoom = -1; // reset Status
-    //Undo : Need notify others in room , for leaver need go to lobby
+    // Need notify others in room , for leaver need go to lobby, done my reuse
+    // enter room func
+    serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
+    var client_self = client_prefix+cid;
+    serverSocket.to(client_self).emit('roomLeave');
   }
 }
 
@@ -69,9 +82,19 @@ module.exports = function(app){
       globalData.client[client_id].inRoom = -1;
       console.log(globalData.client[client_id]);
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
+      io.emit('roomList',globalData.room);
     });
     socket.on('disconnect',function(){
       console.log('disconnect:'+client_id);
+      try{
+        var rid = globalData.client[client_id].inRoom;
+        if(rid>-1){
+          roomLeave(io,socket,client_id);
+          delete globalData.client_id[client_id];
+          //room client list also updated , notify other users in same room
+        }
+      }catch(e){
+      }
     });
     socket.on('roomCreate',function(roomName){
       console.log('roomCreate');
@@ -83,7 +106,7 @@ module.exports = function(app){
     });
     socket.on('roomLeave',function(){
       console.log('roomLeave');
-      roomLeave(socket,client_id);
+      roomLeave(io,socket,client_id);
     });
     socket.on('roomList',function(){
       console.log('roomList');
