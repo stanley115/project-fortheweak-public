@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
+  <audio id="audiobgm" loop>
+    <source src="nyan.mp3" type="audio/mpeg">
+  </audio>
     <div id="welcome-div" class="full-page-div bg">
       <div id = "welcome-page">　
         <div>
@@ -23,16 +26,32 @@
       <div id = "CUHK-logo-background"></div>
     </div>
     <div id="lobby-div"  class="full-page-div" style="display:none">
-          <ul>
-            <li class="text-block" id="fullscreen"><h3>Room List</h3></li>
-            <div id="divLobbyRoomList">
-            </div>
-          </ul>
-          <div class="base-background"></div>
+      <ul>
+        <li class="text-block" id="fullscreen">
+          <h3>Room List</h3>
+          <span id="btnCreateRoom" class="btn-block">Create Room</span>
+        
+        </li>
+        <div id="divLobbyRoomList">
+        </div>
+      </ul>
+      <div class="base-background"></div>
+    </div>
+    <div id="gameroom-div"  class="full-page-div" style="display:none">
+      <ul>
+        <li class="text-block" id="fullscreen">
+          <h3>Game Room</h3>
+          <span id="btnLeaveRoom" class="btn-block">Leave Room</span>
+        </li>
+        <div id="divGameRoomBody">
+        </div>
+      </ul>
+      <div class="base-background"></div>
     </div>
     <div id="game-div" class="full-page-div" style="display:none"></div>
 
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
+    <script src="3rdparty/jquery/dist/jquery.min.js"></script>
     <script src="js/threejs/three.min.js"></script>
     <script src="js/threejs/StereoEffect.js"></script>
     <script src="js/threejs/DeviceOrientationControls.js"></script>
@@ -40,28 +59,40 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
-      /*
-         var lockFunction =  window.screen.orientation.lock;
-         if (lockFunction && lockFunction.call(window.screen.orientation, 'landscape')) {
-         console.log('Orientation locked')
-         } else {
-         console.error('There was a problem in locking the orientation')
-         }
-       */
-    var socket = io.connect();
-    socket.emit("clientNew","Tr9llo");
-    socket.emit("roomList");
-    socket.emit("roomCreate",'AOC');
-    socket.emit("roomList");
-    socket.emit("roomLeave");
-    socket.on("roomList",function(data){
-        console.log("roomList",data);
+      function updateRoomList(data){
+        console.log("updateRoomList");
+        console.log(data);
+        $("#divLobbyRoomList").empty();
+        for (var i in data){
+          var roomId = i+"";
+          var eachRoom = $("<li/>").addClass("text-block");
+          eachRoom.append($("<h4/>").html("Room id:"+roomId));
+          eachRoom.append($("<h4/>").html("Room name:"+data[i].name));
+          eachRoom.append($("<h4/>").html("Num of Players:"+data[i].client_list.length));
+          var btnJoin = $("<span/>").html("Join");
+          btnJoin.addClass("btn-block");
+          btnJoin.on("click",function(){
+              var roomToJoin = roomId;
+              return function(){
+                  roomJoin(roomToJoin);
+              }
+              }());
+          eachRoom.append(btnJoin);
+          $("#divLobbyRoomList").append(eachRoom);
+        }
+      }
+    $("#btnCreateRoom").click(function(){
+        var roomName = window.prompt("Please enter room name", "AOC");
+        socket.emit("roomCreate", roomName);
         });
-socket.on("roomEntered",function(data){
-    console.log("roomEntered",data);
-    });
-console.log("BIND event");
-</script>
-<script src="js/bundle.js"></script>
-    </body>
+      var socket = io.connect();
+    socket.on("roomList",function(data){
+            updateRoomList(data);
+        });
+    socket.on("roomEntered",function(data){
+        console.log("roomEntered",data);
+        });
+  </script>
+  <script src="js/bundle.js"></script>
+</body>
   </html>

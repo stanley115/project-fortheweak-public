@@ -52,26 +52,28 @@ var Welcome = function(config){
         function() {
           var ele = document.getElementById('welcome-page-background');
           fadeOut(ele);
+          document.getElementById("audiobgm").play();
         },
         1200);
     setTimeout(
         function() {
           var ele = document.getElementById('CUHK-logo-background');
-          fadeIn(ele)
+          fadeIn(ele);
         },
         1900);
     setTimeout(
         function() {
           var ele = document.getElementById('CUHK-logo-background');
-          fadeOut(ele)
+          fadeOut(ele);
         },
         3100);
     setTimeout(
         function() {
-          prompt("Enter something","default");
+          var playerName = prompt("Enter Player Name:","default");
+          socket.emit("clientNew",playerName);
           var ele = document.getElementById('welcome-div');
           ele.classList.add("remove");
-          document.getElementById('lobby-div').style.display = 'block'
+          document.getElementById('lobby-div').style.display = 'block';
         },
         3800);
     //$(document.getElementById('welcome-div')).fadeOut("slow");
