@@ -47,7 +47,6 @@ var Bike = function(scene, config, callback){
 	);
 
     socket.on("sync", function(data){
-        console.log(data);
         var player = data.players[self.id];
 
         self.setPos(player.pos.x, player.pos.y);
@@ -74,7 +73,7 @@ Bike.prototype.update = function(dt){
         this.setPos(this.pos.x + tv.x * this.v * dt, this.pos.z + tv.y * this.v * dt);
         this.setDir(tv.x, tv.y);
         // this.bike.rotation.y += 0.1
-        this.obj.receiveShadow = true;
+        // this.obj.receiveShadow = true;
     }
 }
 

@@ -5,7 +5,8 @@
 var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
-    Display = require('./Display');
+    Display = require('./Display'),
+    Wall = require('./Wall');
 var clock = new THREE.Clock(),
     scene = new THREE.Scene();
 
@@ -17,6 +18,8 @@ var Game = function(config){
     this.players = null;
     this.controls = null;
     this.background = null;
+
+    this.tmpWalls = [];
 
     this.role = config.role || "viewer";
 
@@ -31,6 +34,24 @@ var Game = function(config){
                 if (err) console.error("construct player", err);
                 callback();
             });
+        },
+        function(callback){
+            // wall
+            socket.on("wall", function(data){
+                var start = new THREE.Vector2(data.start.x, data.start.y),
+                    end = new THREE.Vector2(data.end.x, data.end.y);
+                if (data.createNewPt){
+                    self.tmpWalls[data.id] = new Wall(scene, {
+                        color: config.players[data.id].color,
+                        start: start,
+                        end: end
+                    });
+                }else {
+                    self.tmpWalls[data.id].set(start, end);
+                }
+            });
+
+            callback();
         },
         function(callback){
             // display

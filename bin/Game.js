@@ -13,7 +13,8 @@ var Game = function(io, config){
 
     // init sockets
     this.players = config.players.map(function(ele, idx){
-        return new Player(ele, idx);
+        ele.roomID = config.roomID;
+        return new Player(ele, idx, config.players.length);
     });
 
     this.viewers = config.viewers;

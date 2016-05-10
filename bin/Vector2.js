@@ -24,4 +24,19 @@ Vector2.prototype.rot = function(deg){
     return new Vector2(cos * this.x - sin * this.y, sin * this.x + cos * this.y);
 }
 
+Vector2.prototype.absDegTo = function (v) {
+    return Math.acos((this.x * v.x + this.y * v.y) / this.mag() / v.mag());
+};
+
+Vector2.prototype.vecTo = function (v) {
+    return v.add(this.multiply(-1));
+};
+
+Vector2.prototype.toObj = function () {
+    return {
+        x: this.x,
+        y: this.y
+    }
+};
+
 module.exports = Vector2;

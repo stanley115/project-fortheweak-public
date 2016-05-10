@@ -1,22 +1,33 @@
 "use strict";
-var INIT_X = [100, 0, -100, 0],
-    INIT_Y = [0, 100, 0, -100],
-    INIT_V = 20;
+var INIT_V = 20,
+    LENGTH = 2,
+    RADIUS =  100;
 
-var MAX_ACC = 20;
+var MAX_ACC = 20,
+    MAX_ALLOW_DEG = Math.PI / 15;
 
 var Vector2 = require('./Vector2');
 
-var Player = function(config, id){
+function tail(pos, dir){
+    return pos.add(dir.multiply(-1 * LENGTH / 2));
+}
+
+var Player = function(config, id, total){
     this.id = id;
-    this.pos = new Vector2(INIT_X[id], INIT_Y[id]);
+
+    var posDeg = Math.PI * 2 / total * id;
+    this.pos = new Vector2(Math.sin(posDeg) * RADIUS, Math.cos(posDeg) * RADIUS);
     this.dir = this.pos.multiply(-1).normalize();
 
     this.v = INIT_V;
     this.turn = 0;
     this.deg = 0;
 
+    this.dead = false;
+    this.wall = [tail(this.pos, this.dir)];
+
     this.socket = config.socket;
+    this.roomID = config.roomID;
 
     initPlayerSocket(this);
 
@@ -31,13 +42,38 @@ var Player = function(config, id){
     }
 }
 
+var damn = 0;
 Player.prototype.update = function(dt, callback){
-    // update dir
-    var acc = this.dir.rot(Math.PI / 2).multiply(this.turn);
-    this.dir = this.dir.multiply(this.v).add(acc.multiply(dt)).normalize();
+    if (!this.dead){
+        var self = this;
+        // update dir
+        var acc = this.dir.rot(Math.PI / 2).multiply(this.turn);
+        this.dir = this.dir.multiply(this.v).add(acc.multiply(dt)).normalize();
 
-    // update pos
-    this.pos = this.pos.add(this.dir.multiply(this.v * dt));
+        // update pos
+        this.pos = this.pos.add(this.dir.multiply(this.v * dt));
+
+        // update walls
+        var newPt = tail(this.pos, this.dir);
+        var len = this.wall.length;
+
+        var createNewPt = (len == 1 ||
+            this.wall[len - 2].vecTo(this.wall[len - 1]).absDegTo(this.wall[len - 1].vecTo(newPt)) > MAX_ALLOW_DEG);
+        if (createNewPt){
+            this.wall.push(newPt);
+        }else {
+            this.wall[len - 1] = newPt;
+        }
+
+        len = this.wall.length;
+        this.socket.emit("wall", { // TODO: all room
+            createNewPt: createNewPt,
+            id: self.id,
+            start: self.wall[len - 2].toObj(),
+            end: self.wall[len - 1].toObj()
+        });
+
+    }
 
     if (callback) callback();
 };
