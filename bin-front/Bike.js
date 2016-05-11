@@ -53,6 +53,8 @@ var Bike = function(scene, config, callback){
         self.setDir(player.dir.x, player.dir.y);
 
         self.v = player.v;
+
+        self.obj.rotateOnAxis(new THREE.Vector3(0, 0, 1), player.deg);
         self.turn = player.deg;
     });
 }

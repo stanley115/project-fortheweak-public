@@ -3,6 +3,7 @@
  * contain player position and direction, render bike
  */
 "use strict";
+var CAM_HEIGHT = 4.5;
 
 var Bike = require("./Bike.js");
 
@@ -17,7 +18,9 @@ Player.prototype.update = function (dt) {
 Player.prototype.getCameraPos = function(){
     var coef = 2;
     // return new THREE.Vector3(10, 10, 10);
-    return new THREE.Vector3(this.bike.pos.x + this.bike.dir.x * coef, 4.5, this.bike.pos.z + this.bike.dir.z * coef);
+    var dec = new THREE.Vector3(0, - (1 - Math.cos(this.bike.turn)) * CAM_HEIGHT, 0);
+    var shift = (new THREE.Vector3(-this.bike.dir.z, 0, this.bike.dir.x)).multiplyScalar(Math.sin(this.bike.turn) * CAM_HEIGHT);
+    return (new THREE.Vector3(this.bike.pos.x + this.bike.dir.x * coef, CAM_HEIGHT, this.bike.pos.z + this.bike.dir.z * coef)).add(dec).add(shift);
 }
 
 Player.prototype.getCameraDir = function(){
