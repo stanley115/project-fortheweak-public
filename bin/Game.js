@@ -45,6 +45,18 @@ Game.prototype.update = function(dt){
                 if (err) console.error("Update player", err);
                 callback();
             });
+        },
+        // collision to wall
+        function(callback){
+            async.forEach(self.players, function(player, callback){
+                player.dead = player.dead || self.players.reduce(function(prev, tPlayer){
+                    return prev || player.hitWall(tPlayer.wall);
+                }, false);
+                callback();
+            }, function(err){
+                if (err) console.error("Detect wall", err);
+                callback();
+            });
         }
     ]);
 

@@ -1,16 +1,13 @@
 "use strict";
 var INIT_V = 20,
     LENGTH = 2,
+    WIDTH = 1,
     RADIUS =  100;
 
 var MAX_ACC = 20,
     MAX_ALLOW_DEG = Math.PI / 15;
 
 var Vector2 = require('./Vector2');
-
-function tail(pos, dir){
-    return pos.add(dir.multiply(-1 * LENGTH / 2));
-}
 
 var Player = function(config, id, total){
     this.id = id;
@@ -24,7 +21,7 @@ var Player = function(config, id, total){
     this.deg = 0;
 
     this.dead = false;
-    this.wall = [tail(this.pos, this.dir)];
+    this.wall = [this.coner(-1, 0)];
 
     this.socket = config.socket;
     this.roomID = config.roomID;
@@ -54,7 +51,7 @@ Player.prototype.update = function(dt, callback){
         this.pos = this.pos.add(this.dir.multiply(this.v * dt));
 
         // update walls
-        var newPt = tail(this.pos, this.dir);
+        var newPt = this.coner(-1, 0);
         var len = this.wall.length;
 
         var createNewPt = (len == 1 ||
@@ -78,13 +75,44 @@ Player.prototype.update = function(dt, callback){
     if (callback) callback();
 };
 
+Player.prototype.coner = function(dx, dy){
+    var dirX = this.dir.multiply(LENGTH * dx / 2);
+    var dirY = this.dir.rot(Math.PI / 2).multiply(WIDTH * dy / 2);
+
+    return this.pos.add(dirX).add(dirY);
+}
+
 Player.prototype.toObj = function(){
     return {
-        pos: {x: this.pos.x, y: this.pos.y},
-        dir: {x: this.dir.x, y: this.dir.y},
+        pos: this.pos.toObj(),
+        dir: this.dir.toObj(),
         v: this.v,
-        deg: this.deg
+        deg: this.deg,
+        dead: this.dead
     };
+}
+
+Player.prototype.toBox = function(){
+    return [
+        this.coner(1, 1),
+        this.coner(1, -1),
+        this.coner(-1, -1),
+        this.coner(-1, 1)
+    ];
+}
+
+Player.prototype.hitWall = function(wall){
+    var box = this.toBox();
+    var hit = false;
+
+    // use for-loop for performance
+    for (var i = 0; !hit && i < wall.length - 1; i++){
+        hit = hit ||
+            Vector2.intersect(box[0], box[2], wall[i], wall[i + 1]) ||
+            Vector2.intersect(box[1], box[3], wall[i], wall[i + 1]);
+    }
+
+    return hit;
 }
 
 module.exports = Player;

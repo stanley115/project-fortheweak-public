@@ -53,7 +53,7 @@ body {
   opacity: 0.33;
   /*filter: alpha(opacity=33);*/
   background-size: 100%;
-  background-image: url("../assets/welcome.jpg");*/
+  background-image: url("../assets/welcome.jpg");
 }
 #CUHK-logo-background{
   /*background-color: lightblue;
@@ -68,7 +68,7 @@ body {
   opacity: 0;
   /*filter: alpha(opacity=33);*/
   background-size: 100%;
-  background-image: url("../assets/CUlogo.jpg");*/
+  background-image: url("../assets/CUlogo.jpg");
 }
 /* a crosshair looks more tron-y */
 * {
