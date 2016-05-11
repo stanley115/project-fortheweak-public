@@ -134,6 +134,15 @@
         clientList = data;
         console.log(clientList);
         });
+    socket.on("disconnect",function(){
+        console.log("disconnect");
+        //Maybe server down,alert and go to start page
+        alert("Disconnect, please make sure server online and connect again");
+        $("#lobby-div").css("display","none");
+        $("#gameroom-div").css("display","none");
+        $("#game-div").css("display","none");
+        $("#welcome-div").css("display","block");
+        });
   </script>
   <script src="js/bundle.js"></script>
 </body>
