@@ -51,7 +51,7 @@ Player.prototype.update = function(dt, callback){
         this.pos = this.pos.add(this.dir.multiply(this.v * dt));
 
         // update walls
-        var newPt = this.coner(-1, 0);
+        var newPt = this.coner(-1.5, 0);
         var len = this.wall.length;
 
         var createNewPt = (len == 1 ||
