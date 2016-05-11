@@ -90,6 +90,7 @@ module.exports = function(app){
       console.log(globalData.client[client_id]);
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
       io.emit('roomList',globalData.room);
+      io.emit('updateClientList',globalData.client);
     });
     socket.on('disconnect',function(){
       console.log('disconnect:'+client_id);
@@ -99,6 +100,7 @@ module.exports = function(app){
           roomLeave(io,socket,client_id);
           delete globalData.client_id[client_id];
           //room client list also updated , notify other users in same room
+          io.emit('updateClientList',globalData.client);
         }
       }catch(e){
       }

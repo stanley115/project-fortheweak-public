@@ -59,6 +59,7 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
+      var clientList = {};
       function showGameRoom(){
         $("#lobby-div").css("display","none");
         $("#gameroom-div").css("display","block");
@@ -99,7 +100,8 @@
         var divInRoomID = $("<div/>").html("Room ID:"+data.room_id);
         var divClientList = $("<div/>");
         for (var i in data.client_list){
-          var tmpli = $("<div/>").html(""+data.client_list[i]+",");
+          var pid = data.client_list[i];
+          var tmpli = $("<div/>").html("client_id:"+pid+":"+clientList[pid].name);
           divClientList.append(tmpli);
         }
         var roomBody = $("<li/>");
@@ -127,6 +129,10 @@
         });
     socket.on("roomLeave",function(data){
         showLobby();
+        });
+    socket.on("updateClientList",function(data){
+        clientList = data;
+        console.log(clientList);
         });
   </script>
   <script src="js/bundle.js"></script>
