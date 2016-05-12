@@ -47,18 +47,6 @@ var Bike = function(scene, config, callback){
 			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
-
-    socket.on("sync", function(data){
-        var player = data.players[self.id];
-
-        self.setPos(player.pos.x, player.pos.y);
-        self.setDir(player.dir.x, player.dir.y);
-
-        self.v = player.v;
-
-        self.obj.rotateOnAxis(new THREE.Vector3(0, 0, 1), player.deg);
-        self.turn = player.deg;
-    });
 }
 
 Bike.prototype = Object.create(AbstractAsset.prototype);

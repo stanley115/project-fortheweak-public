@@ -111,11 +111,14 @@ Game.prototype.animate = function(t) {
     var self = this;
 
     function update(dt) {
-        // self.player.update(dt);
-        async.forEach(self.props, function(prop, callback){
-            prop.update(dt);
-            callback();
+        self.players.forEach(function(player){
+            player.update(dt);
         })
+
+        for (var key in self.props){
+            self.props[key].update(dt);
+        }
+
         self.display.update(dt);
 
         if (self.controls.getTurnDeg){

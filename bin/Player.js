@@ -89,7 +89,8 @@ Player.prototype.toObj = function(){
         dir: this.dir.toObj(),
         v: this.v,
         deg: this.deg,
-        dead: this.dead
+        dead: this.dead,
+        shield: this.shield
     };
 }
 

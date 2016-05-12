@@ -5,14 +5,48 @@
 "use strict";
 var CAM_HEIGHT = 4.5;
 
-var Bike = require("./Bike.js");
+var Bike = require("./Bike"),
+    Shield = require("./Shield");
 
 var Player = function(scene, config, callback){
+    var self = this;
+
+    this.shieldOn = false;
+    this.shield = null;
+    this.dead = false;
+
+    this.id = config.id;
     this.bike = new Bike(scene, config, callback);
+
+    socket.on("sync", function(data){
+        var player = data.players[self.id];
+
+        self.shieldOn = player.shield;
+        self.dead = player.dead;
+
+        self.bike.setPos(player.pos.x, player.pos.y);
+        self.bike.setDir(player.dir.x, player.dir.y);
+        self.bike.v = player.v;
+        self.bike.obj.rotateOnAxis(new THREE.Vector3(0, 0, 1), player.deg);
+        self.bike.turn = player.deg;
+
+        if (self.shieldOn && self.shield === null){
+            self.shield = new Shield(scene);
+        } else if (!self.shieldOn && self.shield !== null){
+            self.shield.remove();
+            self.shield = null;
+        }
+
+        if (self.shieldOn){
+            self.shield.setPos(player.pos.x, player.pos.y, 0);
+            self.shield.setDir(player.dir.x, player.dir.y);
+        }
+    });
 }
 
 Player.prototype.update = function (dt) {
-    this.bike.update(dt);
+    // this.bike.update(dt);
+    if (this.shield) this.shield.update(dt);
 };
 
 Player.prototype.getCameraPos = function(){
