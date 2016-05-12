@@ -20,6 +20,7 @@ var Player = function(config, id, total){
     this.turn = 0;
     this.deg = 0;
 
+    this.shield = 0;
     this.dead = false;
     this.wall = [this.coner(-1, 0)];
 
@@ -102,6 +103,8 @@ Player.prototype.toBox = function(){
 }
 
 Player.prototype.hitWall = function(wall){
+    if (this.shield) return false;
+
     var box = this.toBox();
     var hit = false;
 

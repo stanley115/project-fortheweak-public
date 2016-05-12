@@ -25,4 +25,22 @@ Prop.prototype.toObj = function () {
     };
 };
 
+Prop.prototype.applyEffect = function (player) {
+    if (this.prop == "speed"){
+        player.v *= 2;
+        setTimeout(function(){
+            player.v /= 2;
+        }, 10000);
+    } else if (this.prop == "shield"){
+        player.shield++;
+        setTimeout(function(){
+            player.shield--;
+        }, 10000);
+    } else {
+        console.error("Prop Effect: ", "unknow prop " + this.prop);
+    }
+};
+
+Prop.PROP_LIST = ["speed", "shield"];
+
 module.exports = Prop;

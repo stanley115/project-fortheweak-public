@@ -8,8 +8,7 @@ var Clock = require("clock.js"),
 
 var DEFAULT_FPS = 30,
     PROP_PROBI = .1, // prop/sec
-    SIZE = 1000,
-    PROP_LIST = ["speed", "shield"];
+    SIZE = 1000;
 
 var Game = function(io, config){
     this.clock = new Clock();
@@ -56,7 +55,7 @@ Game.prototype.update = function(dt){
                             Math.random() * SIZE - SIZE / 2,
                             Math.random() * SIZE - SIZE / 2
                         ),
-                        prop:  PROP_LIST[Math.floor(Math.random() * PROP_LIST.length)]
+                        prop:  Prop.PROP_LIST[Math.floor(Math.random() * Prop.PROP_LIST.length)]
                     }, id);
                 } while (self.players.reduce(function(prev, player){
                     return prev || prop.hitPlayer(player);
@@ -91,9 +90,8 @@ Game.prototype.update = function(dt){
         },
         // collision to prop
         function(callback){
-            for (var id in self.props){
-                var prop = self.props[id];
-
+            async.forEach(self.props, function(prop, callback){
+                var id = prop.id;
                 var hit = self.players.reduce(function(prev, player){
                     return prev || (
                         prop.hitPlayer(player)? player: null
@@ -104,12 +102,16 @@ Game.prototype.update = function(dt){
                     self.io.to(self.roomID).emit("delProp", id);
 
                     // TODO: prop effect
+                    prop.applyEffect(hit);
                     console.log(self.roomID + " Player " + hit.id + " hit prop " + id);
 
                     delete self.props[id];
                 }
-            }
-            callback();
+                callback();
+            }, function(err){
+                if (err) console.log("Detect Props", err);
+                callback();
+            });
         }
     ]);
 
