@@ -4,7 +4,11 @@
     <title>VR Tron</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
   </head>
   <body>
   <audio id="audiobgm" loop>
@@ -25,12 +29,44 @@
       <div id = "welcome-page-background" class="base-background"></div>
       <div id = "CUHK-logo-background"></div>
     </div>
+    <button id="btn-openModalUsername" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal-username" style="display:none">Open Modal</button>
+    <div class="modal fade" id="modal-username" role="dialog">
+      <div class="modal-dialog">
+      <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Please enter your username</h4>
+          </div>
+          <div class="modal-body">
+            <input type="text" id="username">
+            <button type="button" class="btn btn-info btn-lg" id="submit-username">Submit</button>
+            <button id="btn-closeModalUsername" type="button" class="btn btn-default" data-dismiss="modal" style="display:none">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="lobby-div"  class="full-page-div" style="display:none">
+      <button id="btn-openModalRoom" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal-roomname" style="display:none">Open Modal</button>
+      <div class="modal fade" id="modal-roomname" role="dialog">
+        <div class="modal-dialog">
+        <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Please enter room name</h4>
+            </div>
+            <div class="modal-body">
+              <input type="text" id="roomname">
+              <button type="button" class="btn btn-info btn-lg" id="submit-roomname">Submit</button>
+              <button id="btn-closeModalRoom" type="button" class="btn btn-default" data-dismiss="modal" style="display:none">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <ul>
         <li class="text-block" id="fullscreen">
           <h3>Room List</h3>
           <span id="btnCreateRoom" class="btn-block">Create Room</span>
-        
+
         </li>
         <div id="divLobbyRoomList">
         </div>
@@ -112,8 +148,6 @@
         $("#divGameRoomBody").append(roomBody);
       }
     $("#btnCreateRoom").click(function(){
-        var roomName = window.prompt("Please enter room name", "AOC");
-        socket.emit("roomCreate", roomName);
     });
     $("#btnLeaveRoom").click(function(){
         socket.emit("roomLeave");

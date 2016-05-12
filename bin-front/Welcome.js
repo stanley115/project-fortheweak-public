@@ -1,5 +1,9 @@
 var Welcome = function(config){
   document.getElementById("fullscreen").addEventListener("click", goFullscreen.bind(null));
+  document.getElementById("submit-username").addEventListener("click", submitUsername.bind(null));
+  document.getElementById("btnCreateRoom").addEventListener("click", createRoom.bind(null));
+  document.getElementById("submit-roomname").addEventListener("click", submitRoomname.bind(null));
+
   //fadeOut
   function fadeOut(el){
     el.style.opacity = 1;
@@ -69,8 +73,13 @@ var Welcome = function(config){
         3100);
     setTimeout(
         function() {
-          var playerName = prompt("Enter Player Name:","default");
-          socket.emit("clientNew",playerName);
+          //document.getElementById("myModal").style.display = "block";
+          // jQuery(document).ready(function($) {
+          //   $('#myModal').modal("show")
+          // });
+          document.getElementById('btn-openModalUsername').click();
+          //var playerName = prompt("Enter Player Name:","default");
+          //socket.emit("clientNew",playerName);
           var ele = document.getElementById('welcome-div');
           ele.classList.add("remove");
           document.getElementById('lobby-div').style.display = 'block';
@@ -78,6 +87,20 @@ var Welcome = function(config){
         3800);
     //$(document.getElementById('welcome-div')).fadeOut("slow");
     //document.getElementById('welcome-div').style.display='none'
+  }
+  function submitUsername(){
+    document.getElementById('btn-closeModalUsername').click();
+    var ele = document.getElementById('username').value;
+    socket.emit("clientNew",ele);
+  }
+  function createRoom(){
+    document.getElementById('btn-openModalRoom').click();
+  }
+  function submitRoomname(){
+    document.getElementById('btn-closeModalRoom').click();
+    var ele = document.getElementById('roomname').value;
+    socket.emit("roomCreate", ele);
+
   }
 }
 Welcome.prototype.start = function(){
