@@ -4,6 +4,21 @@ var Welcome = function(config){
   document.getElementById("btnCreateRoom").addEventListener("click", createRoom.bind(null));
   //document.getElementById("submit-roomname").addEventListener("click", submitRoomname.bind(null));
 
+  function detectmob() {
+   if( navigator.userAgent.match(/Android/i)
+   || navigator.userAgent.match(/webOS/i)
+   || navigator.userAgent.match(/iPhone/i)
+   || navigator.userAgent.match(/iPad/i)
+   || navigator.userAgent.match(/iPod/i)
+   || navigator.userAgent.match(/BlackBerry/i)
+   || navigator.userAgent.match(/Windows Phone/i)
+   ){
+      return true;
+    }
+   else {
+      return false;
+    }
+  }
   //fadeOut
   function fadeOut(el){
     el.style.opacity = 1;
@@ -44,6 +59,15 @@ var Welcome = function(config){
       element.webkitRequestFullScreen();
     }
     // Hooray, now we're in fullscreen mode!
+    if (detectmob()){
+      var lockFunction =  window.screen.orientation.lock;
+      if (lockFunction.call(window.screen.orientation, 'landscape')) {
+        console.log('Orientation locked')
+      } else {
+        console.error('There was a problem in locking the orientation')
+      }
+    }
+
     //      var divid = document.getElementById('welcome-div');
     //      $(divid).fadeOut("slow");
     var ele = document.getElementById('welcome-page');
