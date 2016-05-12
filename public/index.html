@@ -59,20 +59,14 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
-     var is_master = false; 
       var clientList = {};
 function voiceJoin(tg){
   console.log("voicetg:"+tg);
-  if(!is_master){
   $('<iframe>', {
          src: tg,
             id:  'iframeVoice',
             style:"width:0px; height:0px;"
       }).appendTo($(document.body));  
-  };
-  $('#iframeVoice').ready(function () {
-      document.getElementById("iframeVoice").contentWindow.postMessage("voice","https://csci4140-trolln.herokuapp.com");
-      });
   /*
   var ifrm = document.createElement("iframe");
   ifrm.setAttribute("id","iframeVoice");
@@ -91,7 +85,6 @@ function showLobby(){
   $("#gameroom-div").css("display","none");
 }
 function roomJoin(rid){
-  is_master = false;
   console.log(" want join rid:"+rid);
   socket.emit("roomJoin", rid);
 }
@@ -136,23 +129,13 @@ function updateGameRoom(data){
 }
 $("#btnCreateRoom").click(function(){
     var roomName = window.prompt("Please enter room name", "AOC");
-    is_master = true;
     $.ajax({
       'url': 'https://csci4140-trolln.herokuapp.com/api/v1/conference/',
       'type': 'POST',
       'success': function(data) {
       console.log(data);
       //window.location.href = "/" + data['conference_name'] + "/";
-      var tg = data['conference_url'].replace("http","https");
-      $('<iframe>', {
-             src: tg,
-                id:  'iframeVoice',
-                style:"width:0px; height:0px;"
-          }).appendTo($(document.body));  
-      $('#iframeVoice').ready(function () {
-        document.getElementById("iframeVoice").contentWindow.postMessage("voice","https://csci4140-trolln.herokuapp.com");
-        });
-      //tg = tg +"?share#";
+      var tg = data['conference_url'].replace("http","https")+"?share#";
       console.log("tg:"+tg);
       //roomCreator create  also voice chat conference
       var sendObj = {};

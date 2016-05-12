@@ -52,8 +52,7 @@ var Welcome = function(config){
         function() {
           var ele = document.getElementById('welcome-page-background');
           fadeOut(ele);
-          //For testing voice chat
-          //document.getElementById("audiobgm").play();
+          document.getElementById("audiobgm").play();
         },
         1200);
     setTimeout(
