@@ -27,12 +27,12 @@ var Prop = function(scene, config, callback){
 		propURL,
 		// Function when resource is loaded
 		function ( collada ) {
-			console.log("load");
+			// console.log("load");
             self.obj = collada.scene;
             scene.add(self.obj);
 
             self.setPos(config.pos.x, config.pos.y, 0);
-            console.log(self.pos);
+            // console.log(self.pos);
             // self.obj.receiveShadow = true;
 
             if (callback){
@@ -42,7 +42,7 @@ var Prop = function(scene, config, callback){
 		},
 		// Function called when download progresses
 		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+			// console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 		}
 	);
 }
