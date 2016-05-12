@@ -2,21 +2,23 @@
  * Bike object
  */
 "use strict";
-var DEFAULT_BIKE = "assets/tron.dae",
+var configData = require("./config");
+
+var DEFAULT_BIKE = "tron",
     DEFAULT_VELOCITY = 30;
 
 var AbstractAsset = require("./AbstractAsset.js");
 
 var Bike = function(scene, config, callback){
+    AbstractAsset.call(this, scene, config);
     var self = this;
     config = config || {};
-    AbstractAsset.call(this, scene, config);
 
     this.v = DEFAULT_VELOCITY;
     this.turn = 0;
     this.id = config.id;
 
-    var bikeURL = DEFAULT_BIKE;
+    var bikeURL = configData.bikes[config.bike || DEFAULT_BIKE];
 
     var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;

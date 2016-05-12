@@ -6,6 +6,7 @@
 // var DEFAULT_GROUND = "assets/tron.png";
 var DEFAULT_GROUND = "assets/floor.jpg";
 var scene = null;
+var SIZE = 1000;
 
 var Background = function(tmpScene, config){
      this.config = config || {};
@@ -32,7 +33,7 @@ Background.prototype.createWorld = function(display){
 		map: texture
 	});
 
-	var geometry = new THREE.PlaneGeometry(1000, 1000);
+	var geometry = new THREE.PlaneGeometry(SIZE, SIZE);
 
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.rotation.x = -Math.PI / 2;

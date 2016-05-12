@@ -6,7 +6,8 @@ var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
     Display = require('./Display'),
-    Wall = require('./Wall');
+    Wall = require('./Wall'),
+    Prop = require('./Prop');
 var clock = new THREE.Clock(),
     scene = new THREE.Scene();
 
@@ -20,6 +21,7 @@ var Game = function(config){
     this.background = null;
 
     this.tmpWalls = [];
+    this.props = {};
 
     this.role = config.role || "viewer";
 
@@ -48,6 +50,21 @@ var Game = function(config){
                     });
                 }else {
                     self.tmpWalls[data.id].set(start, end);
+                }
+            });
+
+            callback();
+        },
+        function(callback){
+            // props
+            socket.on("addProp", function(config){
+                self.props[config.id] = new Prop(scene, config);
+            });
+
+            socket.on("delProp", function(id){
+                if (self.props[id]){
+                    self.props[id].remove();
+                    delete self.props[id];
                 }
             });
 
@@ -95,6 +112,10 @@ Game.prototype.animate = function(t) {
 
     function update(dt) {
         // self.player.update(dt);
+        async.forEach(self.props, function(prop, callback){
+            prop.update(dt);
+            callback();
+        })
         self.display.update(dt);
 
         if (self.controls.getTurnDeg){

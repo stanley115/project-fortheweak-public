@@ -55,4 +55,9 @@ Vector2.intersect = function(A, B, C, D){
         s(CD.cross(C.vecTo(A))) != s(CD.cross(C.vecTo(B)));
 }
 
+Vector2.prototype.sqrDistanceTo = function(v){
+    function sqr(x){return x * x;}
+    return sqr(this.x - v.x) + sqr(this.y - v.y);
+}
+
 module.exports = Vector2;

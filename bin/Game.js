@@ -1,15 +1,21 @@
 "use strict";
 
-var Clock = require("clock.js");
-var async = require("async");
-var Player = require("./Player");
-var DEFAULT_FPS = 60;
+var Clock = require("clock.js"),
+    async = require("async"),
+    Player = require("./Player"),
+    Prop = require("./Prop"),
+    Vector2 = require("./Vector2");
+
+var DEFAULT_FPS = 30,
+    PROP_PROBI = .1, // prop/sec
+    SIZE = 1000;
 
 var Game = function(io, config){
     this.clock = new Clock();
     this.io = io;
 
     this.roomID = config.roomID;
+    this.props = {};
 
     // init sockets
     this.players = config.players.map(function(ele, idx){
@@ -37,6 +43,29 @@ Game.prototype.update = function(dt){
 
     async.series([
         // update things with order
+        // create new props
+        function(callback){
+            if (Math.random() < PROP_PROBI * dt){
+                var id = "prop" + Object.keys(self.props).length;
+                var prop;
+                do {
+                    prop = new Prop({
+                        pos: new Vector2(
+                            Math.random() * SIZE - SIZE / 2,
+                            Math.random() * SIZE - SIZE / 2
+                        ),
+                        prop: "speed"
+                    }, id);
+                } while (self.players.reduce(function(prev, player){
+                    return prev || prop.hitPlayer(player);
+                }, false));
+
+                self.props[id] = prop;
+
+                self.io.to(self.roomID).emit("addProp", prop.toObj());
+            }
+            callback();
+        },
         // players
         function(callback){
             async.forEach(self.players, function(player, callback){
@@ -57,9 +86,31 @@ Game.prototype.update = function(dt){
                 if (err) console.error("Detect wall", err);
                 callback();
             });
+        },
+        // collision to prop
+        function(callback){
+            async.forEach(self.props, function(prop, callback){
+                var hit = self.players.reduce(function(prev, player){
+                    return prev || (
+                        prop.hitPlayer(player)? player: null
+                    );
+                }, null);
+
+                if (hit){
+                    self.io.to(self.roomID).emit("delProp", prop.id);
+
+                    // TODO: prop effect
+                    console.log("Player " + hit.id + " hit prop " + prop.id);
+
+                    delete self.props[prop.id];
+                }
+                callback();
+            }, function(err){
+                if (err) console.error("Detect prop", err);
+                callback();
+            })
         }
     ]);
-
 
 }
 
