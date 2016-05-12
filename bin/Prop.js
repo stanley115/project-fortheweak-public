@@ -35,12 +35,17 @@ Prop.prototype.applyEffect = function (player) {
         player.shield++;
         setTimeout(function(){
             player.shield--;
+        }, 30000);
+    } else if (this.prop == "slow"){
+        player.v /= 2;
+        setTimeout(function(){
+            player.v *= 2;
         }, 10000);
-    } else {
+    }else {
         console.error("Prop Effect: ", "unknow prop " + this.prop);
     }
 };
 
-Prop.PROP_LIST = ["speed", "shield"];
+Prop.PROP_LIST = ["speed", "shield", "slow"];
 
 module.exports = Prop;
