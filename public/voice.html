@@ -1,0 +1,47 @@
+<html lang="en">
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
+    <script type="text/javascript">
+      function login() {
+        Plivo.conn.login("p13c3w1n1160512082116", "p13c3w1n1");
+      }
+function make_call() {
+  Plivo.conn.call("conference");
+}
+function end_call() {
+  Plivo.conn.hangup();
+}
+function mute() {
+  Plivo.conn.mute();
+}
+function unmute() {
+  Plivo.conn.unmute();
+}
+function loginAndDelayMakeCall(usr,pwd){
+  config = {};
+  Plivo.init(config);
+  Plivo.conn.login(usr,pwd);
+    setTimeout(function() {
+      make_call();
+      }, 1500);
+}
+$(document).ready(function() {
+    //Plivo.onWebrtcNotSupported = webrtcNotSupportedAlert;
+    $.ajax({
+      'url': 'https://csci4140-trolln.herokuapp.com/api/v1/conference/',
+      'type': 'POST',
+      'success': function(data) {
+      console.log(data);
+      }
+    });    
+    Plivo.onReady = login;
+    config = {};
+    Plivo.init(config);
+    setTimeout(function() {
+      make_call();
+      }, 1500);
+    });
+</script>
+</body>
+</html>

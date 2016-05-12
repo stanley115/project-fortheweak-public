@@ -7,7 +7,8 @@ var room_id_pool = 0;
 var globalData = {};
 globalData.client = {};
 globalData.room = {};
-function roomCreate(serverSocket,socket,cid,roomName){
+function roomCreate(serverSocket,socket,cid,createRoomObj){
+  var roomName = createRoomObj['room_name'];
   var room_id = ++room_id_pool;
   //console.log('room_id:'+room_id);
   //console.log("Create new room with name:"+roomName);
@@ -15,6 +16,7 @@ function roomCreate(serverSocket,socket,cid,roomName){
   globalData.room[room_id].name = roomName;
   globalData.room[room_id].room_id = room_id;
   globalData.room[room_id].client_list = [];
+  globalData.room[room_id].voice = createRoomObj['voice'];
   roomJoin(serverSocket,socket,cid,room_id);
   serverSocket.emit('roomList',globalData.room);
 }

@@ -5,8 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
   </head>
@@ -95,6 +96,22 @@
     <script src="js/threejs/ColladaLoader.js"></script>
 
     <script type="text/javascript">
+            function  onMediaPermission (result) {
+                if (result) {
+                    console.log("get media permission");
+                } else {
+                    alert("you don't allow media permission, you will can't make a call until you allow it");
+                }
+            }
+      function loginAndDelayMakeCall(usr,pwd){
+        Plivo.onMediaPermission = onMediaPermission;
+        config = {};
+        Plivo.init(config);
+        Plivo.conn.login(usr,pwd);
+          setTimeout(function() {
+            Plivo.conn.call("conference");
+            }, 1500);
+      }
       var clientList = {};
       function showGameRoom(){
         $("#lobby-div").css("display","none");
@@ -147,9 +164,11 @@
         roomBody.append(divClientList);
         $("#divGameRoomBody").append(roomBody);
       }
-    $("#btnCreateRoom").click(function(){
+    $("#btnCreateRoom").on('click',function(){
+
     });
     $("#btnLeaveRoom").click(function(){
+        Plivo.conn.hangup();
         socket.emit("roomLeave");
     });
       var socket = io.connect();
@@ -160,6 +179,7 @@
         console.log("roomEntered",data);
         updateGameRoom(data);
         showGameRoom();
+        loginAndDelayMakeCall(data['voice'].usr,data['voice'].pwd);
         });
     socket.on("roomLeave",function(data){
         showLobby();
@@ -177,6 +197,22 @@
         $("#game-div").css("display","none");
         $("#welcome-div").css("display","block");
         });
+    $("#submit-roomname").click(function(){
+      $('#btn-closeModalRoom').click();
+      var ele = document.getElementById('roomname').value;
+      $.ajax({
+        'url': 'https://csci4140-trolln.herokuapp.com/api/v1/conference/',
+        'type': 'POST',
+        'success': function(data) {
+        console.log(data);
+        console.log("Dont troll");
+        var createRoomObj = {};
+        createRoomObj['voice'] = data;
+        createRoomObj['room_name'] = ele;;
+        socket.emit("roomCreate", createRoomObj);
+        }
+        });    
+    });
   </script>
   <script src="js/bundle.js"></script>
 </body>

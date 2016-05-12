@@ -2,7 +2,7 @@ var Welcome = function(config){
   document.getElementById("fullscreen").addEventListener("click", goFullscreen.bind(null));
   document.getElementById("submit-username").addEventListener("click", submitUsername.bind(null));
   document.getElementById("btnCreateRoom").addEventListener("click", createRoom.bind(null));
-  document.getElementById("submit-roomname").addEventListener("click", submitRoomname.bind(null));
+  //document.getElementById("submit-roomname").addEventListener("click", submitRoomname.bind(null));
 
   //fadeOut
   function fadeOut(el){
@@ -96,12 +96,7 @@ var Welcome = function(config){
   function createRoom(){
     document.getElementById('btn-openModalRoom').click();
   }
-  function submitRoomname(){
-    document.getElementById('btn-closeModalRoom').click();
-    var ele = document.getElementById('roomname').value;
-    socket.emit("roomCreate", ele);
 
-  }
 }
 Welcome.prototype.start = function(){
 }
