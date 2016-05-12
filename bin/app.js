@@ -7,7 +7,8 @@ var room_id_pool = 0;
 var globalData = {};
 globalData.client = {};
 globalData.room = {};
-function roomCreate(serverSocket,socket,cid,roomName){
+function roomCreate(serverSocket,socket,cid,sendObj){
+  var roomName = sendObj.roomName;
   var room_id = ++room_id_pool;
   //console.log('room_id:'+room_id);
   //console.log("Create new room with name:"+roomName);
@@ -15,8 +16,11 @@ function roomCreate(serverSocket,socket,cid,roomName){
   globalData.room[room_id].name = roomName;
   globalData.room[room_id].room_id = room_id;
   globalData.room[room_id].client_list = [];
+  globalData.room[room_id].voice_url = sendObj.voiceUrl;
   roomJoin(serverSocket,socket,cid,room_id);
   serverSocket.emit('roomList',globalData.room);
+  // this only for room Master
+  //serverSocket.to(room_id).emit('voiceJoin',sendObj.voiceUrl);
 }
 function roomJoin(serverSocket,socket,cid,rid){
   //If client is in other room ,leave it first
@@ -32,11 +36,16 @@ function roomJoin(serverSocket,socket,cid,rid){
   //Need notify any one in the room 
   serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   //As this step may also remove room List, notify the world
-  serverSocket.emit('roomList',globalData.room);
+  serverSocket.to(client_self).emit('voiceJoin',globalData.room[rid].voice_url);
+  serverSocket.emit('roomList',globalData.room);// update roomList but not reinit voice for others in room
   
 }
 
 function roomLeave(serverSocket,socket,cid){
+  try{
+    $("#iframeVoice").remove();
+  }catch(e){
+  }
   var rid = globalData.client[cid].inRoom;
   if(parseInt(rid) > 0 ){
     socket.leave(rid);//leave the socket channel too
@@ -105,9 +114,11 @@ module.exports = function(app){
       }catch(e){
       }
     });
-    socket.on('roomCreate',function(roomName){
+    socket.on('roomCreate',function(sendObj){
       console.log('roomCreate');
-      roomCreate(io,socket,client_id,roomName);
+      var roomName = sendObj.roomName;
+      var voiceUrl = sendObj.voiceUrl
+      roomCreate(io,socket,client_id,sendObj);
     });
     socket.on('roomJoin',function(room_id){
       console.log('roomJoin');
