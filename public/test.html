@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>VR Tron</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <div id="game-div" class="full-page-div"></div>
+
+    <!--script type="text/javascript" src="js/yconsole.js"></script>
+    <script type="text/javascript" >YConsole.show();</script-->
+
+    <script src="3rdparty/socket.io-client/socket.io.js"></script>
+    <script type="text/javascript">
+      var socket = io();
+    </script>
+    <script src="js/threejs/three.min.js"></script>
+    <script src="js/threejs/StereoEffect.js"></script>
+    <script src="js/threejs/DeviceOrientationControls.js"></script>
+    <script src="js/threejs/OrbitControls.js"></script>
+    <script src="js/threejs/ColladaLoader.js"></script>
+
+    <script src="js/bundle.js"></script>
+    </body>
+  </html>
