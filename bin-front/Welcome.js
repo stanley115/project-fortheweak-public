@@ -76,11 +76,12 @@ var Welcome = function(config){
     fadeIn(ele);
     //    var ele = document.getElementById('CUHK-logo-background');
     //  fadeIn(ele);
+
+    document.getElementById("audiobgm").play();
     setTimeout(
         function() {
           var ele = document.getElementById('welcome-page-background');
           fadeOut(ele);
-          document.getElementById("audiobgm").play();
         },
         1200);
     setTimeout(

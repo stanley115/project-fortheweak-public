@@ -15,6 +15,7 @@
   <audio id="audiobgm" loop>
     <source src="nyan.mp3" type="audio/mpeg">
   </audio>
+  <!-- -->
     <div id="welcome-div" class="full-page-div bg">
       <div id = "welcome-page">　
         <div>
@@ -30,7 +31,9 @@
       <div id = "welcome-page-background" class="base-background"></div>
       <div id = "CUHK-logo-background"></div>
     </div>
+
     <button id="btn-openModalUsername" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal-username" style="display:none">Open Modal</button>
+
     <div class="modal fade" id="modal-username" data-backdrop="static" data-keyboard="false" role="dialog">
       <div class="modal-dialog">
       <!-- Modal content-->
@@ -52,6 +55,8 @@
         </div>
       </div>
     </div>
+
+
     <div id="lobby-div"  class="full-page-div" style="display:none">
       <button id="btn-openModalRoom" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal-roomname" style="display:none">Open Modal</button>
       <div class="modal fade" id="modal-roomname" role="dialog">
@@ -78,13 +83,139 @@
         <li class="text-block" id="fullscreen">
           <h3>Room List</h3>
           <span id="btnCreateRoom" class="btn-block">Create Room</span>
-
         </li>
         <div id="divLobbyRoomList">
         </div>
       </ul>
       <div class="base-background"></div>
     </div>
+
+    <div class='container' id='content_room' style='display: none;'>
+         <h1 class='ui header center aligned'>N-Mario Room <span class='room number'></span></h1>
+         <div class='ui grid'>
+           <div class='eleven wide column'>
+             <div class='ui red segment'>
+               <table class='ui basic table' id='player_list'>
+                 <thead>
+                   <tr>
+                     <th class='ten wide'>Name</th>
+                     <th class='two wide'>Color</th>
+                     <th class='two wide'>Ready</th>
+                     <th class='two wide'>Kick</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr class='player_0'>
+                     <td class='player_name'></td>
+                     <td><span class='player_color'></span></td>
+                     <td><i class='icon checkmark player_ready'></i></td>
+                     <td class='player_kick'></td>
+                   </tr>
+                   <tr class='player_1'>
+                     <td class='player_name'></td>
+                     <td><span class='player_color'></span></td>
+                     <td><i class='icon checkmark player_ready'></i></td>
+                     <td class='player_kick'></td>
+                   </tr>
+                   <tr class='player_2'>
+                     <td class='player_name'></td>
+                     <td><span class='player_color'></span></td>
+                     <td><i class='icon checkmark player_ready'></i></td>
+                     <td class='player_kick'></td>
+                   </tr>
+                   <tr class='player_3'>
+                     <td class='player_name'></td>
+                     <td><span class='player_color'></span></td>
+                     <td><i class='icon checkmark player_ready'></i></td>
+                     <td class='player_kick'></td>
+                   </tr>
+                   <tr class='empty_0'>
+                     <td>-- Not Occupied --</td>
+                     <td><span class='player_color'></span></td>
+                     <td></td>
+                     <td></td>
+                   </tr>
+                   <tr class='empty_1'>
+                     <td>-- Not Occupied --</td>
+                     <td><span class='player_color'></span></td>
+                     <td></td>
+                     <td></td>
+                   </tr>
+                   <tr class='empty_2'>
+                     <td>-- Not Occupied --</td>
+                     <td><span class='player_color'></span></td>
+                     <td></td>
+                     <td></td>
+                   </tr>
+                   <tr class='empty_3'>
+                     <td>-- Not Occupied --</td>
+                     <td><span class='player_color'></span></td>
+                     <td></td>
+                     <td></td>
+                   </tr>
+                 </tbody>
+               </table>
+             </div>
+             <div class='ui red segment'>
+               <div class='ui top attached red label'>Chatroom</div>
+               <div class='ui form'>
+                 <div class='field'>
+                   <div id='message_board'></div>
+                 </div>
+                 <div class='field'>
+                   <input id='chatbox' type='text' placeholder='Send a message...'>
+                 </div>
+               </div>
+             </div>
+             <div class='ui form'>
+               <div class='inline field'>
+                 <div class='ui checkbox'>
+                   <input type='checkbox' id='im_ready'>
+                   <label for='im_ready'>I'm Ready</label>
+                 </div>
+               </div>
+               <button class='ui red large button disabled' id='start_game'>
+                 Start Game
+               </button>
+               <button class='ui large button floated right' id='leave_room'>
+                 Leave Room
+               </button>
+             </div>
+           </div>
+           <div class='five wide column'>
+             <div class="ui red form segment" id='setting'>
+               <div class='ui top attached red label'>Settings</div>
+               <div class="field">
+                 <label>World</label>
+                 <div class="ui selection dropdown" id='setting_world'>
+                   <div class="text"></div>
+                   <i class="dropdown icon"></i>
+                   <div class="menu">
+                     <!-- Cherry: I don't know why it cannot be zero based -->
+                     <div class="item" data-value="1">Demo</div>
+                     <div class="item" data-value="2">Grassland</div>
+                     <div class="item" data-value="3">Nether</div>
+                   </div>
+                 </div>
+               </div>
+               <div class="inline field">
+                 <label># of life</label>
+                 <div class="ui selection dropdown" id='setting_life'>
+                   <div class="text"></div>
+                   <i class="dropdown icon"></i>
+                   <div class="menu">
+                     <div class="item" data-value="1">1</div>
+                     <div class="item" data-value="2">2</div>
+                     <div class="item" data-value="3">3</div>
+                     <div class="item" data-value="4">4</div>
+                     <div class="item" data-value="1048576">oo</div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
     <div id="gameroom-div"  class="full-page-div" style="display:none">
       <ul>
         <li class="text-block" id="fullscreen">
@@ -96,6 +227,8 @@
       </ul>
       <div class="base-background"></div>
     </div>
+
+
     <div id="game-div" class="full-page-div" style="display:none"></div>
 
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
