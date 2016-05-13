@@ -7,6 +7,7 @@ var room_id_pool = 0;
 var globalData = {};
 globalData.client = {};
 globalData.room = {};
+globalData.socket = {};
 function roomCreate(serverSocket,socket,cid,createRoomObj){
   var roomName = createRoomObj['room_name'];
   var room_id = ++room_id_pool;
@@ -80,6 +81,7 @@ module.exports = function(app){
   var io = require('socket.io').listen(app);
   io.on('connection', function(socket){
     var client_id = ++client_id_pool; // **** closure for each client to capture client_id;
+    globalData.socket[client_id] = socket;
     var client_channel = client_prefix+client_id;
     socket.join(client_channel); // so that we can broadcast roomList/pref to individual clients when not in room
     console.log("client_id:"+client_id);

@@ -12,7 +12,7 @@ function  onMediaPermission (result) {
   if (result) {
     console.log("get media permission");
   } else {
-    alert("you don't allow media permission, you will can't make a call until you allow it");
+    console.log("you don't allow media permission, you will can't make a call until you allow it");
   }
 }
 function loginAndDelayMakeCall(usr,pwd){
