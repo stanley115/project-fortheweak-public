@@ -148,7 +148,8 @@ Game.prototype.start = function(){
 }
 
 Game.setup = function(){
-    socket.on("gameEnd", function(gameObj){
+    socket.on("getReady", function(gameObj){
+        console.log(gameObj);
         new Game(gameObj);
     });
 }

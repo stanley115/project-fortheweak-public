@@ -11,14 +11,16 @@ var DEFAULT_FPS = 30,
     SIZE = 1000;
 
 var Game = function(config){
+    var self = this;
+
     this.clock = new Clock();
     this.io = config.serverSocket;
 
     config.room = {
-        roomID: config.room_id,
-        roomName: config.room_name,
-        roomBgm: config.room_bgm,
-        floor: config.floor
+        roomID: config.room.room_id,
+        roomName: config.room.room_name,
+        roomBgm: config.room.room_bgm,
+        floor: config.room.floor
     };
     this.room = config.room;
     this.clients = config.client;
@@ -27,17 +29,17 @@ var Game = function(config){
     this.nProps = 0;
 
     // init players
-    this.players = this.client.filter(function(client){
+    this.players = this.clients.filter(function(client){
         return client.role === "player";
-    }).map(function(ele, idx){
+    }).map(function(ele, idx, arr){
         return new Player({
             roomID: self.room.roomID,
             socket: ele.client_socket
-        }, idx, self.players.length);
+        }, idx, arr.length);
     });
 
     // init ready array
-    this.ready = this.client.map(function(client, idx){
+    this.ready = this.clients.map(function(client, idx){
         var setReady = (function(id){
             this.ready[id] = true;
             if (this.readyCheck()){
@@ -45,6 +47,7 @@ var Game = function(config){
                     client.client_socket.removeListener("disconnect", setReady);
                     client.client_socket.removeListener("ready", setReady);
                 });
+                this.start();
             }
         }).bind(self, idx);
 
@@ -86,7 +89,7 @@ Game.prototype.getReady = function () {
     });
     players.forEach(function(player, idx){
         gameObj.role = idx;
-        player.client_socket.emit("ready", gameObj);
+        player.client_socket.emit("getReady", gameObj);
     })
 };
 
@@ -208,7 +211,7 @@ Game.prototype.result = function () {
 Game.prototype.start = function () {
     var self = this;
 
-    this.io.to(this.roomID).emit("gameStart");
+    this.io.to(this.room.roomID).emit("gameStart");
 
     this.clock.tick();
 
@@ -222,6 +225,7 @@ Game.prototype.start = function () {
 
         //check game end
         if (self.checkEnd()){
+            console.log("Game End:", self.room.roomID);
             self.io.to(self.room.roomID).
                 emit("gameEnd", self.result());
             clearInterval(loopGameInterval);

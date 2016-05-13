@@ -2,7 +2,7 @@
 module.exports = {
     floor: {
         "tron": "assets/floor.jpg"
-    }
+    },
     bikes: {
         "tron": "assets/tron.dae"
     },

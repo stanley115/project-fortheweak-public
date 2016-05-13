@@ -20,7 +20,7 @@ Background.prototype.createWorld = function(display){
 	scene.add(light);
 
 	var texture = THREE.ImageUtils.loadTexture(
-			configData[this.config.ground || DEFAULT_GROUND]
+			configData.floor[this.config.ground || DEFAULT_GROUND]
 		);
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
