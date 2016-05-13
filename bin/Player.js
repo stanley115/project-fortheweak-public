@@ -36,6 +36,10 @@ var Player = function(config, id, total){
 
             self.deg = deg;
             self.turn = deg * MAX_ACC;
+        });
+
+        self.socket.on("disconnect", function(){
+            self.dead = true;
         })
     }
 }

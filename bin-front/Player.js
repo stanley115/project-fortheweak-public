@@ -18,6 +18,8 @@ var Player = function(scene, config, callback){
     this.id = config.id;
     this.bike = new Bike(scene, config, callback);
 
+    this.name = config.name;
+
     socket.on("sync", function(data){
         var player = data.players[self.id];
 

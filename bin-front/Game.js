@@ -25,6 +25,14 @@ var Game = function(config){
 
     this.role = config.role || "viewer";
 
+    socket.on("gameStart", function(){
+        self.start();
+    });
+
+    socket.on("gameEnd", function(result){
+        alert("Game End!");
+    });
+
     async.series([
         function(callback){
             // player
@@ -95,15 +103,14 @@ var Game = function(config){
         },
         function(callback){
             // background
-            self.background = new Background(scene, config.background);
+            self.background = new Background(scene, config.floor);
             self.background.createWorld(self.display);
 
             callback();
         }
     ], function(err){
         if (err) console.log(err);
-
-        self.animate();
+        socket.emit("ready");
     });
 }
 
@@ -137,7 +144,13 @@ Game.prototype.animate = function(t) {
 }
 
 Game.prototype.start = function(){
-    // this.animate();
+    this.animate();
+}
+
+Game.setup = function(){
+    socket.on("gameEnd", function(gameObj){
+        new Game(gameObj);
+    });
 }
 
 module.exports = Game;

@@ -10,22 +10,91 @@ var DEFAULT_FPS = 30,
     PROP_PROBI = .1, // prop/sec
     SIZE = 1000;
 
-var Game = function(io, config){
+var Game = function(config){
     this.clock = new Clock();
-    this.io = io;
+    this.io = config.serverSocket;
 
-    this.roomID = config.roomID;
+    config.room = {
+        roomID: config.room_id,
+        roomName: config.room_name,
+        roomBgm: config.room_bgm,
+        floor: config.floor
+    };
+    this.room = config.room;
+    this.clients = config.client;
+
     this.props = {};
     this.nProps = 0;
 
-    // init sockets
-    this.players = config.players.map(function(ele, idx){
-        ele.roomID = config.roomID;
-        return new Player(ele, idx, config.players.length);
+    // init players
+    this.players = this.client.filter(function(client){
+        return client.role === "player";
+    }).map(function(ele, idx){
+        return new Player({
+            roomID: self.room.roomID,
+            socket: ele.client_socket
+        }, idx, self.players.length);
     });
 
-    this.viewers = config.viewers;
+    // init ready array
+    this.ready = this.client.map(function(client, idx){
+        var setReady = (function(id){
+            this.ready[id] = true;
+            if (this.readyCheck()){
+                this.clients.forEach(function(client){
+                    client.client_socket.removeListener("disconnect", setReady);
+                    client.client_socket.removeListener("ready", setReady);
+                });
+            }
+        }).bind(self, idx);
+
+        client.client_socket.on("disconnect", setReady);
+        client.client_socket.on("ready", setReady);
+
+        return false;
+    });
+
+    // tell client to ready
+    this.getReady();
 }
+
+Game.prototype.getReady = function () {
+    var self = this;
+    var players = this.clients.filter(function(client){
+        return client.role === "player";
+    }),
+        viewers = this.clients.filter(function(client){
+            return client.role === "viewer";
+        });
+
+    var gameObj = {
+        floor: this.room.floor,
+        bgm: this.room.roomBgm,
+        players: players.map(function(player, idx){
+            return {
+                id: idx,
+                bike: player.car,
+                name: player.name
+            }
+        }),
+        role: "viewer"
+    };
+
+    viewers.forEach(function(viewer){
+        viewer.client_socket.emit("getReady", gameObj);
+        callabck();
+    });
+    players.forEach(function(player, idx){
+        gameObj.role = idx;
+        player.client_socket.emit("ready", gameObj);
+    })
+};
+
+Game.prototype.readyCheck = function () {
+    return this.ready.reduce(function(prev, client){
+        return prev && client;
+    }, true);
+};
 
 Game.prototype.sync = function () {
     var obj = {};
@@ -35,7 +104,7 @@ Game.prototype.sync = function () {
     });
 
     // send object to all
-    this.io.to(this.roomID).emit("sync", obj);
+    this.io.to(this.room.roomID).emit("sync", obj);
 };
 
 Game.prototype.update = function(dt){
@@ -63,7 +132,7 @@ Game.prototype.update = function(dt){
 
                 self.props[id] = prop;
 
-                self.io.to(self.roomID).emit("addProp", prop.toObj());
+                self.io.to(self.room.roomID).emit("addProp", prop.toObj());
             }
             callback();
         },
@@ -99,11 +168,11 @@ Game.prototype.update = function(dt){
                 }, null);
 
                 if (hit){
-                    self.io.to(self.roomID).emit("delProp", id);
+                    self.io.to(self.room.roomID).emit("delProp", id);
 
                     // TODO: prop effect
                     prop.applyEffect(hit);
-                    console.log(self.roomID + " Player " + hit.id + " hit prop " + id);
+                    console.log(self.room.roomID + " Player " + hit.id + " hit prop " + id);
 
                     delete self.props[id];
                 }
@@ -117,11 +186,33 @@ Game.prototype.update = function(dt){
 
 }
 
+Game.prototype.checkEnd = function () {
+    var nDeads = this.players.reduce(function(prev, player){
+        return prev + player.dead;
+    }, 0),
+        nPlayers = this.players.length;
+
+    if (nPlayers == 1){
+        return nDeads == 1;
+    } else {
+        return nDeads >= nPlayers - 1;
+    }
+};
+
+Game.prototype.result = function () {
+    return this.players.map(function(player){
+        return player.dead;
+    });
+};
+
 Game.prototype.start = function () {
     var self = this;
+
+    this.io.to(this.roomID).emit("gameStart");
+
     this.clock.tick();
 
-    setInterval(function(){
+    var loopGameInterval = setInterval(function(){
         self.clock.tick();
         var dt = self.clock.deltaTime / 1000;
 
@@ -129,6 +220,12 @@ Game.prototype.start = function () {
 
         self.sync();
 
+        //check game end
+        if (self.checkEnd()){
+            self.io.to(self.room.roomID).
+                emit("gameEnd", self.result());
+            clearInterval(loopGameInterval);
+        }
     }, 1000 / DEFAULT_FPS);
 
 };

@@ -3,8 +3,10 @@
  * TODO: BGM
  */
 "use strict";
+var configData = require("./config");
+
 // var DEFAULT_GROUND = "assets/tron.png";
-var DEFAULT_GROUND = "assets/floor.jpg";
+var DEFAULT_GROUND = "tron";
 var scene = null;
 var SIZE = 1000;
 
@@ -18,7 +20,7 @@ Background.prototype.createWorld = function(display){
 	scene.add(light);
 
 	var texture = THREE.ImageUtils.loadTexture(
-			this.config.ground || DEFAULT_GROUND
+			configData[this.config.ground || DEFAULT_GROUND]
 		);
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
