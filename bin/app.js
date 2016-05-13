@@ -8,6 +8,48 @@ var globalData = {};
 globalData.client = {};
 globalData.room = {};
 globalData.socket = {};
+var gameObj = {};
+function gameStart(serverSocket,socket,cid){
+  var config = {};
+  var rid = globalData.client[cid].inRoom;
+  if(rid==-1)return;
+  config['serverSocket'] = serverSocket;
+  config.room = {};
+  config.room.room_id = rid;
+  config.room.room_name = globalData.room[rid].name;
+  for (var k in globalData.room[rid].setting){
+    config.room[k] = global.room[rid][k];
+  }
+  config.client = [];
+  for (var i in globalData.room[rid].client_list){
+    var cid = globalData.room[rid].client_list[i];
+    var client_game_obj = {};
+    client_game_obj['client_id'] = cid;
+    client_game_obj['client_name'] = globalData.client[cid].name;
+    for (var j in globalData.client[cid].setting){
+      client_game_obj[j] = globalData.client[cid].setting[j];
+    }
+    config.client.push(client_game_obj);
+  }
+  console.log(config);
+  //call init game func, which iosocket emit message to each client
+  //call MW's open game func (config);
+}
+function updateGameSetting(serverSocket,socket,cid,settingObj){
+  //setting for whole room(room speed) / individual player(player car) stored in different place
+  var settingKey = settingObj.key;
+  var settingVal = settingObj.val;
+  switch(settingKey){
+    case "bgm":
+      break;
+    case "changeCar":
+      break;
+    default:
+      break;
+  }
+  //TODO:update everyone in room
+}
+
 function roomCreate(serverSocket,socket,cid,createRoomObj){
   var roomName = createRoomObj['room_name'];
   var room_id = ++room_id_pool;
@@ -18,6 +60,7 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
   globalData.room[room_id].room_id = room_id;
   globalData.room[room_id].client_list = [];
   globalData.room[room_id].voice = createRoomObj['voice'];
+  globalData.room[room_id].setting = {};
   roomJoin(serverSocket,socket,cid,room_id);
   serverSocket.emit('roomList',globalData.room);
 }
@@ -90,6 +133,7 @@ module.exports = function(app){
       globalData.client[client_id]={};
       globalData.client[client_id].cid = client_id;
       globalData.client[client_id].name = name;
+      globalData.client[client_id].setting = {};
       globalData.client[client_id].inRoom = -1;
       console.log(globalData.client[client_id]);
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
@@ -100,7 +144,7 @@ module.exports = function(app){
       console.log('disconnect:'+client_id);
       try{
         var rid = globalData.client[client_id].inRoom;
-        if(rid>-1){
+        if(rid!=-1){
           roomLeave(io,socket,client_id);
           delete globalData.client_id[client_id];
           //room client list also updated , notify other users in same room
@@ -127,6 +171,10 @@ module.exports = function(app){
     });
     socket.on('roomUpdate',function(){
       console.log('roomUpdate');
+    });
+    socket.on('gameStart',function(){
+      console.log('gameStart');
+      gameStart(io,socket,client_id);
     });
   });
 };

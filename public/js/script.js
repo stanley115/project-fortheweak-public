@@ -78,6 +78,9 @@ function updateGameRoom(data){
 }
 $("#btnCreateRoom").on('click',function(){
 });
+$("#btnStartGame").on('click',function(){
+    socket.emit("gameStart");
+});
 $("#btnLeaveRoom").click(function(){
     Plivo.conn.hangup();
     socket.emit("roomLeave");

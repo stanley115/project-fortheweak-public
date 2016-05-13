@@ -6,6 +6,7 @@ startGameObj =
 			room_id: “”,
 			room_name:”312321”,
 			room_bgm: “wulala”
+            floor: fsafsafa
       },
       client: [
       {
