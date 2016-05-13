@@ -1,0 +1,32 @@
+
+startGameObj = 
+{
+		serverSocket: io,
+		room: {
+			room_id: “”,
+			room_name:”312321”,
+			room_bgm: “wulala”
+      },
+      client: [
+      {
+      client_id: “1”,
+      client_name: “name”,
+      client_socket: …,
+      role : “viewer”,
+      car: “nyancat”
+      },{
+      client_id: “2”,
+      client_name: “nam2”,
+      client_socket: …,
+      car : “mole”
+      }]
+}
+
+Regard all room_id/client_id as string unless specified
+
+Broadcast to individual client:
+io.to(“client-“+{his client id}).emit(…..)
+
+Broadcast to whole room :
+io.to({room_id}).emit(…..)
+
