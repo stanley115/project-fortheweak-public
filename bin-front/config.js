@@ -10,5 +10,8 @@ module.exports = {
         "speed": "assets/arrow.dae",
         "shield": "assets/shield.dae",
         "slow": "assets/arrow_down.dae"
+    },
+    sight: {
+        "default": "assets/sight.dae"
     }
 };

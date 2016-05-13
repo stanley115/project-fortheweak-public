@@ -3,10 +3,13 @@
  * contain player position and direction, render bike
  */
 "use strict";
-var CAM_HEIGHT = 4.5;
+var CAM_HEIGHT = 4.5,
+    SIGHT_LENGTH = 12;
 
-var Bike = require("./Bike"),
-    Shield = require("./Shield");
+var async = require("async"),
+    Bike = require("./Bike"),
+    Shield = require("./Shield"),
+    Sight = require("./Sight");
 
 var Player = function(scene, config, callback){
     var self = this;
@@ -15,8 +18,26 @@ var Player = function(scene, config, callback){
     this.shield = null;
     this.dead = false;
 
+    this.bike = null;
+    this.sight = null;
+
     this.id = config.id;
-    this.bike = new Bike(scene, config, callback);
+
+    async.parallel([
+        function(callback){
+            self.bike = new Bike(scene, config, callback);
+        },
+        function(callback){
+            if (config.display){
+                self.sight = new Sight(scene, config, callback);
+            }else {
+                callback();
+            }
+        }
+    ], function(err){
+        if (err) console.error("prepare player", err);
+        callback();
+    });
 
     this.name = config.name;
 
@@ -26,12 +47,27 @@ var Player = function(scene, config, callback){
         self.shieldOn = player.shield;
         self.dead = player.dead;
 
+        // sight
+        if (self.sight !== null){
+            self.sight.setPos(
+                player.pos.x + player.dir.x * SIGHT_LENGTH,
+                player.pos.y + player.dir.y * SIGHT_LENGTH,
+                CAM_HEIGHT
+            );
+            self.sight.setDir(
+                - player.dir.y,
+                player.dir.x
+            );
+        }
+
+        // bike
         self.bike.setPos(player.pos.x, player.pos.y);
         self.bike.setDir(player.dir.x, player.dir.y);
         self.bike.v = player.v;
         self.bike.obj.rotateOnAxis(new THREE.Vector3(0, 0, 1), player.deg);
         self.bike.turn = player.deg;
 
+        // shield
         if (self.shieldOn && self.shield === null){
             self.shield = new Shield(scene);
         } else if (!self.shieldOn && self.shield !== null){

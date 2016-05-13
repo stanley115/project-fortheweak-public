@@ -39,6 +39,7 @@ var Game = function(config){
             self.players = [];
             async.forEachOf(config.players, function(player, id, callback){
                 player.id = id;
+                player.display = (id === config.role);
                 self.players[id] = new Player(scene, player, callback);
             }, function(err){
                 if (err) console.error("construct player", err);
