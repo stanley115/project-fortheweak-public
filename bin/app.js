@@ -10,6 +10,16 @@ globalData.client = {};
 globalData.room = {};
 globalData.socket = {};
 var gameObj = {};
+function cleanGame(rid){
+  if(rid == -1 )return ;
+  for (var i in globalData.room[rid].client_list){//reset Client Station
+    var cid = globalData.room[rid].client_list[i];
+    globalData.client[cid].inRoom = -1;
+  }
+  delete globalData.room[rid];
+  io.emit('roomList',globalData.room);
+  io.emit('updateClientList',globalData.client);
+}
 function gameStart(serverSocket,socket,cid){
   var config = {};
   var rid = globalData.client[cid].inRoom;
@@ -41,7 +51,7 @@ function gameStart(serverSocket,socket,cid){
   console.log(config);
   //call init game func, which iosocket emit message to each client
   //call MW's open game func (config);
-  var game = new Game(config);
+  var game = new Game(config,cleanGame);
 }
 function updateGameSetting(serverSocket,socket,cid,settingObj){
   //setting for whole room(room speed) / individual player(player car) stored in different place
@@ -99,7 +109,7 @@ function roomJoin(serverSocket,socket,cid,rid){
   serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   //As this step may also remove room List, notify the world
   serverSocket.emit('roomList',globalData.room);
-  
+
 }
 
 function roomLeave(serverSocket,socket,cid){
@@ -124,9 +134,9 @@ function roomLeave(serverSocket,socket,cid){
     //In fact need notify all client so that info updated on lobby too 
     //Update on left client lobby too so that it won't click on empty room 
     /*
-    serverSocket.to(client_self).emit('roomList',globalData.room);
-    serverSocket.to(client_self).emit('roomLeave');
-    */
+       serverSocket.to(client_self).emit('roomList',globalData.room);
+       serverSocket.to(client_self).emit('roomLeave');
+       */
     serverSocket.emit('roomList',globalData.room);
     serverSocket.to(client_self).emit('roomLeave');
   }
@@ -197,6 +207,18 @@ module.exports = function(app){
       console.log('gameStart');
       gameStart(io,socket,client_id);
     });
+    /* Server not receive event
+       socket.on('gameEnd',function(){
+       console.log('gameEnd');
+    //refresh room List
+    var rid = globalData.client[cid].inRoom;
+    globalData.client[cid].inRoom = -1; // reset client state to lobby; 
+    if(rid!=-1)delete globalData.room[rid];
+    io.emit('roomList',globalData.room);
+    io.emit('updateClientList',globalData.client);
+    });
+    */
+
     socket.on('updateGameSetting',function(data){
       console.log('roomLeave');
       updateGameSetting(io,socket,client_id,data);
