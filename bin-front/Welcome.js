@@ -121,7 +121,6 @@ var Welcome = function(config){
   function createRoom(){
     document.getElementById('btn-openModalRoom').click();
   }
-
 }
 Welcome.prototype.start = function(){
 }

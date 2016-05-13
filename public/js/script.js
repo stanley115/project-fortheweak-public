@@ -8,6 +8,12 @@ $(document).ready(function(){
       $('#submit-roomname').click();
     });
 });
+function krEncodeEntities(s){
+  return $("<div/>").text(s).html();
+}
+function krDencodeEntities(s){
+  return $("<div/>").html(s).text();
+}
 function  onMediaPermission (result) {
   if (result) {
     console.log("get media permission");
@@ -44,9 +50,9 @@ function updateRoomList(data){
   for (var i in data){
     var roomId = i+"";
     var eachRoom = $("<li/>").addClass("text-block");
-    eachRoom.append($("<h4/>").html("Room id:"+roomId));
-    eachRoom.append($("<h4/>").html("Room name:"+data[i].name));
-    eachRoom.append($("<h4/>").html("Num of Players:"+data[i].client_list.length));
+    eachRoom.append($("<h4/>").html(krEncodeEntities("Room id:"+roomId)));
+    eachRoom.append($("<h4/>").html(krEncodeEntities("Room name:"+data[i].name)));
+    eachRoom.append($("<h4/>").html(krEncodeEntities("Num of Players:"+data[i].client_list.length)));
     var btnJoin = $("<span/>").html("Join");
     btnJoin.addClass("btn-block");
     btnJoin.on("click",function(){
@@ -61,18 +67,15 @@ function updateRoomList(data){
 }
 function updateGameRoom(data){
   $("#divGameRoomBody").empty();
-  var divInRoomName = $("<div/>").html("Room Name:"+data.name);
-  var divInRoomID = $("<div/>").html("Room ID:"+data.room_id);
-  var divClientList = $("<div/>");
+  var roomBody = $("<li/>").addClass("text-block");
+  roomBody.append($("<h4/>").html(krEncodeEntities("Room Name:"+data.name)));
+  roomBody.append($("<h4/>").html(krEncodeEntities("Room ID:"+data.room_id)));
+  var divClientList = $("<h4/>");
   for (var i in data.client_list){
     var pid = data.client_list[i];
-    var tmpli = $("<div/>").html("client_id:"+pid+":"+clientList[pid].name);
+    var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
     divClientList.append(tmpli);
   }
-  var roomBody = $("<li/>");
-  roomBody.addClass("text-block");
-  roomBody.append(divInRoomName);
-  roomBody.append(divInRoomID);
   roomBody.append(divClientList);
   $("#divGameRoomBody").append(roomBody);
 }
