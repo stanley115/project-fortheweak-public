@@ -108,6 +108,18 @@ var socket;
     clientList = data;
     console.log(clientList);
   });
+  socket.on("gameStart",function(data){
+    $("#lobby-div").css("display","none");
+    $("#gameroom-div").css("display","none");
+    $("#welcome-div").css("display","none");
+    $("#game-div").css("display","block");
+  });
+  socket.on("gameEnd",function(data){
+    $("#lobby-div").css("display","block");
+    $("#gameroom-div").css("display","none");
+    $("#welcome-div").css("display","none");
+    $("#game-div").css("display","none");
+  });
   socket.on("disconnect",function(){
     console.log("disconnect");
     //Maybe server down,alert and go to start page

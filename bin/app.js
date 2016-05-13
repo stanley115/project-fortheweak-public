@@ -1,6 +1,7 @@
 /**
  *  Main application
  */
+var Game = require("./Game");
 var client_prefix = "client-";
 var client_id_pool = 0 ;
 var room_id_pool = 0;
@@ -40,7 +41,7 @@ function gameStart(serverSocket,socket,cid){
   console.log(config);
   //call init game func, which iosocket emit message to each client
   //call MW's open game func (config);
-  var game = new require("./Game")(config);
+  var game = new Game(config);
 }
 function updateGameSetting(serverSocket,socket,cid,settingObj){
   //setting for whole room(room speed) / individual player(player car) stored in different place
