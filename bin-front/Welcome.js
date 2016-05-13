@@ -117,6 +117,7 @@ var Welcome = function(config){
     document.getElementById('btn-closeModalUsername').click();
     var ele = document.getElementById('username').value;
     socket.emit("clientNew",ele);
+    console.log("HIHIHIHI register event send");
   }
   function createRoom(){
     document.getElementById('btn-openModalRoom').click();

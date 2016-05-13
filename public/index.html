@@ -21,7 +21,7 @@
         <div>
           <h2>Happy Trolling</h2>
           <ul>
-            <li class="text-block" id="fullscreen">
+            <li class="btn-block" id="fullscreen">
             <!--button id="fullscreen"　class = "text-block"-->
             Start Tron
             </li>
@@ -80,7 +80,7 @@
         </div>
       </div>
       <ul>
-        <li class="text-block" id="fullscreen">
+        <li class="text-block">
           <h3>Room List</h3>
           <span id="btnCreateRoom" class="btn-block">Create Room</span>
         </li>
@@ -218,10 +218,33 @@
        </div>
     <div id="gameroom-div"  class="full-page-div" style="display:none">
       <ul>
-        <li class="text-block" id="fullscreen">
+        <li class="text-block" >
           <h3>Game Room</h3>
           <div id="btnLeaveRoom" class="btn-block">Leave Room</div>
           <div id="btnStartGame" class="btn-block">Start Game</div>
+          <span class="btn-block">Floor:
+            <select id="selectFloor">
+              <option selected value="tron">tron</option> 
+            </select>
+          </span>
+          <span class="btn-block">Role:
+            <select id="selectRole">
+              <option selected value="player">player</option> 
+              <option value="viewer">viewer</option> 
+            </select>
+          </span>
+          <span class="btn-block">Car:
+            <select id="selectCar">
+              <option selected value="viewer">viewer</option> 
+            </select>
+          </span>
+          <span class="btn-block">Bgm:
+            <select id="selectBgm">
+              <option selected value="nyan_cat">nyan cat</option> 
+            </select>
+          </span>
+
+
         </li>
         <div id="divGameRoomBody">
         </div>
@@ -231,7 +254,6 @@
 
 
     <div id="game-div" class="full-page-div" style="display:none"></div>
-
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
     <script src="3rdparty/jquery/dist/jquery.min.js"></script>
     <script src="js/threejs/three.min.js"></script>

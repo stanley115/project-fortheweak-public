@@ -18,7 +18,10 @@ function gameStart(serverSocket,socket,cid){
   config.room.room_id = rid;
   config.room.room_name = globalData.room[rid].name;
   for (var k in globalData.room[rid].setting){
-    config.room[k] = global.room[rid][k];
+    if (globalData.room[rid].setting.hasOwnProperty(k)) {
+      console.log("k:"+k);
+      config.room[k] = globalData.room[rid].setting[k];
+    }
   }
   config.client = [];
   for (var i in globalData.room[rid].client_list){
@@ -26,23 +29,39 @@ function gameStart(serverSocket,socket,cid){
     var client_game_obj = {};
     client_game_obj['client_id'] = cid;
     client_game_obj['client_name'] = globalData.client[cid].name;
+    client_game_obj['client_socket'] = globalData.socket[cid];
     for (var j in globalData.client[cid].setting){
-      client_game_obj[j] = globalData.client[cid].setting[j];
+      if (globalData.client[cid].setting.hasOwnProperty(j)) {
+        client_game_obj[j] = globalData.client[cid].setting[j];
+      }
     }
     config.client.push(client_game_obj);
   }
   console.log(config);
   //call init game func, which iosocket emit message to each client
   //call MW's open game func (config);
+  var game = new require("./Game")(config);
 }
 function updateGameSetting(serverSocket,socket,cid,settingObj){
   //setting for whole room(room speed) / individual player(player car) stored in different place
   var settingKey = settingObj.key;
   var settingVal = settingObj.val;
+  var rid = globalData.client[cid].inRoom;
+  if(rid==-1)return;
+  console.log("updateGameSetting : cid:"+cid+",rid:"+rid);
+  console.log(settingObj);
   switch(settingKey){
     case "bgm":
+      globalData.room[rid].setting.room_bgm = settingVal;
       break;
-    case "changeCar":
+    case "car":
+      globalData.client[cid].setting.car = settingVal;
+      break;
+    case "floor":
+      globalData.room[rid].setting.floor = settingVal;
+      break;
+    case "role":
+      globalData.client[cid].setting.role = settingVal;
       break;
     default:
       break;
@@ -130,6 +149,7 @@ module.exports = function(app){
     console.log("client_id:"+client_id);
     var client_name; // another var in closure
     socket.on('clientNew',function(name){
+      console.log("clientNew");
       globalData.client[client_id]={};
       globalData.client[client_id].cid = client_id;
       globalData.client[client_id].name = name;
@@ -175,6 +195,10 @@ module.exports = function(app){
     socket.on('gameStart',function(){
       console.log('gameStart');
       gameStart(io,socket,client_id);
+    });
+    socket.on('updateGameSetting',function(data){
+      console.log('roomLeave');
+      updateGameSetting(io,socket,client_id,data);
     });
   });
 };

@@ -4,13 +4,7 @@ var Welcome = require('./Welcome');
 var welcome = new Welcome();
 
 
-var Game = require('./Game');
-var game = new Game({
-  players: [{}],
-    role: 0
-});
-game.start();
-
+require('./Game').setup();
 
 // var communication = require('./Communication');
 // require('./StylesAndFix');

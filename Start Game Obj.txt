@@ -19,6 +19,7 @@ startGameObj =
       client_id: “2”,
       client_name: “nam2”,
       client_socket: …,
+      role : player,
       car : “mole”
       }]
 }
