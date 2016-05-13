@@ -7,7 +7,7 @@ var Clock = require("clock.js"),
     Vector2 = require("./Vector2");
 
 var DEFAULT_FPS = 30,
-    PROP_PROBI = .1, // prop/sec
+    PROP_PROBI = 1, // prop/sec
     SIZE = 1000;
 
 var Game = function(config, cleanGame){

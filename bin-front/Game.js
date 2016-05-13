@@ -25,25 +25,13 @@ var Game = function(config){
 
     this.role = config.role || "viewer";
 
-    var gameStartListener = function(){
-        console.log("game start");
-        self.start();
-    }
-    var gameEndListener = function(result){
-        console.log("game end");
-        socket.removeListener("sync");
-        socket.removeListener("gameStart", gameStartListener);
-        socket.removeListener("gameEnd", gameEndListener);
-        socket.removeListener("wall");
+    this.gameStartListener = this.start.bind(this);
+    this.gameEndListener = this.end.bind(this);
 
-        var canvas = document.querySelector("canvas").remove();
+    socket.on("gameStart", this.gameStartListener);
+    socket.on("gameEnd", this.gameEndListener);
 
-        // TODO: remove all things in game
-        delete self;
-    }
-
-    socket.on("gameStart", gameStartListener);
-    socket.on("gameEnd", gameEndListener);
+    this.animateID = null;
 
     async.series([
         function(callback){
@@ -150,15 +138,41 @@ Game.prototype.animate = function(t) {
     	self.display.render(dt);
     }
 
-	requestAnimationFrame(self.animate.bind(self));
+	this.animateID = requestAnimationFrame(self.animate.bind(self));
 
 	update(clock.getDelta());
 	render(clock.getDelta());
 }
 
 Game.prototype.start = function(){
+    console.log("game start");
     this.animate();
 }
+
+Game.prototype.end = function (result) {
+    console.log("game end");
+
+    // remove listeners
+    socket.removeListener("sync");
+    socket.removeListener("gameStart", this.gameStartListener);
+    socket.removeListener("gameEnd", this.gameEndListener);
+    socket.removeListener("wall");
+    socket.removeListener("addProp");
+    socket.removeListener("delProp");
+
+    // remove objects
+    document.querySelector("canvas").remove();
+    this.display.remove();
+    while (this.scene.children.length){
+        this.scene.remove(this.scene.children[this.scene.children.length - 1]);
+    }
+    this.scene = null;
+    this.controls = null;
+    this.background = null;
+    cancelAnimationFrame(this.animateID);
+
+    delete this;
+};
 
 Game.setup = function(){
     socket.on("getReady", function(gameObj){

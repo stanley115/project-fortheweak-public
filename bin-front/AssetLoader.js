@@ -6,7 +6,7 @@ module.exports = (function(){
     var assets = {};
 
     var AssetLoader = function(url, callback){
-        if (url in assets){
+        if (assets[url]){
             callback(assets[url].clone());
         } else {
             var loader = new THREE.ColladaLoader();

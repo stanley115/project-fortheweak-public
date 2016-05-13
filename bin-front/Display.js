@@ -110,4 +110,10 @@ function Display(scene, config){
     init();
 }
 
+Display.prototype.remove = function () {
+    this.camera = null;
+    this.renderer = null;
+    this.controls = null;
+};
+
 module.exports = Display;
