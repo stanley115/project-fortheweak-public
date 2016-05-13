@@ -10,7 +10,7 @@ var DEFAULT_FPS = 30,
     PROP_PROBI = .1, // prop/sec
     SIZE = 1000;
 
-var Game = function(config){
+var Game = function(config, cleanGame){
     var self = this;
 
     this.clock = new Clock();
@@ -29,7 +29,7 @@ var Game = function(config){
     this.nProps = 0;
 
     this.loopGameInterval = null;
-    this.cleanGame = config.cleanGame;
+    this.cleanGame = cleanGame;
 
     // init players
     this.players = this.clients.filter(function(client){
