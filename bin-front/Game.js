@@ -7,8 +7,7 @@ var async = require("async"),
     Display = require('./Display'),
     Wall = require('./Wall'),
     Prop = require('./Prop');
-var clock = new THREE.Clock(),
-    scene = new THREE.Scene();
+var clock = new THREE.Clock();
 
 var Game = function(config){
     config = config || {};
@@ -19,25 +18,32 @@ var Game = function(config){
     this.controls = null;
     this.background = null;
 
+    this.scene = new THREE.Scene()
+
     this.tmpWalls = [];
     this.props = {};
 
     this.role = config.role || "viewer";
 
-    socket.on("gameStart", function(){
+    var gameStartListener = function(){
+        console.log("game start");
         self.start();
-    });
-
-    socket.on("gameEnd", function(result){
+    }
+    var gameEndListener = function(result){
+        console.log("game end");
         socket.removeListener("sync");
-        socket.removeListener("gameStart");
-        socket.removeListener("gameEnd");
+        socket.removeListener("gameStart", gameStartListener);
+        socket.removeListener("gameEnd", gameEndListener);
         socket.removeListener("wall");
 
         var canvas = document.querySelector("canvas").remove();
 
+        // TODO: remove all things in game
         delete self;
-    });
+    }
+
+    socket.on("gameStart", gameStartListener);
+    socket.on("gameEnd", gameEndListener);
 
     async.series([
         function(callback){
@@ -46,7 +52,7 @@ var Game = function(config){
             async.forEachOf(config.players, function(player, id, callback){
                 player.id = id;
                 player.display = (id === config.role);
-                self.players[id] = new Player(scene, player, callback);
+                self.players[id] = new Player(self.scene, player, callback);
             }, function(err){
                 if (err) console.error("construct player", err);
                 callback();
@@ -58,7 +64,7 @@ var Game = function(config){
                 var start = new THREE.Vector2(data.start.x, data.start.y),
                     end = new THREE.Vector2(data.end.x, data.end.y);
                 if (data.createNewPt){
-                    self.tmpWalls[data.id] = new Wall(scene, {
+                    self.tmpWalls[data.id] = new Wall(self.scene, {
                         color: config.players[data.id].color,
                         start: start,
                         end: end
@@ -73,7 +79,7 @@ var Game = function(config){
         function(callback){
             // props
             socket.on("addProp", function(config){
-                self.props[config.id] = new Prop(scene, config);
+                self.props[config.id] = new Prop(self.scene, config);
             });
 
             socket.on("delProp", function(id){
@@ -87,7 +93,7 @@ var Game = function(config){
         },
         function(callback){
             // display
-            self.display = new Display(scene, {
+            self.display = new Display(self.scene, {
                 role: config.role,
                 player: self.players[config.role] || null
             });
@@ -110,7 +116,7 @@ var Game = function(config){
         },
         function(callback){
             // background
-            self.background = new Background(scene, config.floor);
+            self.background = new Background(self.scene, config.floor);
             self.background.createWorld(self.display);
 
             callback();
