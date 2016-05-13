@@ -12,7 +12,7 @@ globalData.room = {};
 globalData.socket = {};
 var gameObj = {};
 function cleanGame(rid){
-  if(rid == -1 )return ;
+  if(rid == -1 || globalData.room[rid]== undefined)return ;
   for (var i in globalData.room[rid].client_list){//reset Client Station
     var cid = globalData.room[rid].client_list[i];
     globalData.client[cid].inRoom = -1;
