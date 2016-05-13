@@ -28,6 +28,9 @@ var Game = function(config){
     this.props = {};
     this.nProps = 0;
 
+    this.loopGameInterval = null;
+    this.cleanGame = config.cleanGame;
+
     // init players
     this.players = this.clients.filter(function(client){
         return client.role === "player";
@@ -215,7 +218,7 @@ Game.prototype.start = function () {
 
     this.clock.tick();
 
-    var loopGameInterval = setInterval(function(){
+    this.loopGameInterval = setInterval(function(){
         self.clock.tick();
         var dt = self.clock.deltaTime / 1000;
 
@@ -225,13 +228,24 @@ Game.prototype.start = function () {
 
         //check game end
         if (self.checkEnd()){
-            console.log("Game End:", self.room.roomID);
-            self.io.to(self.room.roomID).
-                emit("gameEnd", self.result());
-            clearInterval(loopGameInterval);
+            self.end();
         }
     }, 1000 / DEFAULT_FPS);
 
 };
+
+Game.prototype.end = function(){
+    console.log("Game End:", this.room.roomID);
+    this.io.to(this.room.roomID).
+        emit("gameEnd", this.result());
+    clearInterval(this.loopGameInterval);
+
+    this.clients.forEach(function(client){
+        client.client_socket.removeAllListeners("deg");
+        client.client_socket.removeAllListeners("ready");
+    });
+
+    if (this.cleanGame) this.cleanGame(this.room.roomID);
+}
 
 module.exports = Game;

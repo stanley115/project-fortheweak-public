@@ -30,7 +30,10 @@ var Game = function(config){
     });
 
     socket.on("gameEnd", function(result){
-        alert("Game End!");
+        socket.removeListener("sync");
+        socket.removeListener("gameStart");
+        socket.removeListener("gameEnd");
+        socket.removeListener("wall");
     });
 
     async.series([
