@@ -3,6 +3,8 @@
  */
 "use strict";
 
+var AssetLoader = require("./AssetLoader");
+
 var AbstractAsset = function(scene, config){
     config = config || {};
     this.obj = null;
@@ -38,6 +40,17 @@ AbstractAsset.prototype.getPos2 = function(){
 
 AbstractAsset.prototype.getDir2 = function () {
     return new THREE.Vector2(this.dir.x, this.dir.z);
+};
+
+AbstractAsset.prototype.loadFromUrl = function (url, scene, callback) {
+    var self = this;
+    AssetLoader(url, function(obj){
+        self.obj = obj;
+        self.obj.receiveShadow = true;
+        scene.add(obj);
+
+        if (callback) callback();
+    })
 };
 
 module.exports = AbstractAsset;

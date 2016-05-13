@@ -20,33 +20,7 @@ var Bike = function(scene, config, callback){
 
     var bikeURL = configData.bikes[config.bike || DEFAULT_BIKE];
 
-    var loader = new THREE.ColladaLoader();
-	loader.options.convertUpAxis = true;
-    loader.geometries = new THREE.Geometry();
-    // loader.geometries.translate(-100, 0, -1);
-    loader.options.centerGeometry = true;
-
-    loader.load(
-		// resource URL
-		bikeURL,
-		// Function when resource is loaded
-		function ( collada ) {
-			console.log("load");
-            self.obj = collada.scene;
-            scene.add(self.obj);
-
-            self.obj.receiveShadow = true;
-
-            if (callback){
-                callback();
-            }
-            // self.bike.rotation.y = Math.PI / 2;
-		},
-		// Function called when download progresses
-		function ( xhr ) {
-			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-		}
-	);
+    this.loadFromUrl(bikeURL, scene, callback);
 }
 
 Bike.prototype = Object.create(AbstractAsset.prototype);

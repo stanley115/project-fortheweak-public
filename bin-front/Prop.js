@@ -4,6 +4,7 @@
 var ROTATE_SPEED = Math.PI / 2;
 
 var AbstractAsset = require("./AbstractAsset"),
+    AssetLoader = require("./AssetLoader"),
     configData = require("./config");
 
 var Prop = function(scene, config, callback){
@@ -16,35 +17,10 @@ var Prop = function(scene, config, callback){
 
     var propURL = configData.props[config.prop];
 
-    var loader = new THREE.ColladaLoader();
-
-    loader.options.convertUpAxis = true;
-    loader.geometries = new THREE.Geometry();
-    loader.options.centerGeometry = true;
-
-    loader.load(
-		// resource URL
-		propURL,
-		// Function when resource is loaded
-		function ( collada ) {
-			// console.log("load");
-            self.obj = collada.scene;
-            scene.add(self.obj);
-
-            self.setPos(config.pos.x, config.pos.y, 0);
-            // console.log(self.pos);
-            // self.obj.receiveShadow = true;
-
-            if (callback){
-                callback();
-            }
-            // self.bike.rotation.y = Math.PI / 2;
-		},
-		// Function called when download progresses
-		function ( xhr ) {
-			// console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-		}
-	);
+    this.loadFromUrl(propURL, scene, function(){
+        self.setPos(config.pos.x, config.pos.y, 0);
+        if (callback) callback();
+    });
 }
 Prop.prototype = Object.create(AbstractAsset.prototype);
 
