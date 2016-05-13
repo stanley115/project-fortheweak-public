@@ -1,7 +1,6 @@
 /**
  * Game module
  */
-"use strict";
 var async = require("async"),
     Background = require('./Background'),
     Player = require('./Player'),
@@ -34,6 +33,10 @@ var Game = function(config){
         socket.removeListener("gameStart");
         socket.removeListener("gameEnd");
         socket.removeListener("wall");
+
+        var canvas = document.querySelector("canvas").remove();
+
+        delete self;
     });
 
     async.series([

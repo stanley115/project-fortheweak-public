@@ -11,6 +11,7 @@ var Vector2 = require('./Vector2');
 
 var Player = function(config, id, total){
     this.id = id;
+    this.io = config.io;
 
     var posDeg = Math.PI * 2 / total * id;
     this.pos = new Vector2(Math.sin(posDeg) * RADIUS, Math.cos(posDeg) * RADIUS);
@@ -68,7 +69,7 @@ Player.prototype.update = function(dt, callback){
         }
 
         len = this.wall.length;
-        this.socket.emit("wall", { // TODO: all room
+        this.io.emit("wall", { // TODO: all room
             createNewPt: createNewPt,
             id: self.id,
             start: self.wall[len - 2].toObj(),

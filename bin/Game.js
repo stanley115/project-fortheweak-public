@@ -36,6 +36,7 @@ var Game = function(config, cleanGame){
         return client.role === "player";
     }).map(function(ele, idx, arr){
         return new Player({
+            io: self.io.to(self.room.roomID),
             roomID: self.room.roomID,
             socket: ele.client_socket
         }, idx, arr.length);
@@ -88,7 +89,6 @@ Game.prototype.getReady = function () {
 
     viewers.forEach(function(viewer){
         viewer.client_socket.emit("getReady", gameObj);
-        callabck();
     });
     players.forEach(function(player, idx){
         gameObj.role = idx;
