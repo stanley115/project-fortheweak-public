@@ -6,6 +6,7 @@ var client_prefix = "client-";
 var client_id_pool = 0 ;
 var room_id_pool = 0;
 var globalData = {};
+var io;
 globalData.client = {};
 globalData.room = {};
 globalData.socket = {};
@@ -151,7 +152,7 @@ function roomList(serverSocket,cid){
 module.exports = function(app){
   //use the same object to store room info & client info;
   console.log("Init socketio");
-  var io = require('socket.io').listen(app);
+  io = require('socket.io').listen(app);
   io.on('connection', function(socket){
     var client_id = ++client_id_pool; // **** closure for each client to capture client_id;
     globalData.socket[client_id] = socket;
