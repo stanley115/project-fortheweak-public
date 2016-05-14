@@ -99,6 +99,15 @@ var socket;
     updateGameRoom(data);
     showGameRoom();
     loginAndDelayMakeCall(data['voice'].usr,data['voice'].pwd);
+    if(data.setting.floor != undefined){
+      $("#selectFloor").val(data.setting.floor);
+    }
+    if(data.setting.room_bgm != undefined){
+      $("#selectBgm").val(data.setting.room_bgm);
+    }
+    if(data.setting.wall != undefined){
+      $("#selectWall").val(data.setting.wall);
+    }
     $("#selectFloor").change();
     $("#selectBgm").change();
     $("#selectRole").change();
