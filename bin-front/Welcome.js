@@ -107,7 +107,8 @@ var Welcome = function(config){
           //socket.emit("clientNew",playerName);
           var ele = document.getElementById('welcome-div');
           ele.classList.add("remove");
-          document.getElementById('lobby-div').style.display = 'block';
+          showLobby();
+          //document.getElementById('lobby-div').style.display = 'block';
         },
         3800);
     //$(document.getElementById('welcome-div')).fadeOut("slow");
