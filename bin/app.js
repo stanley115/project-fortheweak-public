@@ -106,7 +106,7 @@ function roomJoin(serverSocket,socket,cid,rid){
   var client_self = client_prefix+cid;
   console.log(globalData.room[rid]);
   globalData.client[cid].inRoom = rid;
-  //Need notify any one in the room 
+  //Need notify any one in the room
   serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   //As this step may also remove room List, notify the world
   serverSocket.emit('roomList',globalData.room);
@@ -132,8 +132,8 @@ function roomLeave(serverSocket,socket,cid){
     // enter room func
     serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
     var client_self = client_prefix+cid;
-    //In fact need notify all client so that info updated on lobby too 
-    //Update on left client lobby too so that it won't click on empty room 
+    //In fact need notify all client so that info updated on lobby too
+    //Update on left client lobby too so that it won't click on empty room
     /*
        serverSocket.to(client_self).emit('roomList',globalData.room);
        serverSocket.to(client_self).emit('roomLeave');
@@ -206,6 +206,7 @@ module.exports = function(app){
     });
     socket.on('gameStart',function(){
       console.log('gameStart');
+
       gameStart(io,socket,client_id);
     });
     /* Server not receive event
@@ -213,7 +214,7 @@ module.exports = function(app){
        console.log('gameEnd');
     //refresh room List
     var rid = globalData.client[cid].inRoom;
-    globalData.client[cid].inRoom = -1; // reset client state to lobby; 
+    globalData.client[cid].inRoom = -1; // reset client state to lobby;
     if(rid!=-1)delete globalData.room[rid];
     io.emit('roomList',globalData.room);
     io.emit('updateClientList',globalData.client);

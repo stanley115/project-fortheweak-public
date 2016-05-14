@@ -109,10 +109,15 @@ var socket;
     console.log(clientList);
   });
   socket.on("gameStart",function(data){
+    $("#loading-div").css("display","none");
+    $("#game-div").css("display","block");
+  });
+  socket.on("gameLoading", function(data){
+    $("#loading-div").css("display","block");
     $("#lobby-div").css("display","none");
     $("#gameroom-div").css("display","none");
     $("#welcome-div").css("display","none");
-    $("#game-div").css("display","block");
+
   });
   socket.on("gameEnd",function(data){
     $("#lobby-div").css("display","block");
@@ -157,4 +162,3 @@ var socket;
   $('#selectCar').on('change', function() {
     socket.emit("updateGameSetting",{key:"car",val:this.value});
   });
-
