@@ -7,8 +7,9 @@ var Clock = require("clock.js"),
     Vector2 = require("./Vector2");
 
 var DEFAULT_FPS = 30,
-    PROP_PROBI = 1, // prop/sec
-    SIZE = 1000;
+    PROP_PROBI = .2, // prop/sec
+    SIZE = 1000,
+    WAIT_TIME = 3000;
 
 var Game = function(config, cleanGame){
     var self = this;
@@ -36,7 +37,7 @@ var Game = function(config, cleanGame){
         return client.role === "player";
     }).map(function(ele, idx, arr){
         return new Player({
-            io: self.io.to(self.room.roomID),
+            io: self.io,
             roomID: self.room.roomID,
             socket: ele.client_socket
         }, idx, arr.length);
@@ -216,21 +217,23 @@ Game.prototype.start = function () {
 
     this.io.to(this.room.roomID).emit("gameStart");
 
-    this.clock.tick();
-
-    this.loopGameInterval = setInterval(function(){
+    setTimeout(function(){
         self.clock.tick();
-        var dt = self.clock.deltaTime / 1000;
 
-        self.update(dt);
+        self.loopGameInterval = setInterval(function(){
+            self.clock.tick();
+            var dt = self.clock.deltaTime / 1000;
 
-        self.sync();
+            self.update(dt);
 
-        //check game end
-        if (self.checkEnd()){
-            self.end();
-        }
-    }, 1000 / DEFAULT_FPS);
+            self.sync();
+
+            //check game end
+            if (self.checkEnd()){
+                self.end();
+            }
+        }, 1000 / DEFAULT_FPS);
+    }, WAIT_TIME);
 
 };
 
