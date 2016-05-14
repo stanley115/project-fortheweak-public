@@ -103,6 +103,7 @@ var socket;
     $("#selectBgm").change();
     $("#selectRole").change();
     $("#selectCar").change();
+    $("#selectWall").change();
   });
   socket.on("roomLeave",function(data){
     showLobby();
@@ -164,4 +165,7 @@ var socket;
   });
   $('#selectCar').on('change', function() {
     socket.emit("updateGameSetting",{key:"car",val:this.value});
+  });
+  $('#selectWall').on('change', function() {
+    socket.emit("updateGameSetting",{key:"wall",val:this.value});
   });

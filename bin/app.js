@@ -81,6 +81,9 @@ function updateGameSetting(serverSocket,socket,cid,settingObj){
     case "floor":
       globalData.room[rid].setting.floor = settingVal;
       break;
+    case "wall":
+      globalData.room[rid].setting.wall = settingVal;
+      break;
     case "role":
       globalData.client[cid].setting.role = settingVal;
       break;
