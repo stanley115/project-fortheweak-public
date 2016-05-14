@@ -220,19 +220,21 @@ Game.prototype.start = function () {
     setTimeout(function(){
         self.clock.tick();
 
-        self.loopGameInterval = setInterval(function(){
-            self.clock.tick();
-            var dt = self.clock.deltaTime / 1000;
+        if (!self.loopGameInterval){
+            self.loopGameInterval = setInterval(function(){
+                self.clock.tick();
+                var dt = self.clock.deltaTime / 1000;
 
-            self.update(dt);
+                self.update(dt);
 
-            self.sync();
+                self.sync();
 
-            //check game end
-            if (self.checkEnd()){
-                self.end();
-            }
-        }, 1000 / DEFAULT_FPS);
+                //check game end
+                if (self.checkEnd()){
+                    self.end();
+                }
+            }, 1000 / DEFAULT_FPS);
+        }
     }, WAIT_TIME);
 
 };
