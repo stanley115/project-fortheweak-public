@@ -26,6 +26,9 @@ Prop.prototype.toObj = function () {
 };
 
 Prop.prototype.applyEffect = function (player) {
+    if (!player.propsHit[this.prop]) player.propsHit[this.prop] = 0;
+    player.propsHit[this.prop]++;
+
     if (this.prop == "speed"){
         player.v *= 2;
         setTimeout(function(){

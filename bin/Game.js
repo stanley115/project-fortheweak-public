@@ -225,7 +225,7 @@ Game.prototype.checkEnd = function () {
 
 Game.prototype.result = function () {
     return this.players.map(function(player){
-        return player.dead;
+        return player.result();
     });
 };
 

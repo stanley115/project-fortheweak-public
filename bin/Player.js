@@ -23,6 +23,9 @@ var Player = function(config, id, total){
 
     this.shield = 0;
     this.dead = false;
+    this.liveTime = 0;
+    this.propsHit = {};
+
     this.wall = [this.coner(-1, 0)];
 
     this.socket = config.socket;
@@ -49,6 +52,9 @@ var damn = 0;
 Player.prototype.update = function(dt, callback){
     if (!this.dead){
         var self = this;
+        // update live time
+        this.liveTime += dt;
+
         // update dir
         var acc = this.dir.rot(Math.PI / 2).multiply(this.turn);
         this.dir = this.dir.multiply(this.v).add(acc.multiply(dt)).normalize();
@@ -123,5 +129,13 @@ Player.prototype.hitWall = function(wall){
 
     return hit;
 }
+
+Player.prototype.result = function () {
+    return {
+        dead: this.dead,
+        props: this.propsHit,
+        time: this.liveTime
+    };
+};
 
 module.exports = Player;
