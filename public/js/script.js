@@ -68,18 +68,25 @@ var socket;
     }
   }
   function updateGameRoom(data){
+    $("#troll-divGameRoomHead").empty();
     $("#divGameRoomBody").empty();
-    var roomBody = $("<li/>").addClass("text-block");
-    roomBody.append($("<h4/>").html(krEncodeEntities("Room Name:"+data.name)));
-    roomBody.append($("<h4/>").html(krEncodeEntities("Room ID:"+data.room_id)));
-    var divClientList = $("<h4/>");
+    var roomBody = $("<li/>").addClass("troll-troll-text-block");
+    var roomHead = $("<div/>");
+    roomHead.append($("<h4/>").html(krEncodeEntities("Room Name:"+data.name)));
+    roomHead.append($("<h4/>").html(krEncodeEntities("Room ID:"+data.room_id)));
+    var divClientList = $("<h4/>").text("Player List:");
+    var id = 1;
     for (var i in data.client_list){
       var pid = data.client_list[i];
-      var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
+//      var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
+      var tmpli = $("<div/>").html(krEncodeEntities((id++)+". "+clientList[pid].name));
       divClientList.append(tmpli);
     }
     roomBody.append(divClientList);
+
     $("#divGameRoomBody").append(roomBody);
+    $("#troll-divGameRoomHead").append(roomHead);
+
   }
   $("#btnCreateRoom").on('click',function(){
   });
@@ -190,4 +197,3 @@ var socket;
         break;
     }
   });
-
