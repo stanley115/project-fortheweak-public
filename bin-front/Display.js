@@ -4,6 +4,7 @@
 "use strict";
 
 function Display(scene, config){
+    var self = this;
     console.log('construct Display Obj');
     config = config || {}
     var element, container, renderer;
@@ -82,17 +83,50 @@ function Display(scene, config){
     	} else if (container.webkitRequestFullscreen) {
     		container.webkitRequestFullscreen();
     	}
+
+        function detectmob() {
+            if (
+                navigator.userAgent.match(/Android/i) ||
+                navigator.userAgent.match(/webOS/i) ||
+                navigator.userAgent.match(/iPhone/i) ||
+                navigator.userAgent.match(/iPad/i) ||
+                navigator.userAgent.match(/iPod/i) ||
+                navigator.userAgent.match(/BlackBerry/i) ||
+                navigator.userAgent.match(/Windows Phone/i)
+            ){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        if (detectmob()){
+            var lockFunction =  window.screen.orientation.lock;
+            if (lockFunction.call(window.screen.orientation, 'landscape')) {
+                console.log('Orientation locked')
+            } else {
+                console.error('There was a problem in locking the orientation')
+            }
+        }
     }
 
-    var firstCall = true;
+    this.resetOrientation = true;
+
+    // reset orientation when first sync
+    var firstSyncHandler = function(){
+        self.resetOrientation = true;
+        socket.removeListener("sync", firstSyncHandler);
+    }
+    socket.on("sync", firstSyncHandler);
+
     function update(dt){
         resize();
 
         if (updateCamera) updateCamera();
         camera.updateProjectionMatrix();
 
-    	controls.update(dt, firstCall);
-        firstCall = false;
+    	controls.update(dt, self.resetOrientation);
+        self.resetOrientation = false;
     }
 
     function render(dt){
