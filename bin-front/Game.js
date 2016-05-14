@@ -35,7 +35,7 @@ var Game = function(config){
     if (this.role !== "viewer"){
         var dead = false;
         socket.on("sync", function(data){
-            if (!dead && data.players[this.role].dead){
+            if (!dead && data.players[self.role].dead){
                 if (navigator.vibrate) {
                     navigator.vibrate(1000);
                 }
