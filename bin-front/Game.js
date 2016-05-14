@@ -53,7 +53,7 @@ var Game = function(config){
                     end = new THREE.Vector2(data.end.x, data.end.y);
                 if (data.createNewPt){
                     self.tmpWalls[data.id] = new Wall(self.scene, {
-                        color: config.players[data.id].color,
+                        color: config.players[data.id].wall,
                         start: start,
                         end: end
                     });

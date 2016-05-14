@@ -82,7 +82,8 @@ Game.prototype.getReady = function () {
             return {
                 id: idx,
                 bike: player.car,
-                name: player.name
+                name: player.name,
+                wall: player.wall
             }
         }),
         role: "viewer"

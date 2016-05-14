@@ -1,7 +1,8 @@
 var DEFAULT_HEIGHT = 7,
-    DEFAULT_COLOR = 0xFFFFFF;
+    DEFAULT_COLOR = "white";
 
-var AbstractAsset = require('./AbstractAsset');
+var AbstractAsset = require("./AbstractAsset"),
+    configData = require("./config");
 
 var Wall = function(scene, config){
     AbstractAsset.call(this, scene, config);
@@ -13,7 +14,7 @@ var Wall = function(scene, config){
     );
 
     var material = new THREE.MeshBasicMaterial( {
-        color: config.color || DEFAULT_COLOR,
+        color: configData.wallColor[config.color || DEFAULT_COLOR],
         side: THREE.DoubleSide,
         opacity: 0.5,
         transparent: true

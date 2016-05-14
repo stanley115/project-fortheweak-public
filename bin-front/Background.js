@@ -11,7 +11,7 @@ var scene = null;
 var SIZE = 1000;
 
 var Background = function(tmpScene, config){
-     this.config = config || {};
+     this.config = config;
      scene = tmpScene;
 }
 
@@ -20,7 +20,7 @@ Background.prototype.createWorld = function(display){
 	scene.add(light);
 
 	var texture = THREE.ImageUtils.loadTexture(
-			configData.floor[this.config.ground || DEFAULT_GROUND]
+			configData.floor[this.config || DEFAULT_GROUND]
 		);
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
