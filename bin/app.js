@@ -25,6 +25,13 @@ function gameStart(serverSocket,socket,cid){
   var config = {};
   var rid = globalData.client[cid].inRoom;
   if(rid==-1)return;
+  if(globalData.room[rid].started == true){
+    console.log("Skip gameStart request as already started");
+    return;
+  }
+  // As init game take time now broadcast a gameLoading event for client to
+  // block multiple start ,also need add server logic
+  serverSocket.to(rid).emit("gameLoading");
   config['serverSocket'] = serverSocket;
   config.room = {};
   config.room.room_id = rid;
@@ -52,6 +59,7 @@ function gameStart(serverSocket,socket,cid){
   console.log(config);
   //call init game func, which iosocket emit message to each client
   //call MW's open game func (config);
+  globalData.room[rid].started = true;
   var game = new Game(config,cleanGame);
 }
 function updateGameSetting(serverSocket,socket,cid,settingObj){
@@ -91,6 +99,7 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
   globalData.room[room_id].room_id = room_id;
   globalData.room[room_id].client_list = [];
   globalData.room[room_id].voice = createRoomObj['voice'];
+  globalData.room[room_id].started = false;
   globalData.room[room_id].setting = {};
   roomJoin(serverSocket,socket,cid,room_id);
   serverSocket.emit('roomList',globalData.room);
