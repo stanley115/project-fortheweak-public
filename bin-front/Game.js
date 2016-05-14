@@ -32,6 +32,17 @@ var Game = function(config){
     this.props = {};
 
     this.role = config.role || "viewer";
+    if (this.role !== "viewer"){
+        var dead = false;
+        socket.on("sync", function(data){
+            if (!dead && data.players[this.role].dead){
+                if (navigator.vibrate) {
+                    navigator.vibrate(1000);
+                }
+                dead = true;
+            }
+        })
+    }
 
     this.gameStartListener = this.start.bind(this);
     this.gameEndListener = this.end.bind(this);
@@ -168,6 +179,10 @@ Game.prototype.start = function(){
 
 Game.prototype.end = function (result) {
     console.log("game end");
+
+    if (navigator.vibrate) {
+        navigator.vibrate(1000);
+    }
 
     // remove listeners
     socket.removeAllListeners("sync");

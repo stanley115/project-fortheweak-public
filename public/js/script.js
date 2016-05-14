@@ -1,3 +1,5 @@
+// enable vibration support
+navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var socket;
   $('#username').keypress(function(e){
     if(e.keyCode==13)
