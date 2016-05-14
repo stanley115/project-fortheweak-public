@@ -88,8 +88,9 @@ THREE.DeviceOrientationControls = function(object) {
   var q1 = new THREE.Quaternion(- Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
 
   this.update = (function(delta) {
+      var offset = 0;
 
-    return function(delta) {
+    return function(delta, reset) {
 
       if (this.freeze) return;
       if (delta === undefined) delta = 0;
@@ -101,8 +102,13 @@ THREE.DeviceOrientationControls = function(object) {
         //this.autoAlign = true;
       //}
 
-      this.alpha = deviceOrientation.gamma ?
-        THREE.Math.degToRad(deviceOrientation.alpha) : 0; // Z
+      if (reset){
+          offset = deviceOrientation.alpha ?
+            THREE.Math.degToRad(deviceOrientation.alpha) : 0;
+      }
+
+      this.alpha = deviceOrientation.alpha ?
+        THREE.Math.degToRad(deviceOrientation.alpha) - offset : 0; // Z
       this.beta = deviceOrientation.beta ?
         THREE.Math.degToRad(deviceOrientation.beta) : 0; // X'
       this.gamma = deviceOrientation.gamma ?

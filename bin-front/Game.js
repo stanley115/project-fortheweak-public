@@ -162,13 +162,18 @@ Game.prototype.end = function (result) {
 
     // remove objects
     document.querySelector("canvas").remove();
-    this.display.remove();
     while (this.scene.children.length){
         this.scene.remove(this.scene.children[this.scene.children.length - 1]);
     }
-    this.scene = null;
-    this.controls = null;
-    this.background = null;
+    delete this.scene;
+    delete this.controls;
+    delete this.background;
+    delete this.display.remove();
+    delete this.display;
+    this.players.forEach(function(player){
+        delete player;
+    });
+
     cancelAnimationFrame(this.animateID);
 
     delete this;

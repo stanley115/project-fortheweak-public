@@ -84,13 +84,15 @@ function Display(scene, config){
     	}
     }
 
+    var firstCall = true;
     function update(dt){
         resize();
 
         if (updateCamera) updateCamera();
         camera.updateProjectionMatrix();
 
-    	controls.update(dt);
+    	controls.update(dt, firstCall);
+        firstCall = false;
     }
 
     function render(dt){
@@ -111,9 +113,9 @@ function Display(scene, config){
 }
 
 Display.prototype.remove = function () {
-    this.camera = null;
-    this.renderer = null;
-    this.controls = null;
+    delete this.camera;
+    delete this.renderer;
+    delete this.controls;
 };
 
 module.exports = Display;
