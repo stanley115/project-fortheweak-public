@@ -84,8 +84,9 @@ function updateGameSetting(serverSocket,socket,cid,settingObj){
       serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "wall":
-      globalData.room[rid].setting.wall = settingVal;
-      serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
+      //*** wall changed to client setting
+      globalData.client[cid].setting.wall = settingVal;
+      //serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "role":
       globalData.client[cid].setting.role = settingVal;

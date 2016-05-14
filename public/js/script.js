@@ -105,9 +105,7 @@ var socket;
     if(data.setting.room_bgm != undefined){
       $("#selectBgm").val(data.setting.room_bgm);
     }
-    if(data.setting.wall != undefined){
-      $("#selectWall").val(data.setting.wall);
-    }
+    // remove wall as it becomes client setting
     $("#selectFloor").change();
     $("#selectBgm").change();
     $("#selectRole").change();
@@ -187,9 +185,6 @@ var socket;
         break;
       case "floor":
         $("#selectFloor").val(settingVal);
-        break;
-      case "wall":
-        $("#selectWall").val(settingVal);
         break;
       default:
         break;
