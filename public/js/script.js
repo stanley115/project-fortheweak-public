@@ -32,10 +32,12 @@ var socket;
   var clientList = {};
   function showGameRoom(){
     $("#lobby-div").css("display","none");
+    $("#gameroom-div").css("overflow","scroll");
     $("#gameroom-div").css("display","block");
   }
   function showLobby(){
     $("#lobby-div").css("display","block");
+    $("#lobby-div").css("overflow","scroll");
     $("#gameroom-div").css("display","none");
   }
   function roomJoin(rid){
