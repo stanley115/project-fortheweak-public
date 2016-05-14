@@ -60,6 +60,7 @@ function gameStart(serverSocket,socket,cid){
   //call init game func, which iosocket emit message to each client
   //call MW's open game func (config);
   globalData.room[rid].started = true;
+  io.emit('roomList',globalData.room); // Dont let other get in
   var game = new Game(config,cleanGame);
 }
 function updateGameSetting(serverSocket,socket,cid,settingObj){

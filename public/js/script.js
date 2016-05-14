@@ -49,6 +49,7 @@ var socket;
     console.log(data);
     $("#divLobbyRoomList").empty();
     for (var i in data){
+      if(data[i].started == true)continue; // client side hiding started game
       var roomId = i+"";
       var eachRoom = $("<li/>").addClass("text-block");
       eachRoom.append($("<h4/>").html("Room id:"+roomId));
