@@ -153,12 +153,12 @@ Game.prototype.end = function (result) {
     console.log("game end");
 
     // remove listeners
-    socket.removeListener("sync");
+    socket.removeAllListeners("sync");
     socket.removeListener("gameStart", this.gameStartListener);
     socket.removeListener("gameEnd", this.gameEndListener);
-    socket.removeListener("wall");
-    socket.removeListener("addProp");
-    socket.removeListener("delProp");
+    socket.removeAllListeners("wall");
+    socket.removeAllListeners("addProp");
+    socket.removeAllListeners("delProp");
 
     // remove objects
     document.querySelector("canvas").remove();

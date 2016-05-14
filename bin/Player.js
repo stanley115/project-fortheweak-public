@@ -2,7 +2,7 @@
 var INIT_V = 20,
     LENGTH = 2,
     WIDTH = 1,
-    RADIUS =  100;
+    RADIUS =  200;
 
 var MAX_ACC = 20,
     MAX_ALLOW_DEG = Math.PI / 15;
@@ -69,7 +69,7 @@ Player.prototype.update = function(dt, callback){
         }
 
         len = this.wall.length;
-        this.io.emit("wall", { // TODO: all room
+        this.io.to(this.roomID).emit("wall", { // TODO: all room
             createNewPt: createNewPt,
             id: self.id,
             start: self.wall[len - 2].toObj(),
