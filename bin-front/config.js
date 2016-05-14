@@ -11,7 +11,8 @@ module.exports = {
     bikes: {
         "tron": "assets/tron.dae",
         "nyan": "assets/nyan.dae",
-        "black": "assets/black.dae"
+        "black": "assets/black.dae",
+        "shark": "assets/shark.dae"
     },
     props: {
         "speed": "assets/arrow.dae",

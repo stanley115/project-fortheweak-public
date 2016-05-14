@@ -9,6 +9,14 @@ var async = require("async"),
     Prop = require('./Prop');
 var clock = new THREE.Clock();
 
+var SIZE = 1000,
+    CONERS = [
+        new THREE.Vector2(-SIZE / 2., SIZE / 2.),
+        new THREE.Vector2(SIZE / 2., SIZE / 2.),
+        new THREE.Vector2(SIZE / 2., -SIZE / 2.),
+        new THREE.Vector2(-SIZE / 2., -SIZE / 2.)
+    ];
+
 var Game = function(config){
     config = config || {};
 
@@ -61,6 +69,15 @@ var Game = function(config){
                     self.tmpWalls[data.id].set(start, end);
                 }
             });
+
+            // init wall
+            for (var i = 0; i < 4; i++){
+                new Wall(self.scene, {
+                    color: config.role == "viewer"? null: config.players[config.role].wall,
+                    start: CONERS[i],
+                    end: CONERS[(i + 1) % 4]
+                });
+            }
 
             callback();
         },

@@ -189,6 +189,23 @@ Game.prototype.update = function(dt){
                 if (err) console.log("Detect Props", err);
                 callback();
             });
+        },
+        // collision to border
+        function(callback){
+            async.forEach(self.players, function(player, callback){
+                console.log(player.pos.x + " " + player.pos.y);
+                player.dead = player.dead || player.toBox().reduce(function(prev, point){
+                    return prev ||
+                        point.x > SIZE / 2. ||
+                        point.x < - SIZE / 2. ||
+                        point.y > SIZE / 2. ||
+                        point.y < - SIZE / 2.;
+                }, false);
+                callback();
+            }, function(err){
+                if (err) console.log("Detect Border");
+                callback();
+            });
         }
     ]);
 
