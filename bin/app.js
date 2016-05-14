@@ -74,15 +74,18 @@ function updateGameSetting(serverSocket,socket,cid,settingObj){
   switch(settingKey){
     case "bgm":
       globalData.room[rid].setting.room_bgm = settingVal;
+      serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "car":
       globalData.client[cid].setting.car = settingVal;
       break;
     case "floor":
       globalData.room[rid].setting.floor = settingVal;
+      serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "wall":
       globalData.room[rid].setting.wall = settingVal;
+      serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "role":
       globalData.client[cid].setting.role = settingVal;
@@ -235,7 +238,6 @@ module.exports = function(app){
     */
 
     socket.on('updateGameSetting',function(data){
-      console.log('roomLeave');
       updateGameSetting(io,socket,client_id,data);
     });
   });

@@ -169,3 +169,21 @@ var socket;
   $('#selectWall').on('change', function() {
     socket.emit("updateGameSetting",{key:"wall",val:this.value});
   });
+  socket.on("syncRoomSetting",function(settingObj){
+    var settingKey = settingObj.key;
+    var settingVal = settingObj.val;
+    switch(settingKey){
+      case "bgm":
+        $("#selectBgm").val(settingVal);
+        break;
+      case "floor":
+        $("#selectFloor").val(settingVal);
+        break;
+      case "wall":
+        $("#selectWall").val(settingVal);
+        break;
+      default:
+        break;
+    }
+  });
+
