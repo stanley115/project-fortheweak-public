@@ -185,10 +185,10 @@ module.exports = function(app){
       globalData.client[client_id].setting = {};
       globalData.client[client_id].inRoom = -1;
       console.log(globalData.client[client_id]);
+      io.to(client_channel).emit('updateClientId',client_id);
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
       io.emit('roomList',globalData.room);
       io.emit('updateClientList',globalData.client);
-      io.emit('updateClientId',client_id);
     });
     socket.on('disconnect',function(){
       console.log('disconnect:'+client_id);

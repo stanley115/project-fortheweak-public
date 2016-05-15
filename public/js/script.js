@@ -199,7 +199,6 @@ var cid;
 
   });
   socket.on("gameEnd",function(data){
-    console.log("FUCK");
     console.log(data[0].dead);
     console.log(data[0].props);
     console.log(data[0].time);
