@@ -132,7 +132,6 @@ function roomJoin(serverSocket,socket,cid,rid){
   console.log(globalData.room[rid]);
   globalData.client[cid].inRoom = rid;
   //Need notify any one in the room
-  setDefaultSettingForPlayer(cid);
   //As this step may also remove room List, notify the world
   serverSocket.emit('roomList',globalData.room);
   serverSocket.emit('updateClientList',globalData.client);
@@ -193,6 +192,7 @@ module.exports = function(app){
       globalData.client[client_id].name = name;
       globalData.client[client_id].setting = {};
       globalData.client[client_id].inRoom = -1;
+      setDefaultSettingForPlayer(client_id);
       console.log(globalData.client[client_id]);
       io.to(client_channel).emit('updateClientId',client_id);
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
