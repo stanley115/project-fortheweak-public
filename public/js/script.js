@@ -1,3 +1,61 @@
+/**
+ * stacktable.js
+ * Author & copyright (c) 2012: John Polacek
+ * Dual MIT & GPL license
+ *
+ * Page: http://johnpolacek.github.com/stacktable.js
+ * Repo: https://github.com/johnpolacek/stacktable.js/
+ *
+ * jQuery plugin for stacking tables on small screens
+ *
+ */
+;(function($) {
+  $.fn.stacktable = function(options) {
+    var $tables = this,
+        defaults = {id:'stacktable',hideOriginal:false},
+        settings = $.extend({}, defaults, options);
+
+    return $tables.each(function() {
+      var $stacktable = $('<table class="'+settings.id+'"><tbody></tbody></table>');
+      if (typeof settings.myClass !== undefined) $stacktable.addClass(settings.myClass);
+      var markup = '';
+      $table = $(this);
+      $topRow = $table.find('tr').eq(0);
+      $table.find('tr').each(function(index,value) {
+        markup += '<tr>';
+        // for the first row, top left table cell is the head of the table
+        if (index===0) {
+          markup += '<tr><th class="st-head-row st-head-row-main" colspan="2">'+$(this).find('th,td').eq(0).html()+'</th></tr>';
+        }
+        // for the other rows, put the left table cell as the head for that row
+        // then iterate through the key/values
+        else {
+          $(this).find('td').each(function(index,value) {
+            if (index===0) {
+              markup += '<tr><th class="st-head-row" colspan="2">'+$(this).html()+'</th></tr>';
+            } else {
+              if ($(this).html() !== ''){
+                markup += '<tr>';
+                if ($topRow.find('td,th').eq(index).html()){
+                  markup += '<td class="st-key">'+$topRow.find('td,th').eq(index).html()+'</td>';
+                } else {
+                  markup += '<td class="st-key"></td>';
+                }
+                markup += '<td class="st-val">'+$(this).html()+'</td>';
+                markup += '</tr>';
+              }
+            }
+          });
+        }
+      });
+      $stacktable.append($(markup));
+      $table.before($stacktable);
+      if (settings.hideOriginal) $table.hide();
+    });
+  };
+
+}(jQuery));
+
 // enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var socket;
@@ -144,9 +202,8 @@ var socket;
     console.log(data[0].dead);
     console.log(data[0].props);
     console.log(data[0].time);
-    var result = $("<table/>").attr("id","troll-result-table");
-    //record.append($("<td/>").html("Name"));
     var head = $("<tr/>");
+    head.append($("<td/>").html("Name"));
     head.append($("<td/>").html("Time"));
 
     for (var j in data[0].props){
@@ -157,7 +214,7 @@ var socket;
     $("#troll-result").append(head);
     for (i = 0; i < data.length; i++){
       var record = $("<tr/>");
-      //record.append($("<td/>").html(krEncodeEntities(data[i].name)));//M9W: Name你當住有先啦
+      record.append($("<td/>").html(krEncodeEntities("No name no life~~")));//M9W: Name你當住有先啦
       record.append($("<td/>").html(krEncodeEntities(data[i].time)));
       for (var j in data[i].props){
         if(!data[i].props.hasOwnProperty(j)) continue;
@@ -165,6 +222,8 @@ var socket;
       }
       record.append($("<td/>").html(krEncodeEntities(data[i].dead)));
       $("#troll-result").append(record);
+      $('#troll-result').stacktable({myClass:'small-only'});
+
     }
     //$('#troll-result').stacktable({myClass:'stacktable small-only'});
     $("#result-div").css("display","block");

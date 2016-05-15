@@ -413,3 +413,10 @@ ul.menu li.menu_break {
   box-shadow:0 0 7px rgba(36,198,224,1.0);
 }
 */
+.large-only { display: table; }
+.small-only { display: none; }
+
+@media (max-width: 800px) {
+  .large-only { display: none; }
+  .small-only { display: table; }
+}
