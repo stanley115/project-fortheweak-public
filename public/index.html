@@ -100,11 +100,31 @@
           <div id="troll-divGameRoomHead"></div>
           <div class="container-fluid">
             <div class="row">
-              <div class=" col-sm-6">
-                <div id="divGameRoomBody">
-                </div>
+              <div class=" col-sm-8">
+                <div id="divGameRoomBodyPre"></div>
+                <span id="divPlayerName"></span>
+                <select id="selectRole">
+                  <option selected value="player">player</option>
+                  <option value="viewer">viewer</option>
+                </select>
+                <select id="selectCar">
+                  <option selected value="tron">Tron</option>
+                  <option value="black">Black Tron</option>
+                  <option value="nyan">Nyan Cat</option>
+                </select>
+                <select id="selectWall">
+                  <option selected value="white">White</option>
+                  <option value="red">Red</option>
+                  <option value="green">Green</option>
+                  <option value="blue">Blue</option>
+                  <option value="yellow">Yellow</option>
+                  <option value="orange">Orange</option>
+                  <option value="purple">Purple</option>
+                  <option value="brown">Brown</option>
+                </select>
+                <div id="divGameRoomBodyPost"></div>
               </div>
-              <div class="col-sm-6 col-sm-pull-right">
+              <div class="col-sm-4 col-sm-pull-right">
                 <span class="troll-btn-block">Floor:
                   <select id="selectFloor">
                     <option selected value="tron">Tron</option>
@@ -115,36 +135,9 @@
                     <option value="stone">Stone</option>
                   </select>
                 </span>
-                <span class="troll-btn-block">Role:
-                  <select id="selectRole">
-
-                    <option selected value="player">player</option>
-                    <option value="viewer">viewer</option>
-                  </select>
-                </span>
-                <span class="troll-btn-block">Car:
-                  <select id="selectCar">
-                    <option selected value="tron">Tron</option>
-                    <option value="black">Black Tron</option>
-                    <option value="nyan">Nyan Cat</option>
-                  </select>
-                </span>
                 <span class="troll-btn-block">Bgm:
                   <select id="selectBgm">
                     <option selected value="nyan_cat">nyan cat</option>
-                  </select>
-                </span>
-
-                <span class="troll-btn-block">Wall Color:
-                  <select id="selectWall">
-                    <option selected value="white">White</option>
-                    <option value="red">Red</option>
-                    <option value="green">Green</option>
-                    <option value="blue">Blue</option>
-                    <option value="yellow">Yellow</option>
-                    <option value="orange">Orange</option>
-                    <option value="purple">Purple</option>
-                    <option value="brown">Brown</option>
                   </select>
                 </span>
               </div>

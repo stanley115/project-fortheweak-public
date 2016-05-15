@@ -128,26 +128,59 @@ var cid;
       $("#divLobbyRoomList").append(eachRoom);
     }
   }
+  function rebuildGameRoom(rid){
+    var divClientList = $("<div/>").html("Player List:");
+    var id =1;
+    for (var i in clientList){
+      if (clientList[i].inRoom != rid) continue;
+      var pid = clientList[i].cid;
+    //      var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
+      var tmpli = $("<div/>").html(krEncodeEntities((id++)+". "+clientList[pid].name + pid + " "+ cid));
+      if (cid!=pid){
+        tmpli.append(clientList[pid].setting.role);
+        tmpli.append(clientList[pid].setting.car);
+        tmpli.append(clientList[pid].setting.wall);
+        divClientList.append(tmpli);
+      }
+      else {
+          $("#divPlayerName").html((id-1)+". "+clientList[pid].name);
+          $("#divGameRoomBodyPre").html(divClientList);
+          divClientList = $("<div/>").html("");
+      }
+    }
+    $("#divGameRoomBodyPost").html(divClientList);
+  }
   function updateGameRoom(data){
     $("#troll-divGameRoomHead").empty();
-    $("#divGameRoomBody").empty();
+    $("#divGameRoomBodyPre").empty();
+    $("#divGameRoomBodyPost").empty();
+    $("#divPlayerName").empty();
     var roomBody = $("<li/>").addClass("troll-troll-text-block");
     var roomHead = $("<div/>");
     roomHead.append($("<h4/>").html(krEncodeEntities("Room Name:"+data.name)));
     roomHead.append($("<h4/>").html(krEncodeEntities("Room ID:"+data.room_id)));
-    var divClientList = $("<h4/>").text("Player List:");
-    var id = 1;
-    for (var i in data.client_list){
-      var pid = data.client_list[i];
-//      var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
-      var tmpli = $("<div/>").html(krEncodeEntities((id++)+". "+clientList[pid].name));
-      divClientList.append(tmpli);
-    }
-    roomBody.append(divClientList);
-
-    $("#divGameRoomBody").append(roomBody);
     $("#troll-divGameRoomHead").append(roomHead);
-
+//    var divClientList = $("<div/>").html("Player List:");
+//    var id = 1;
+//     for (var i in data.client_list){
+//       var pid = data.client_list[i];
+// //      var tmpli = $("<div/>").html(krEncodeEntities("client_id:"+pid+":"+clientList[pid].name));
+//       var tmpli = $("<div/>").html(krEncodeEntities((id++)+". "+clientList[pid].name + pid + " "+ cid));
+//       if (cid!=pid){
+//         tmpli.append(clientList[pid].setting.role);
+//         tmpli.append(clientList[pid].setting.car);
+//         tmpli.append(clientList[pid].setting.wall);
+//         divClientList.append(tmpli);
+//       }
+//       else {
+//           $("#divPlayerName").html((id-1)+". "+clientList[pid].name);
+//           $("#divGameRoomBodyPre").html(divClientList);
+//           divClientList = $("<div/>").html("");
+//       }
+//     }
+//     $("#divGameRoomBodyPost").html(divClientList);
+//     $("#troll-divGameRoomHead").append(roomHead);
+    if (clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
   }
   $("#btnCreateRoom").on('click',function(){
   });
@@ -189,9 +222,10 @@ var cid;
     clientList = data;
     console.log(clientList);
     if(clientList[cid] != undefined && clientList[cid].setting != undefined){
-      $("#selectCar").val(clientList[cid].setting.car);
-      $("#selectRole").val(clientList[cid].setting.role);
-      $("#selectWall").val(clientList[cid].setting.wall);
+      if ($("#selectCar")!=undefined) $("#selectCar").val(clientList[cid].setting.car);
+      if ($("#selectRole")!=undefined) $("#selectRole").val(clientList[cid].setting.role);
+      if ($("#selectWall")!=undefined) $("#selectWall").val(clientList[cid].setting.wall);
+      if (clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
     }
   });
   socket.on("gameStart",function(data){
@@ -203,7 +237,6 @@ var cid;
     $("#lobby-div").css("display","none");
     $("#gameroom-div").css("display","none");
     $("#welcome-div").css("display","none");
-
   });
   socket.on("gameEnd",function(data){
     console.log(data[0].dead);
@@ -273,9 +306,6 @@ var cid;
       }
     });
   });
-  $('#selectRole').on('change', function() {
-    socket.emit("updateGameSetting",{key:"role",val:this.value});
-  });
   $('#selectBgm').on('change', function() {
     socket.emit("updateGameSetting",{key:"bgm",val:this.value});
   });
@@ -287,6 +317,9 @@ var cid;
   });
   $('#selectWall').on('change', function() {
     socket.emit("updateGameSetting",{key:"wall",val:this.value});
+  });
+  $('#selectRole').on('change', function() {
+    socket.emit("updateGameSetting",{key:"role",val:this.value});
   });
 socket.on('updateClientId',function(data){
   cid=data;
