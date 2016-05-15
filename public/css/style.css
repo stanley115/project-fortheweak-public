@@ -21,7 +21,7 @@
   user-select: none;
 }
 .need-scroll-div {
-  overflow: scroll-y !important;
+  overflow: scroll !important;
 }
 ul body{
   overflow: scroll;
