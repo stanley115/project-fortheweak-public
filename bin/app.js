@@ -133,10 +133,10 @@ function roomJoin(serverSocket,socket,cid,rid){
   globalData.client[cid].inRoom = rid;
   //Need notify any one in the room
   setDefaultSettingForPlayer(cid);
-  serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   //As this step may also remove room List, notify the world
   serverSocket.emit('roomList',globalData.room);
   serverSocket.emit('updateClientList',globalData.client);
+  serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
 }
 
 function roomLeave(serverSocket,socket,cid){
