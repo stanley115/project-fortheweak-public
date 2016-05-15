@@ -59,6 +59,7 @@
 // enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var socket;
+var cid;
   $('#username').keypress(function(e){
     if(e.keyCode==13)
     $('#submit-username').click();
@@ -203,6 +204,8 @@ var socket;
     console.log(data[0].props);
     console.log(data[0].time);
     var head = $("<tr/>");
+    head.css("text-align","center");
+    head.addClass("large-only-header");
     head.append($("<td/>").html("Name"));
     head.append($("<td/>").html("Time"));
 
@@ -279,6 +282,10 @@ var socket;
   $('#selectWall').on('change', function() {
     socket.emit("updateGameSetting",{key:"wall",val:this.value});
   });
+socket.on('updateClientId',function(data){
+  cid=data;
+  console.log("my cid = "+cid);
+})
   socket.on("syncRoomSetting",function(settingObj){
     var settingKey = settingObj.key;
     var settingVal = settingObj.val;

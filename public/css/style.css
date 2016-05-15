@@ -414,6 +414,10 @@ ul.menu li.menu_break {
 }
 */
 .large-only { display: table; }
+.large-only td{
+  padding-right: 20px;
+}
+
 .small-only { display: none; }
 
 @media (max-width: 800px) {

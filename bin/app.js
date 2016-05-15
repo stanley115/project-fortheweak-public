@@ -188,6 +188,7 @@ module.exports = function(app){
       io.to(client_channel).emit('clientNew',client_channel,globalData.client[client_id]);
       io.emit('roomList',globalData.room);
       io.emit('updateClientList',globalData.client);
+      io.emit('updateClientId',client_id);
     });
     socket.on('disconnect',function(){
       console.log('disconnect:'+client_id);
