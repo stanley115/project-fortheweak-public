@@ -221,7 +221,7 @@ var cid;
     $("#troll-result").append(head);
     for (i = 0; i < data.length; i++){
       var record = $("<tr/>");
-      record.append($("<td/>").html(krEncodeEntities("No name no life~~")));//M9W: Name你當住有先啦
+      record.append($("<td/>").html(krEncodeEntities(data[i].name)));//M9W: Name你當住有先啦
       record.append($("<td/>").html(krEncodeEntities(data[i].time)));
       for (var j in data[i].props){
         if(!data[i].props.hasOwnProperty(j)) continue;

@@ -30,6 +30,7 @@ var Player = function(config, id, total){
 
     this.socket = config.socket;
     this.roomID = config.roomID;
+    this.name = config.name;
 
     initPlayerSocket(this);
 
@@ -101,7 +102,8 @@ Player.prototype.toObj = function(){
         v: this.v,
         deg: this.deg,
         dead: this.dead,
-        shield: this.shield
+        shield: this.shield,
+        name: this.name
     };
 }
 
@@ -132,6 +134,7 @@ Player.prototype.hitWall = function(wall){
 
 Player.prototype.result = function () {
     return {
+        name: this.name,
         dead: this.dead,
         props: this.propsHit,
         time: this.liveTime

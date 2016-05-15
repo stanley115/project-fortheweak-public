@@ -39,7 +39,8 @@ var Game = function(config, cleanGame){
         return new Player({
             io: self.io,
             roomID: self.room.roomID,
-            socket: ele.client_socket
+            socket: ele.client_socket,
+            name: ele.client_name
         }, idx, arr.length);
     });
 
