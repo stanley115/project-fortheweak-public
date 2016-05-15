@@ -155,6 +155,7 @@ function roomLeave(serverSocket,socket,cid){
     globalData.client[cid].inRoom = -1; // reset Status
     // Need notify others in room , for leaver need go to lobby, done my reuse
     // enter room func
+    serverSocket.to(rid).emit('updateClientList',globalData.client);
     serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
     var client_self = client_prefix+cid;
     //In fact need notify all client so that info updated on lobby too
