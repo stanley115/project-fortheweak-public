@@ -24,7 +24,7 @@ var Player = function(config, id, total){
     this.shield = 0;
     this.dead = false;
     this.liveTime = 0;
-    this.propsHit = {};
+    this.propsHit = {speed: 0, slow: 0, shield: 0};
 
     this.wall = [this.coner(-1, 0)];
 

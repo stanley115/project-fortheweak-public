@@ -140,9 +140,37 @@ var socket;
 
   });
   socket.on("gameEnd",function(data){
-    $("#lobby-div").css("display","block");
+    console.log("FUCK");
+    console.log(data[0].dead);
+    console.log(data[0].props);
+    console.log(data[0].time);
+    var result = $("<table/>").attr("id","troll-result-table");
+    //record.append($("<td/>").html("Name"));
+    var head = $("<tr/>");
+    head.append($("<td/>").html("Time"));
+
+    for (var j in data[0].props){
+        if(!data[0].props.hasOwnProperty(j)) continue;
+        head.append($("<td/>").html(j));
+    }
+    head.append($("<td/>").html("Dead"));
+    $("#troll-result").append(head);
+    for (i = 0; i < data.length; i++){
+      var record = $("<tr/>");
+      //record.append($("<td/>").html(krEncodeEntities(data[i].name)));//M9W: Name你當住有先啦
+      record.append($("<td/>").html(krEncodeEntities(data[i].time)));
+      for (var j in data[i].props){
+        if(!data[i].props.hasOwnProperty(j)) continue;
+        record.append($("<td/>").html(krEncodeEntities(data[i].props[j])));
+      }
+      record.append($("<td/>").html(krEncodeEntities(data[i].dead)));
+      $("#troll-result").append(record);
+    }
+    //$('#troll-result').stacktable({myClass:'stacktable small-only'});
+    $("#result-div").css("display","block");
     $("#gameroom-div").css("display","none");
     $("#welcome-div").css("display","none");
+    $("#lobby-div").css("display","none");
     $("#game-div").css("display","none");
   });
   socket.on("disconnect",function(){
@@ -153,6 +181,13 @@ var socket;
     $("#gameroom-div").css("display","none");
     $("#game-div").css("display","none");
     $("#welcome-div").css("display","block");
+  });
+  $("#btnBackLobby").click(function(){
+    $("#result-div").css("display","none");
+    $("#gameroom-div").css("display","none");
+    $("#welcome-div").css("display","none");
+    $("#game-div").css("display","none");
+    $("#lobby-div").css("display","block");
   });
   $("#submit-roomname").click(function(){
     $('#btn-closeModalRoom').click();

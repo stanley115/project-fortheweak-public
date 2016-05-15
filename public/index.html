@@ -13,6 +13,9 @@
     <script type="text/javascript" src="https://s3.amazonaws.com/plivosdk/web/plivo.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!--link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7635/stacktable.js">
+    <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script-->
+
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
   </head>
@@ -105,7 +108,7 @@
                 </div>
               </div>
               <div class="col-sm-6 col-sm-pull-right">
-                <span class="troll-troll-btn-block">Floor:
+                <span class="troll-btn-block">Floor:
                   <select id="selectFloor">
                     <option selected value="tron">Tron</option>
                     <option value="tron2">Tron2</option>
@@ -115,27 +118,27 @@
                     <option value="stone">Stone</option>
                   </select>
                 </span>
-                <span class="troll-troll-btn-block">Role:
+                <span class="troll-btn-block">Role:
                   <select id="selectRole">
 
                     <option selected value="player">player</option>
                     <option value="viewer">viewer</option>
                   </select>
                 </span>
-                <span class="troll-troll-btn-block">Car:
+                <span class="troll-btn-block">Car:
                   <select id="selectCar">
                     <option selected value="tron">Tron</option>
                     <option value="black">Black Tron</option>
                     <option value="nyan">Nyan Cat</option>
                   </select>
                 </span>
-                <span class="troll-troll-btn-block">Bgm:
+                <span class="troll-btn-block">Bgm:
                   <select id="selectBgm">
                     <option selected value="nyan_cat">nyan cat</option>
                   </select>
                 </span>
 
-                <span class="troll-troll-btn-block">Wall Color:
+                <span class="troll-btn-block">Wall Color:
                   <select id="selectWall">
                     <option selected value="white">White</option>
                     <option value="red">Red</option>
@@ -160,7 +163,14 @@
 
     <div id="game-div" class="full-page-div" style="display:none"></div>
 
-    <div id="result-div" class="full-page-div" style="display:none"></div>
+    <div id="result-div" class="full-page-div" style="display:none">
+      <ul>
+        <li class="text-block" >
+          <div id="troll-result"></div>
+          <span id="troll-btnBackLobby" class="btn-block">Back to Lobby</span>
+        </li>
+      </ul>
+    </div>
 
     <script src="3rdparty/socket.io-client/socket.io.js"></script>
     <script src="3rdparty/jquery/dist/jquery.min.js"></script>
