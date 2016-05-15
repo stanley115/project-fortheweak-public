@@ -176,9 +176,11 @@ var cid;
     // remove wall as it becomes client setting
     $("#selectFloor").change();
     $("#selectBgm").change();
+    /* move default player setting to server
     $("#selectRole").change();
     $("#selectCar").change();
     $("#selectWall").change();
+    */
   });
   socket.on("roomLeave",function(data){
     showLobby();
@@ -186,6 +188,9 @@ var cid;
   socket.on("updateClientList",function(data){
     clientList = data;
     console.log(clientList);
+    $("#selectCar").val(clientList[cid].setting.car);
+    $("#selectRole").val(clientList[cid].setting.role);
+    $("#selectWall").val(clientList[cid].setting.wall);
   });
   socket.on("gameStart",function(data){
     $("#loading-div").css("display","none");

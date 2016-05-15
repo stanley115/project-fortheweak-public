@@ -78,6 +78,7 @@ function updateGameSetting(serverSocket,socket,cid,settingObj){
       break;
     case "car":
       globalData.client[cid].setting.car = settingVal;
+      serverSocket.to(rid).emit('updateClientList',globalData.client);
       break;
     case "floor":
       globalData.room[rid].setting.floor = settingVal;
@@ -86,10 +87,12 @@ function updateGameSetting(serverSocket,socket,cid,settingObj){
     case "wall":
       //*** wall changed to client setting
       globalData.client[cid].setting.wall = settingVal;
+      serverSocket.to(rid).emit('updateClientList',globalData.client);
       //serverSocket.to(rid).emit('syncRoomSetting',{key:settingKey,val:settingVal});
       break;
     case "role":
       globalData.client[cid].setting.role = settingVal;
+      serverSocket.to(rid).emit('updateClientList',globalData.client);
       break;
     default:
       break;
@@ -112,6 +115,11 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
   roomJoin(serverSocket,socket,cid,room_id);
   serverSocket.emit('roomList',globalData.room);
 }
+function setDefaultSettingForPlayer(cid){
+  globalData.client[cid].setting.car = 'tron';
+  globalData.client[cid].setting.wall = 'white';
+  globalData.client[cid].setting.role = 'player';
+}
 function roomJoin(serverSocket,socket,cid,rid){
   //If client is in other room ,leave it first
   //This step will also remove empty room
@@ -124,10 +132,11 @@ function roomJoin(serverSocket,socket,cid,rid){
   console.log(globalData.room[rid]);
   globalData.client[cid].inRoom = rid;
   //Need notify any one in the room
+  setDefaultSettingForPlayer(cid);
   serverSocket.to(rid).emit('roomEntered',globalData.room[rid]);
   //As this step may also remove room List, notify the world
   serverSocket.emit('roomList',globalData.room);
-
+  serverSocket.emit('updateClientList',globalData.client);
 }
 
 function roomLeave(serverSocket,socket,cid){
