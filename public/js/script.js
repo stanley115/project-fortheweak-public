@@ -56,6 +56,31 @@
 
 }(jQuery));
 
+function detectmob() {
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ){
+    return true;
+  }
+ else {
+    return false;
+  }
+}
+
+$(document).ready(function(){
+  if (detectmob()){
+    var choice = '<option selected value="player">player</option><option value="viewer">viewer</option>'
+  }
+  else {
+    var choice = '<option selected value="viewer">viewer</option>'
+  }
+  $("#selectRole").append(choice)
+});
 // enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var socket;
@@ -233,7 +258,20 @@ String.prototype.capitalizeFirstLetter = function() {
     console.log(clientList);
     if(clientList[cid] != undefined && clientList[cid].setting != undefined){
       if ($("#selectCar")!=undefined) $("#selectCar").val(clientList[cid].setting.car);
-      if ($("#selectRole")!=undefined) $("#selectRole").val(clientList[cid].setting.role);
+      if ($("#selectRole")!=undefined){
+        if (clientList[cid].setting.role=='default'){
+          if (detectmob()){
+              clientList[cid].setting.role = 'player'
+          }
+          else {
+            clientList[cid].setting.role = 'viewer'
+          }
+          $("#selectRole").val(clientList[cid].setting.role);
+          console.log(clientList[cid].setting.role);
+          socket.emit("updateGameSetting",{key:"role",val:clientList[cid].setting.role});
+
+        }
+      }
       if ($("#selectWall")!=undefined) $("#selectWall").val(clientList[cid].setting.wall);
       if (clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
     }

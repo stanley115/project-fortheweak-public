@@ -118,7 +118,7 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
 function setDefaultSettingForPlayer(cid){
   globalData.client[cid].setting.car = 'tron';
   globalData.client[cid].setting.wall = 'white';
-  globalData.client[cid].setting.role = 'player';
+  globalData.client[cid].setting.role = 'default';
 }
 function roomJoin(serverSocket,socket,cid,rid){
   //If client is in other room ,leave it first
