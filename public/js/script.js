@@ -25,19 +25,19 @@
         markup += '<tr>';
         // for the first row, top left table cell is the head of the table
         if (index===0) {
-          markup += '<tr><th class="st-head-row st-head-row-main" colspan="2">'+$(this).find('th,td').eq(0).html()+'</th></tr>';
+          //markup += '<tr class="st-name"><th class="st-head-row st-head-row-main" colspan="2">'+$(this).find('th,td').eq(0).html()+'</th></tr>';
         }
         // for the other rows, put the left table cell as the head for that row
         // then iterate through the key/values
         else {
           $(this).find('td').each(function(index,value) {
             if (index===0) {
-              markup += '<tr><th class="st-head-row" colspan="2">'+$(this).html()+'</th></tr>';
+              markup += '<tr><th class="st-head-row" colspan="2">Name:'+$(this).html()+'</th></tr>';
             } else {
               if ($(this).html() !== ''){
                 markup += '<tr>';
                 if ($topRow.find('td,th').eq(index).html()){
-                  markup += '<td class="st-key">'+$topRow.find('td,th').eq(index).html()+'</td>';
+                  markup += '<td class="st-key" style="padding-left:5em">'+$topRow.find('td,th').eq(index).html()+'</td>';
                 } else {
                   markup += '<td class="st-key"></td>';
                 }
@@ -60,6 +60,9 @@
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 var socket;
 var cid;
+String.prototype.capitalizeFirstLetter = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
   $('#username').keypress(function(e){
     if(e.keyCode==13)
     $('#submit-username').click();
@@ -246,33 +249,34 @@ var cid;
     $("#welcome-div").css("display","none");
   });
   socket.on("gameEnd",function(data){
-    console.log(data[0].dead);
-    console.log(data[0].props);
-    console.log(data[0].time);
+    //console.log(data[0].dead);
+    //console.log(data[0].props);
+    //console.log(data[0].time);
     var head = $("<tr/>");
-    head.css("text-align","center");
+
     head.addClass("large-only-header");
     head.append($("<td/>").html("Name"));
     head.append($("<td/>").html("Time"));
-
     for (var j in data[0].props){
         if(!data[0].props.hasOwnProperty(j)) continue;
-        head.append($("<td/>").html(j));
+        head.append($("<td/>").html(j.capitalizeFirstLetter()));
     }
     head.append($("<td/>").html("Dead"));
     $("#troll-result").empty();
+    $("#troll-result").css("text-align","center")
     $("#troll-result").append(head);
     for (i = 0; i < data.length; i++){
       var record = $("<tr/>");
       record.append($("<td/>").html(krEncodeEntities(data[i].name)));//M9W: Name你當住有先啦
-      record.append($("<td/>").html(krEncodeEntities(data[i].time)));
+      record.append($("<td/>").html(krEncodeEntities(data[i].time.toFixed(3))));
       for (var j in data[i].props){
         if(!data[i].props.hasOwnProperty(j)) continue;
         record.append($("<td/>").html(krEncodeEntities(data[i].props[j])));
       }
       record.append($("<td/>").html(krEncodeEntities(data[i].dead)));
       $("#troll-result").append(record);
-      $('#troll-result').stacktable({myClass:'small-only'});
+      $(".small-only").remove()
+      $('#troll-result').stacktable({myClass:'small-only table table-borderless'});
 
     }
     //$('#troll-result').stacktable({myClass:'stacktable small-only'});
