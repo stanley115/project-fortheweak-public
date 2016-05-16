@@ -278,10 +278,12 @@ String.prototype.capitalizeFirstLetter = function() {
   });
   socket.on("gameStart",function(data){
     $("#loading-div").css("display","none");
+    $("#loading-div2").css("display","none");
     $("#game-div").css("display","block");
   });
   socket.on("gameLoading", function(data){
-    $("#loading-div").css("display","block");
+    if (clientList[cid].setting.role=='player') $("#loading-div2").css("display","block");
+    if (clientList[cid].setting.role=='viewer') $("#loading-div").css("display","block");
     $("#lobby-div").css("display","none");
     $("#gameroom-div").css("display","none");
     $("#welcome-div").css("display","none");
