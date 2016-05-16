@@ -157,6 +157,23 @@ String.prototype.capitalizeFirstLetter = function() {
     }
   }
   function rebuildGameRoom(rid){
+    var mapRole = {};
+    mapRole["player"] = "Player";
+    mapRole["viewer"] = "Viewer";
+    var mapCar = {};
+    mapCar["tron"] = "Tron";
+    mapCar["black"] = "Black Tron"
+    mapCar["nyan"] = "Nyan Cat"
+    var mapWall = {};
+    mapWall["white"] = "White";
+    mapWall["red"] = "Red";
+    mapWall["green"] = "Green";
+    mapWall["blue"] = "Blue";
+    mapWall["yellow"] = "Yellow";
+    mapWall["orange"] = "Orange";
+    mapWall["purple"] = "Purple";
+    mapWall["brown"] = "Brown";
+
     console.log(clientList);
     $("#divGameRoomBodyPre").empty();
     $("#divGameRoomBodyPost").empty();
@@ -172,9 +189,9 @@ String.prototype.capitalizeFirstLetter = function() {
       if (cid!=pid){
         var tmpli = $("<tr/>")
         tmpli.append($("<th/>").text(username));
-        tmpli.append($("<th/>").text(clientList[pid].setting.role));
-        tmpli.append($("<th/>").text(clientList[pid].setting.car));
-        tmpli.append($("<th/>").text(clientList[pid].setting.wall));
+        tmpli.append($("<th/>").text(mapRole[clientList[pid].setting.role]));
+        tmpli.append($("<th/>").text(mapCar[clientList[pid].setting.car]));
+        tmpli.append($("<th/>").text(mapWall[clientList[pid].setting.wall]));
         divClientList.append(tmpli);
       }
       else {
