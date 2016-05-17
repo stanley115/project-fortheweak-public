@@ -74,10 +74,10 @@ function detectmob() {
 
 $(document).ready(function(){
   if (detectmob()){
-    var choice = '<option selected value="player">player</option><option value="viewer">viewer</option>'
+    var choice = '<option selected value="player">Player</option><option value="viewer">Viewer</option>'
   }
   else {
-    var choice = '<option selected value="viewer">viewer</option>'
+    var choice = '<option selected value="viewer">Viewer</option>'
   }
   $("#selectRole").append(choice)
 });

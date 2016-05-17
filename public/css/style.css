@@ -20,6 +20,9 @@
   -ms-user-select: none;
   user-select: none;
 }
+::-webkit-scrollbar { 
+    display: none;
+}
 .need-scroll-div {
   overflow: scroll !important;
 }
@@ -175,7 +178,8 @@ body {
   line-height: 21px;
   display: block;
   /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
+  margin-left: auto;
+  margin-right: auto;
   width: 60%; /*500 too width for mobile*/
   padding: 25px;
   border: 1px solid rgba(21,171,195,1.0);
@@ -208,7 +212,7 @@ body {
   line-height: 21px;
   display: block;
   /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
+  margin: 0 auto;
   /*width: 60%; /*500 too width for mobile*/
   padding: 25px;
   border: 1px solid rgba(21,171,195,1.0);
