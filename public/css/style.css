@@ -80,7 +80,7 @@ body {
   background-size: 100%;
   background-image: url("../assets/welcome.jpg");
 }
-#CUHK-logo-background{
+#logo-background{
   /*background-color: lightblue;
    */
   position:absolute;
@@ -93,7 +93,7 @@ body {
   opacity: 0;
   /*filter: alpha(opacity=33);*/
   background-size: 100%;
-  background-image: url("../assets/CUlogo.jpg");
+  background-image: url("../assets/fortheweak.jpg");
 }
 select {
     background: black;

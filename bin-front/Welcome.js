@@ -86,16 +86,16 @@ var Welcome = function(config){
         1200);
     setTimeout(
         function() {
-          var ele = document.getElementById('CUHK-logo-background');
+          var ele = document.getElementById('logo-background');
           fadeIn(ele);
         },
-        1900);
+        2100);
     setTimeout(
         function() {
-          var ele = document.getElementById('CUHK-logo-background');
+          var ele = document.getElementById('logo-background');
           fadeOut(ele);
         },
-        3100);
+        4000);
     setTimeout(
         function() {
           //document.getElementById("myModal").style.display = "block";
@@ -110,7 +110,7 @@ var Welcome = function(config){
           showLobby();
           //document.getElementById('lobby-div').style.display = 'block';
         },
-        3800);
+        4500);
     //$(document.getElementById('welcome-div')).fadeOut("slow");
     //document.getElementById('welcome-div').style.display='none'
   }
