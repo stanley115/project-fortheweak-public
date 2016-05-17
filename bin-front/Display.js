@@ -113,11 +113,9 @@ function Display(scene, config){
     this.resetOrientation = true;
 
     // reset orientation when first sync
-    var firstSyncHandler = function(){
+    socket.on("resetOrientation", function(){
         self.resetOrientation = true;
-        socket.removeListener("sync", firstSyncHandler);
-    }
-    socket.on("sync", firstSyncHandler);
+    })
 
     function update(dt){
         resize();

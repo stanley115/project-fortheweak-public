@@ -230,29 +230,43 @@ Game.prototype.result = function () {
     });
 };
 
+Game.prototype.resetOrientation = function () {
+    this.clients.forEach(function(client){
+        if (client.role === "player"){
+            client.client_socket.emit("resetOrientation");
+        }
+    });
+};
+
 Game.prototype.start = function () {
     var self = this;
+    var gameStart = false;
 
     this.io.to(this.room.roomID).emit("gameStart");
 
-    setTimeout(function(){
-        self.clock.tick();
-
-        if (!self.loopGameInterval){
-            self.loopGameInterval = setInterval(function(){
+    if (!self.loopGameInterval){
+        self.loopGameInterval = setInterval(function(){
+            if (gameStart){
                 self.clock.tick();
                 var dt = self.clock.deltaTime / 1000;
 
                 self.update(dt);
+            }else {
+                self.resetOrientation();
+            }
 
-                self.sync();
+            self.sync();
 
-                //check game end
-                if (self.checkEnd()){
-                    self.end();
-                }
-            }, 1000 / DEFAULT_FPS);
-        }
+            //check game end
+            if (self.checkEnd()){
+                self.end();
+            }
+        }, 1000 / DEFAULT_FPS);
+    }
+
+    setTimeout(function(){
+        self.clock.tick();
+        gameStart = true;
     }, WAIT_TIME);
 
 };
