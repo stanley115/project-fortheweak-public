@@ -86,7 +86,8 @@ var Game = function(config){
                 new Wall(self.scene, {
                     color: config.role == "viewer"? null: config.players[config.role].wall,
                     start: CONERS[i],
-                    end: CONERS[(i + 1) % 4]
+                    end: CONERS[(i + 1) % 4],
+                    height: 50
                 });
             }
 

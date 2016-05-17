@@ -8,10 +8,9 @@ var Wall = function(scene, config){
     AbstractAsset.call(this, scene, config);
     var self = this;
 
-    this.geometry = new THREE.PlaneGeometry(
-        1,
-        DEFAULT_HEIGHT
-    );
+    var height = config.height || DEFAULT_HEIGHT;
+
+    this.geometry = new THREE.PlaneGeometry(1, height);
 
     var material = new THREE.MeshBasicMaterial( {
         color: configData.wallColor[config.color || DEFAULT_COLOR],
@@ -39,7 +38,7 @@ Wall.prototype.set = function (start, end) {
     this.setPos(
         (start.x + end.x) / 2,
         (start.y + end.y) / 2,
-        DEFAULT_HEIGHT / 2
+        this.height / 2
     );
     // this.setPos(0, 0, 0);
     this.setDir(
