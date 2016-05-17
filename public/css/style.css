@@ -159,7 +159,7 @@ body {
   line-height: 21px;
   /*margin: 0px 5px 20px 55px; todo*/
   margin: 0 auto 15px;
-  padding: 10px 15px;
+  padding: 10px;
   width: 40%;
   text-align: center;
   border: 1px solid rgba(21,171,195,1.0);
@@ -169,38 +169,6 @@ body {
   -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
   -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
   box-shadow: 0 0 9px rgba(21,171,195,1.0);
-}
-.troll-btn-block {
-  font-size: 13px;
-  line-height: 21px;
-  /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
-  padding: 10px 15px;
-  text-align: center;
-  border: 1px solid rgba(21,171,195,1.0);
-  background-color: rgba(0, 0, 0, 0.7);
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  display: block;
-}
-.troll-btn-inline {
-  font-size: 13px;
-  line-height: 21px;
-  /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
-  padding: 10px 15px;
-  text-align: center;
-  border: 1px solid rgba(21,171,195,1.0);
-  background-color: rgba(0, 0, 0, 0.7);
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  display: inline;
 }
 .text-block {
   font-size: 13px;
@@ -218,60 +186,6 @@ body {
   -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
   box-shadow: 0 0 9px rgba(21,171,195,1.0);
 }
-.troll {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-.troll-text-block {
-  font-size: 13px;
-  line-height: 21px;
-  display: block;
-  /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
-  /*width: 60%;*/ /*500 too width for mobile*/
-  padding: 25px 75px;
-  border: 1px solid rgba(21,171,195,1.0);
-  background-color: rgba(0, 0, 0, 0.7);
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  box-shadow: 0 0 9px rgba(21,171,195,1.0);
-}
-.troll-troll-text-block {
-  font-size: 13px;
-  line-height: 21px;
-  display: block;
-  /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
-  /*width: 60%;*/ /*500 too width for mobile*/
-  padding: 25px;
-  border: 1px solid rgba(21,171,195,1.0);
-  background-color: rgba(0, 0, 0, 0.7);
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  box-shadow: 0 0 9px rgba(21,171,195,1.0);
-}
-.game-option-block {
-  font-size: 13px;
-  line-height: 21px;
-  display: block;
-  width: 100%;
-  /*margin: 0px 5px 20px 55px; todo*/
-  margin: 0 auto 15px;
-  /*width: 60%;*/ /*500 too width for mobile*/
-  padding: 25px;
-  text-align: center;
-  border: 1px solid rgba(21,171,195,1.0);
-  background-color: rgba(0, 0, 0, 0.7);
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -moz-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  -webkit-box-shadow: 0 0 9px rgba(21,171,195,1.0);
-  box-shadow: 0 0 9px rgba(21,171,195,1.0);
-}
 .game-option-inline {
   font-size: 13px;
   line-height: 21px;
@@ -279,7 +193,8 @@ body {
   /*margin: 0px 5px 20px 55px; todo*/
   margin: 0 auto 15px;
   /*width: 60%;*/ /*500 too width for mobile*/
-  padding: 25px 75px;
+  padding: 25px;
+  text-align:center;
   border: 1px solid rgba(21,171,195,1.0);
   background-color: rgba(0, 0, 0, 0.7);
   -moz-border-radius: 15px;
@@ -314,7 +229,8 @@ body {
   /*margin: 0px 5px 20px 55px; todo*/
   margin: 0 auto 15px;
   /*width: 60%; /*500 too width for mobile*/
-  padding: 25px 10px;
+  padding: 25px;
+  text-align:center;
   border: 1px solid rgba(21,171,195,1.0);
   background-color: rgba(0, 0, 0, 0.7);
   -moz-border-radius: 15px;
