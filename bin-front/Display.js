@@ -18,7 +18,7 @@ function Display(scene, config){
     	container.appendChild(element);
 
         camera = new THREE.PerspectiveCamera(100, 2, 0.1, 700);
-    	camera.position.set(0, 10, 0);
+    	camera.position.set(0, 400, 0);
     	scene.add(camera);
 
         if (config.role != 'viewer'){
