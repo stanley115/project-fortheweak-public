@@ -135,7 +135,7 @@ Player.prototype.hitWall = function(wall){
 Player.prototype.result = function () {
     return {
         name: this.name,
-        dead: this.dead,
+        dead: this.dead?"Dead":"Alive",
         props: this.propsHit,
         time: this.liveTime
     };
