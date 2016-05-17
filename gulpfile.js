@@ -4,6 +4,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
+var rename = require('gulp-rename');
 
 var handleError = function(name, e){
     console.log('Error: ' + name + '\n' + e);
@@ -20,7 +21,6 @@ var bundle = function(watch){
     rebundle = function() {
         console.log('Rebuild');
         var stream = bundler.bundle();
-        if (!watch) stream.pipe(uglify());
         stream.on('error', function(e){
             handleError('Browserify', e);
         });
@@ -33,6 +33,34 @@ var bundle = function(watch){
         bundler.on('update', rebundle);
     }
     return rebundle();
+}
+
+var concatJS = function(watch){
+    console.log("concat");
+    var tmp = gulp.src([
+        './public/js/jquery.min.js',
+        './public/js/plivo.min.js',
+        './public/js/bootstrap.min.js',
+        './node_modules/socket.io-client/socket.io.js',
+        './node_modules/jquery/dist/jquery.min.js',
+        './public/js/threejs/three.min.js',
+        './public/js/threejs/StereoEffect.js',
+        './public/js/threejs/DeviceOrientationControls.js',
+        './public/js/threejs/OrbitControls.js',
+        './public/js/threejs/ColladaLoader.js',
+        './public/js/script.js',
+        './public/js/bundle.js']
+    )
+    .pipe(concat('resultBundle.js'))
+    .pipe(gulp.dest('./public/js'));
+
+    if (!watch){
+        tmp = tmp.pipe(rename('resultBundle.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./public/js'));
+    }
+
+    return tmp;
 }
 
 // I added this so that you see how to run two watch tasks
@@ -53,12 +81,12 @@ gulp.task('clean', function() {
 
 // develope
 gulp.task('dev', function(){
-    bundle(true);
+    bundle(true), concatJS(true);
 });
 
 // production
 gulp.task('prod', function(){
-    bundle(false);
+    bundle(false), concatJS(false);
 });
 
 // gulp.task('default', ['product']);

@@ -42,6 +42,8 @@ jspm_packages
 
 # bundle.js
 **/bundle.js
+**/resultBundle.js
+**/resultBundle.min.js
 
 
 #undofile for vim
