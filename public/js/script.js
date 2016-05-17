@@ -322,7 +322,7 @@ String.prototype.capitalizeFirstLetter = function() {
         if(!data[0].props.hasOwnProperty(j)) continue;
         head.append($("<td/>").html(j.capitalizeFirstLetter()));
     }
-    head.append($("<td/>").html("Dead"));
+    head.append($("<td/>").html("Status"));
     $("#troll-result").empty();
     $("#troll-result").css("text-align","center")
     $("#troll-result").append(head);
@@ -334,7 +334,7 @@ String.prototype.capitalizeFirstLetter = function() {
         if(!data[i].props.hasOwnProperty(j)) continue;
         record.append($("<td/>").html(krEncodeEntities(data[i].props[j])));
       }
-      record.append($("<td/>").html(krEncodeEntities(data[i].dead)));
+      record.append($("<td/>").html(krEncodeEntities(data[i].status)));
       $("#troll-result").append(record);
       $(".small-only").remove()
       $('#troll-result').stacktable({myClass:'small-only table table-borderless'});
