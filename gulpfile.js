@@ -4,7 +4,6 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');
-var rename = require('gulp-rename');
 
 var handleError = function(name, e){
     console.log('Error: ' + name + '\n' + e);
@@ -55,8 +54,7 @@ var concatJS = function(watch){
     .pipe(gulp.dest('./public/js'));
 
     if (!watch){
-        tmp = tmp.pipe(rename('resultBundle.min.js'))
-        .pipe(uglify())
+        tmp = tmp.pipe(uglify())
         .pipe(gulp.dest('./public/js'));
     }
 
