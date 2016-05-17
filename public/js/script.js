@@ -164,15 +164,6 @@ String.prototype.capitalizeFirstLetter = function() {
     mapCar["tron"] = "Tron";
     mapCar["black"] = "Black Tron"
     mapCar["nyan"] = "Nyan Cat"
-    var mapWall = {};
-    mapWall["white"] = "White";
-    mapWall["red"] = "Red";
-    mapWall["green"] = "Green";
-    mapWall["blue"] = "Blue";
-    mapWall["yellow"] = "Yellow";
-    mapWall["orange"] = "Orange";
-    mapWall["purple"] = "Purple";
-    mapWall["brown"] = "Brown";
 
     console.log(clientList);
     $("#divGameRoomBodyPre").empty();
@@ -191,7 +182,11 @@ String.prototype.capitalizeFirstLetter = function() {
         tmpli.append($("<th/>").text(username));
         tmpli.append($("<th/>").text(mapRole[clientList[pid].setting.role]));
         tmpli.append($("<th/>").text(mapCar[clientList[pid].setting.car]));
-        tmpli.append($("<th/>").text(mapWall[clientList[pid].setting.wall]));
+        var div = $("<div/>").css("background-color", clientList[pid].setting.wall)
+        div.css("width","44px");
+        div.css("height","23px");
+        div.css("border", "3px");
+        tmpli.append($("<th/>").html(div));
         divClientList.append(tmpli);
       }
       else {
@@ -279,9 +274,14 @@ String.prototype.capitalizeFirstLetter = function() {
         if (clientList[cid].setting.role=='default'){
           if (detectmob()){
               clientList[cid].setting.role = 'player'
+              $("#selectCar").css("display", "block");
+              $("#selectWall").css("display", "block");
+
           }
           else {
             clientList[cid].setting.role = 'viewer'
+            $("#selectCar").css("display", "none");
+            $("#selectWall").css("display", "none");
           }
           $("#selectRole").val(clientList[cid].setting.role);
           console.log(clientList[cid].setting.role);
@@ -388,6 +388,15 @@ String.prototype.capitalizeFirstLetter = function() {
     socket.emit("updateGameSetting",{key:"wall",val:this.value});
   });
   $('#selectRole').on('change', function() {
+    //alert(this.value);
+    if (this.value=="player"){
+      $("#selectCar").css("display", "block");
+      $("#selectWall").css("display", "block");
+    }
+    if (this.value=="viewer") {
+      $("#selectCar").css("display", "none");
+      $("#selectWall").css("display", "none");
+    }
     socket.emit("updateGameSetting",{key:"role",val:this.value});
   });
 socket.on('updateClientId',function(data){
