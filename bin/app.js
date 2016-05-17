@@ -29,6 +29,15 @@ function gameStart(serverSocket,socket,cid){
     console.log("Skip gameStart request as already started");
     return;
   }
+  var countPlayer = 0;
+  for (var i in globalData.room[rid].client_list){//reset Client Station
+    var cid = globalData.room[rid].client_list[i];
+    if(globalData.client[cid].setting.role == 'player')++countPlayer;
+  }
+  if(countPlayer==0){
+    serverSocket.to(rid).emit("gameNoPlayer");
+    return ;
+  }
   // As init game take time now broadcast a gameLoading event for client to
   // block multiple start ,also need add server logic
   serverSocket.to(rid).emit("gameLoading");

@@ -185,6 +185,8 @@ THREE.DeviceOrientationControls = function(object) {
     this.freeze = true;
   };
 
+  // get initial orientation
+  onScreenOrientationChangeEvent();
 };
 
 })();
