@@ -3,6 +3,7 @@ var source = require('vinyl-source-stream'); // Used to stream bundle for furthe
 var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
+var gWatch = require('gulp-watch');
 var concat = require('gulp-concat');
 
 var handleError = function(name, e){
@@ -29,14 +30,17 @@ var bundle = function(watch){
 
     if (watch) {
         bundler = watchify(bundler)
-        bundler.on('update', rebundle);
+        bundler.on('update', function(){
+            rebundle();
+        });
     }
     return rebundle();
 }
 
 var concatJS = function(watch){
     console.log("concat");
-    var tmp = gulp.src([
+
+    var fileList = [
         './public/js/jquery.min.js',
         './public/js/plivo.min.js',
         './public/js/bootstrap.min.js',
@@ -48,10 +52,11 @@ var concatJS = function(watch){
         './public/js/threejs/OrbitControls.js',
         './public/js/threejs/ColladaLoader.js',
         './public/js/script.js',
-        './public/js/bundle.js']
-    )
-    .pipe(concat('resultBundle.js'))
-    .pipe(gulp.dest('./public/js'));
+        './public/js/bundle.js'];
+
+    var tmp = gulp.src(fileList)
+        .pipe(concat('resultBundle.js'))
+        .pipe(gulp.dest('./public/js'));
 
     if (!watch){
         tmp = tmp.pipe(uglify())
@@ -80,6 +85,9 @@ gulp.task('clean', function() {
 // develope
 gulp.task('dev', function(){
     bundle(true), concatJS(true);
+    gWatch(['./public/js/bundle.js', './public/js/script.js', './public/js/threejs/*'], {}, function(e){
+        concatJS(true);
+    });
 });
 
 // production
