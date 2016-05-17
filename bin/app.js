@@ -35,7 +35,7 @@ function gameStart(serverSocket,socket,cid){
     if(globalData.client[cid].setting.role == 'player')++countPlayer;
   }
   if(countPlayer==0){
-    serverSocket.to(rid).emit("gameNoPlayer");
+    serverSocket.to(client_prefix+cid).emit("gameNoPlayer");
     return ;
   }
   // As init game take time now broadcast a gameLoading event for client to
@@ -126,7 +126,7 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
 }
 function setDefaultSettingForPlayer(cid){
   globalData.client[cid].setting.car = 'tron';
-  globalData.client[cid].setting.wall = 'white';
+  globalData.client[cid].setting.wall = '#000000';
   globalData.client[cid].setting.role = 'default';
 }
 function roomJoin(serverSocket,socket,cid,rid){
