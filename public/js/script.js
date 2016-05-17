@@ -185,7 +185,8 @@ String.prototype.capitalizeFirstLetter = function() {
         var div = $("<div/>").css("background-color", clientList[pid].setting.wall)
         div.css("width","44px");
         div.css("height","23px");
-        div.css("border", "3px");
+        div.css("border", "3px solid");
+        div.css("border-color","rgba(21,171,195,1.0)");
         tmpli.append($("<th/>").html(div));
         divClientList.append(tmpli);
       }
