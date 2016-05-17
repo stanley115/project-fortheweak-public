@@ -126,7 +126,7 @@ function roomCreate(serverSocket,socket,cid,createRoomObj){
 }
 function setDefaultSettingForPlayer(cid){
   globalData.client[cid].setting.car = 'tron';
-  globalData.client[cid].setting.wall = '#000000';
+  globalData.client[cid].setting.wall = '#FFFFFF';
   globalData.client[cid].setting.role = 'default';
 }
 function roomJoin(serverSocket,socket,cid,rid){

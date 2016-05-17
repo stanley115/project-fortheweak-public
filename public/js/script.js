@@ -291,7 +291,7 @@ String.prototype.capitalizeFirstLetter = function() {
         }
       }
       if ($("#selectWall")!=undefined) $("#selectWall").val(clientList[cid].setting.wall);
-      if (clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
+      if (clientList[cid] != undefined && clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
     }
   });
   socket.on("gameNoPlayer",function(data){
