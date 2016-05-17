@@ -293,6 +293,9 @@ String.prototype.capitalizeFirstLetter = function() {
       if (clientList[cid].inRoom!=-1) rebuildGameRoom(clientList[cid].inRoom);
     }
   });
+  socket.on("gameNoPlayer",function(data){
+    alert("No Player, play AOC?");
+  });
   socket.on("gameStart",function(data){
     $("#loading-div").css("display","none");
     $("#loading-div2").css("display","none");
