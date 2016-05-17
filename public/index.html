@@ -91,7 +91,25 @@
       </ul>
       <div class="base-background"></div>
     </div>
+
     <div id="gameroom-div"  class="full-page-div need-scroll-div" style="display:none; overflow:scroll;">
+      <div class="modal fade" id="gameroom-reject" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+              <p>Only viewer in this room, cannot start the game</p>
+            </div>
+            <div class="modal-footer">
+              <button id="btnRejectClose"type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
       <ul>
         <li class="game-room-block" >
           <div id="troll-divGameRoomHead"></div>
@@ -164,7 +182,9 @@
               <div class="col-sm-12">
                 <div id="btnLeaveRoom" class="game-option-inline col-sm-6 col-xs-6">Leave Room</div>
                 <div id="btnStartGame" class="game-option-inline col-sm-6 col-xs-6">Start Game</div>
+                <button id="btnReject" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#gameroom-reject" style="display:none">Open Modal</button>
               </div>
+
             </div>
 
           </div>

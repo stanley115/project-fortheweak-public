@@ -264,6 +264,7 @@ String.prototype.capitalizeFirstLetter = function() {
     */
   });
   socket.on("roomLeave",function(data){
+    $("btnRejectClose").click();
     showLobby();
   });
   socket.on("updateClientList",function(data){
@@ -295,9 +296,12 @@ String.prototype.capitalizeFirstLetter = function() {
     }
   });
   socket.on("gameNoPlayer",function(data){
-    alert("No Player, play AOC?");
+    $("#btnReject").click();
+    //$("#gameroom-reject").show()
+//    alert("No Player, play AOC?");
   });
   socket.on("gameStart",function(data){
+    $("btnRejectClose").click();
     $("#loading-div").css("display","none");
     $("#loading-div2").css("display","none");
     $("#game-div").css("display","block");
