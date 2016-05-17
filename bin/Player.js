@@ -1,7 +1,7 @@
 "use strict";
 var INIT_V = 20,
-    LENGTH = 2,
-    WIDTH = 1,
+    LENGTH = 4,
+    WIDTH = 2,
     RADIUS =  200;
 
 var MAX_ACC = 20,
@@ -130,6 +130,20 @@ Player.prototype.hitWall = function(wall){
     }
 
     return hit;
+}
+
+Player.prototype.hitPlayer = function(player){
+    var box = this.toBox(),
+        box2 = player.toBox();
+
+    return [0, 1].reduce(function(prev, i){
+        return prev || [0, 1].forEach(function(prev, j){
+            return prev || Vector2.intersect(
+                box[i], box[i + 2],
+                box2[j], box2[j + 2]
+            );
+        }, false);
+    }, false);
 }
 
 Player.prototype.result = function () {

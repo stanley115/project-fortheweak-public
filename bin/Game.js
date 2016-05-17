@@ -206,6 +206,19 @@ Game.prototype.update = function(dt){
                 if (err) console.log("Detect Border");
                 callback();
             });
+        },
+        // collision to other player
+        function(callback){
+            self.players.forEach(function(player1, i){
+                if (player1.dead) return;
+                self.players.forEach(function(player2, j){
+                    if (player2.dead || i == j) return;
+                    if (player1.hitPlayer(player2)){
+                        player1.dead = !player1.shield;
+                        player2.dead = !player2.shield;
+                    }
+                })
+            })
         }
     ]);
 
