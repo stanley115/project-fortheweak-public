@@ -21,5 +21,6 @@ module.exports = {
     },
     sight: {
         "default": "assets/sight.dae"
-    }
+    },
+    pointer: "assets/pointer.dae"
 };

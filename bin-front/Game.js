@@ -6,7 +6,8 @@ var async = require("async"),
     Player = require('./Player'),
     Display = require('./Display'),
     Wall = require('./Wall'),
-    Prop = require('./Prop');
+    Prop = require('./Prop'),
+    Pointer = require('./Pointer');
 var clock = new THREE.Clock();
 
 var SIZE = 1000,
@@ -30,6 +31,7 @@ var Game = function(config){
 
     this.tmpWalls = [];
     this.props = {};
+    this.pointers = [];
 
     this.role = config.role || "viewer";
     if (this.role !== "viewer"){
@@ -91,6 +93,41 @@ var Game = function(config){
                 });
             }
 
+            callback();
+        },
+        function(callback){
+            // pointers
+            if (config.role !== "viewer"){
+                self.pointers = self.players.map(function(player, idx){
+                    return idx !== config.role ? new Pointer(self.scene) : null;
+                });
+
+                socket.on("sync", function(data){
+                    var currPlayer = data.players[config.role];
+                    var currPos = new THREE.Vector2(
+                        currPlayer.pos.x,
+                        currPlayer.pos.y
+                    );
+                    data.players.forEach(function(player, idx){
+                        if (idx === config.role) return;
+                        if (player.dead){
+                            if (self.pointers[idx] !== null){
+                                self.pointers[idx].remove();
+                            }
+                            return;
+                        }
+
+                        // update pointers
+                        self.pointers[idx].set(
+                            currPos,
+                            new THREE.Vector2(
+                                player.pos.x,
+                                player.pos.y
+                            )
+                        )
+                    });
+                });
+            }
             callback();
         },
         function(callback){
