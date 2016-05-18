@@ -148,6 +148,7 @@ function roomJoin(serverSocket,socket,cid,rid){
 }
 
 function roomLeave(serverSocket,socket,cid){
+  if(globalData.client[cid] == undefined || globalData.client[cid].inRoom == undefined)return;
   var rid = globalData.client[cid].inRoom;
   if(parseInt(rid) > 0 ){
     socket.leave(rid);//leave the socket channel too
@@ -195,13 +196,13 @@ module.exports = function(app){
     socket.join(client_channel); // so that we can broadcast roomList/pref to individual clients when not in room
     console.log("client_id:"+client_id);
     var client_name; // another var in closure
+    globalData.client[client_id]={};
+    globalData.client[client_id].cid = client_id;
+    globalData.client[client_id].setting = {};
+    globalData.client[client_id].inRoom = -1;
     socket.on('clientNew',function(name){
       console.log("clientNew");
-      globalData.client[client_id]={};
-      globalData.client[client_id].cid = client_id;
       globalData.client[client_id].name = name;
-      globalData.client[client_id].setting = {};
-      globalData.client[client_id].inRoom = -1;
       setDefaultSettingForPlayer(client_id);
       console.log(globalData.client[client_id]);
       io.to(client_channel).emit('updateClientId',client_id);
