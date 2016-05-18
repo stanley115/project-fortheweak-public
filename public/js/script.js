@@ -181,13 +181,19 @@ String.prototype.capitalizeFirstLetter = function() {
         var tmpli = $("<tr/>")
         tmpli.append($("<th/>").text(username));
         tmpli.append($("<th/>").text(mapRole[clientList[pid].setting.role]));
-        tmpli.append($("<th/>").text(mapCar[clientList[pid].setting.car]));
-        var div = $("<div/>").css("background-color", clientList[pid].setting.wall)
-        div.css("width","44px");
-        div.css("height","23px");
-        div.css("border", "3px solid");
-        div.css("border-color","rgba(21,171,195,1.0)");
-        tmpli.append($("<th/>").html(div));
+        if (clientList[pid].setting.role=="viewer"){
+          tmpli.append($("<th/>"));
+          tmpli.append($("<th/>"));
+        }
+        else {
+          tmpli.append($("<th/>").text(mapCar[clientList[pid].setting.car]));
+          var div = $("<div/>").css("background-color", clientList[pid].setting.wall)
+          div.css("width","44px");
+          div.css("height","23px");
+          div.css("border", "3px solid");
+          div.css("border-color","rgba(21,171,195,1.0)");
+          tmpli.append($("<th/>").html(div));
+        }
         divClientList.append(tmpli);
       }
       else {
@@ -278,7 +284,6 @@ String.prototype.capitalizeFirstLetter = function() {
               clientList[cid].setting.role = 'player'
               $("#selectCar").css("display", "block");
               $("#selectWall").css("display", "block");
-
           }
           else {
             clientList[cid].setting.role = 'viewer'
