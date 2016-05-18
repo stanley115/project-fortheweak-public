@@ -102,11 +102,6 @@ THREE.DeviceOrientationControls = function(object) {
         //this.autoAlign = true;
       //}
 
-      if (reset){
-          offset = deviceOrientation.alpha ?
-            THREE.Math.degToRad(deviceOrientation.alpha) : 0;
-      }
-
       this.alpha = deviceOrientation.alpha ?
         THREE.Math.degToRad(deviceOrientation.alpha) - offset : 0; // Z
       this.beta = deviceOrientation.beta ?
@@ -121,6 +116,11 @@ THREE.DeviceOrientationControls = function(object) {
 
       // 'ZXY' for the device, but 'YXZ' for us
       euler.set(this.beta, this.alpha, - this.gamma, 'YXZ');
+
+      if (reset){
+          offset = euler.y;
+      }
+      euler.y -= offset;
 
       quaternion.setFromEuler(euler);
       quaternionLerp.slerp(quaternion, 0.5); // interpolate

@@ -192,6 +192,7 @@ Game.prototype.end = function (result) {
     socket.removeAllListeners("wall");
     socket.removeAllListeners("addProp");
     socket.removeAllListeners("delProp");
+    socket.removeAllListeners("resetOrientation");
 
     // remove objects
     document.querySelector("canvas").remove();

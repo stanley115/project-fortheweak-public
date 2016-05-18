@@ -46,13 +46,13 @@ var Game = function(config, cleanGame){
 
     // init ready array
     this.ready = this.clients.map(function(client, idx){
+        var gameStart = false;
         var setReady = (function(id){
             this.ready[id] = true;
-            if (this.readyCheck()){
-                this.clients.forEach(function(client){
-                    client.client_socket.removeListener("disconnect", setReady);
-                    client.client_socket.removeListener("ready", setReady);
-                });
+            client.client_socket.removeListener("disconnect", setReady);
+            client.client_socket.removeListener("ready", setReady);
+            if (this.readyCheck() && !gameStart){
+                gameStart = true;
                 this.start();
             }
         }).bind(self, idx);
