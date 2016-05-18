@@ -9,6 +9,17 @@
  * jQuery plugin for stacking tables on small screens
  *
  */
+var enableVoiceChat = false;
+var inCall = false;
+var prod = true;
+if(prod){
+  enableVoiceChat = true;
+  var console = {};
+  console.log = function(){};
+  console.warn = function(){};
+  window.console = console;
+}
+
 ;(function($) {
   $.fn.stacktable = function(options) {
     var $tables = this,
@@ -242,7 +253,13 @@ String.prototype.capitalizeFirstLetter = function() {
     socket.emit("gameStart");
   });
   $("#btnLeaveRoom").click(function(){
+    //if(enableVoiceChat==true)Plivo.conn.hangup();
+    try{
     Plivo.conn.hangup();
+    document.getElementById("audiobgm").play();
+    }catch(e){
+    }
+    inCall = false;
     socket.emit("roomLeave");
   });
   socket = io.connect();
@@ -253,7 +270,8 @@ String.prototype.capitalizeFirstLetter = function() {
     console.log("roomEntered",data);
     updateGameRoom(data);
     showGameRoom();
-    loginAndDelayMakeCall(data['voice'].usr,data['voice'].pwd);
+    if(enableVoiceChat==true && inCall==false)loginAndDelayMakeCall(data['voice'].usr,data['voice'].pwd);
+    inCall = true;
     if(data.setting.floor != undefined){
       $("#selectFloor").val(data.setting.floor);
     }
@@ -322,6 +340,10 @@ String.prototype.capitalizeFirstLetter = function() {
     //console.log(data[0].dead);
     //console.log(data[0].props);
     //console.log(data[0].time);
+    try{
+      Plivo.conn.hangup();
+    }catch(e){
+    }
     var head = $("<tr/>");
 
     head.addClass("large-only-header");
@@ -358,8 +380,13 @@ String.prototype.capitalizeFirstLetter = function() {
   });
   socket.on("disconnect",function(){
     console.log("disconnect");
+    try{
+      Plivo.conn.hangup();
+    }catch(e){
+    }
     //Maybe server down,alert and go to start page
     alert("Disconnect, please make sure server online and connect again");
+    location.reload();
     $("#lobby-div").css("display","none");
     $("#gameroom-div").css("display","none");
     $("#game-div").css("display","none");
