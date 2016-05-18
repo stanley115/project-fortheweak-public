@@ -1,6 +1,8 @@
 /**
  *  Main application
  */
+require('events').EventEmitter.prototype._maxListeners = 0;
+process.setMaxListeners(0);
 var Game = require("./Game");
 var client_prefix = "client-";
 var client_id_pool = 0 ;
