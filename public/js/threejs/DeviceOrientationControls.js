@@ -103,7 +103,7 @@ THREE.DeviceOrientationControls = function(object) {
       //}
 
       this.alpha = deviceOrientation.alpha ?
-        THREE.Math.degToRad(deviceOrientation.alpha) - offset : 0; // Z
+        THREE.Math.degToRad(deviceOrientation.alpha) : 0; // Z
       this.beta = deviceOrientation.beta ?
         THREE.Math.degToRad(deviceOrientation.beta) : 0; // X'
       this.gamma = deviceOrientation.gamma ?
@@ -117,8 +117,11 @@ THREE.DeviceOrientationControls = function(object) {
       // 'ZXY' for the device, but 'YXZ' for us
       euler.set(this.beta, this.alpha, - this.gamma, 'YXZ');
 
+      console.log("x:", euler.x);
+      console.log("y:", euler.y);
+      console.log("z:", euler.z);
       if (reset){
-          offset = euler.y;
+          offset = euler.y - (euler.z < 0? Math.PI: 0);
       }
       euler.y -= offset;
 
