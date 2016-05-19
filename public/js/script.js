@@ -173,8 +173,9 @@ String.prototype.capitalizeFirstLetter = function() {
     mapRole["viewer"] = "Viewer";
     var mapCar = {};
     mapCar["tron"] = "Tron";
-    mapCar["black"] = "Black Tron"
-    mapCar["nyan"] = "Nyan Cat"
+    mapCar["black"] = "Black Tron";
+    mapCar["nyan"] = "Nyan Cat";
+    mapCar["shark"] = "Shark";
 
     console.log(clientList);
     $("#divGameRoomBodyPre").empty();
